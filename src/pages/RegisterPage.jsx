@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
@@ -18,8 +18,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { AuthLayout } from "../layout/AuthLayout";
+import { useDispatch, useSelector } from "react-redux";
+import { startRegisterUserwithEmailAndPassword } from "../store/auth/authThunks";
+import { isError } from "../store/auth/authSlice";
 
 export const RegisterPage = () => {
+  const { status, errorMessage } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const isCheckingAuthentication = useMemo(
+    () => status === "checking",
+    [status]
+  );
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       displayName: "",
@@ -39,7 +48,7 @@ export const RegisterPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      console.log({ values });
+      dispatch(startRegisterUserwithEmailAndPassword(values));
     },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -48,6 +57,9 @@ export const RegisterPage = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+  const onRedirect = () => {
+    dispatch(isError({ errorMessage: null }));
   };
 
   return (
@@ -119,15 +131,15 @@ export const RegisterPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-            {/* <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
+            <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
               <Alert severity="error">{errorMessage}</Alert>
-            </Grid> */}
+            </Grid>
             <Grid item xs={12}>
               <Button
                 type="submit"
                 variant="contained"
                 fullWidth
-                // disabled={isCheckingAuthentication}
+                disabled={isCheckingAuthentication}
               >
                 <Typography>Crear cuenta</Typography>
               </Button>
@@ -138,6 +150,7 @@ export const RegisterPage = () => {
               ¿Ya tienes una cuenta?
             </Typography>
             <Link
+              onClick={onRedirect}
               component={RouterLink}
               sx={{ fontSize: 14 }}
               color="inherit"

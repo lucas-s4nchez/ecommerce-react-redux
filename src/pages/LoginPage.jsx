@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
@@ -19,8 +19,15 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { AuthLayout } from "../layout/AuthLayout";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  startGoogleSigIn,
+  startLoginWithEmailAndPassword,
+} from "../store/auth/authThunks";
 
 export const LoginPage = () => {
+  const { status, errorMessage } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: "",
@@ -36,15 +43,23 @@ export const LoginPage = () => {
     }),
     onSubmit: (values) => {
       console.log({ values });
+      dispatch(startLoginWithEmailAndPassword(values));
     },
   });
-
   const [showPassword, setShowPassword] = useState(false);
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+  const onGoogleSignIn = () => {
+    dispatch(startGoogleSigIn());
+    console.log(errorMessage);
+  };
+  const onRedirect = () => {
+    dispatch(isError({ errorMessage: null }));
   };
   return (
     <AuthLayout title={"Iniciar sesión"}>
@@ -96,9 +111,9 @@ export const LoginPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-            {/* <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
+            <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
               <Alert severity="error">{errorMessage}</Alert>
-            </Grid> */}
+            </Grid>
             <Grid item xs={12} sm={6}>
               <Button
                 // disabled={isAuthenticating}
@@ -111,6 +126,7 @@ export const LoginPage = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Button
+                onClick={onGoogleSignIn}
                 // disabled={isAuthenticating}
                 variant="contained"
                 fullWidth
@@ -125,6 +141,7 @@ export const LoginPage = () => {
               ¿No tienes una cuenta?
             </Typography>
             <Link
+              onClick={onRedirect}
               component={RouterLink}
               sx={{ fontSize: 14 }}
               color="inherit"
