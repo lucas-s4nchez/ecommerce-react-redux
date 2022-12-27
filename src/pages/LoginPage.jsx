@@ -24,6 +24,7 @@ import {
   startGoogleSigIn,
   startLoginWithEmailAndPassword,
 } from "../store/auth/authThunks";
+import { isError } from "../store/auth/authSlice";
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);

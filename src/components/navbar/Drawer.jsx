@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink as RouterLink } from "react-router-dom";
 import {
   Drawer,
   Box,
@@ -6,33 +8,121 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
+  Link,
+  Typography,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
+
+import { startLogout } from "../../store/auth/authThunks";
 
 const drawerWidth = 240;
 
 const DrawerContent = () => {
+  const { status } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
+  const onLogout = () => {
+    dispatch(startLogout());
+  };
   return (
     <div>
       <Toolbar />
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+        <ListItem sx={{ padding: 0 }}>
+          <ListItemButton sx={{ padding: 0 }}>
+            <Link
+              to={"/"}
+              component={RouterLink}
+              sx={{
+                padding: "8px 16px",
+                minWidth: "100%",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "20px",
+                width: "100%",
+                color: "secondary.main",
+                "&.active": {
+                  color: "primary.main",
+                },
+              }}
+            >
+              <HomeIcon sx={{ fontSize: 30 }} />
+              <Typography
+                sx={{
+                  width: "100%",
+                  textAlign: "start",
+                  textTransform: "none",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                Inicio
+              </Typography>
+            </Link>
+          </ListItemButton>
+        </ListItem>
+
+        <Divider />
+        {isAuthenticated ? (
+          <ListItem sx={{ padding: 0 }}>
+            <ListItemButton sx={{ gap: "20px" }} onClick={onLogout}>
+              <LoginIcon sx={{ fontSize: 30 }} />
+              <Typography
+                sx={{
+                  width: "100%",
+                  textAlign: "start",
+                  textTransform: "none",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                Salir
+              </Typography>
             </ListItemButton>
           </ListItem>
-        ))}
+        ) : (
+          <ListItem sx={{ padding: 0 }}>
+            <ListItemButton sx={{ padding: 0 }}>
+              <Link
+                to={"/login"}
+                component={RouterLink}
+                sx={{
+                  padding: "8px 16px",
+                  minWidth: "100%",
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "20px",
+                  width: "100%",
+                  color: "secondary.main",
+                  "&.active": {
+                    color: "primary.main",
+                  },
+                }}
+              >
+                <LoginIcon sx={{ fontSize: 30 }} />
+                <Typography
+                  sx={{
+                    width: "100%",
+                    textAlign: "start",
+                    textTransform: "none",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  Iniciar sesión
+                </Typography>
+              </Link>
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
-      <Divider />
+
+      {/* <Divider />
       <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
           <ListItem key={text} disablePadding>
@@ -44,7 +134,7 @@ const DrawerContent = () => {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </div>
   );
 };
