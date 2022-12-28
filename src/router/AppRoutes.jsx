@@ -2,7 +2,15 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { Layout } from "../layout/Layout";
-import { HomePage, LoginPage, RegisterPage } from "../pages";
+import {
+  FavoritesPage,
+  HomePage,
+  LoginPage,
+  OffersPage,
+  PurchasesPage,
+  RegisterPage,
+} from "../pages";
+import { AccountPage } from "../pages/AccountPage";
 import { NotAuthenticatedRoutes } from "./NotAuthenticatedRoutes";
 
 export const AppRoutes = () => {
@@ -14,6 +22,10 @@ export const AppRoutes = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/purchases" element={<PurchasesPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/offers" element={<OffersPage />} />
+        <Route path="/account" element={<AccountPage />} />
         <Route
           path="/login"
           element={

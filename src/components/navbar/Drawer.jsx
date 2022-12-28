@@ -1,6 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink as RouterLink } from "react-router-dom";
 import {
   Drawer,
   Box,
@@ -9,146 +8,35 @@ import {
   ListItem,
   ListItemButton,
   Toolbar,
-  Link,
   Typography,
 } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import LoginIcon from "@mui/icons-material/Login";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import { startLogout } from "../../store/auth/authThunks";
+import { LinkItem } from "./LinkItem";
 
 const drawerWidth = 240;
 
-const DrawerContent = () => {
-  const { status } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
-  const onLogout = () => {
-    dispatch(startLogout());
-  };
-  return (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        <ListItem sx={{ padding: 0 }}>
-          <ListItemButton sx={{ padding: 0 }}>
-            <Link
-              to={"/"}
-              component={RouterLink}
-              sx={{
-                padding: "8px 16px",
-                minWidth: "100%",
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "20px",
-                width: "100%",
-                color: "secondary.main",
-                "&.active": {
-                  color: "primary.main",
-                },
-              }}
-            >
-              <HomeIcon sx={{ fontSize: 30 }} />
-              <Typography
-                sx={{
-                  width: "100%",
-                  textAlign: "start",
-                  textTransform: "none",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                Inicio
-              </Typography>
-            </Link>
-          </ListItemButton>
-        </ListItem>
-
-        <Divider />
-        {isAuthenticated ? (
-          <ListItem sx={{ padding: 0 }}>
-            <ListItemButton sx={{ gap: "20px" }} onClick={onLogout}>
-              <LoginIcon sx={{ fontSize: 30 }} />
-              <Typography
-                sx={{
-                  width: "100%",
-                  textAlign: "start",
-                  textTransform: "none",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                Salir
-              </Typography>
-            </ListItemButton>
-          </ListItem>
-        ) : (
-          <ListItem sx={{ padding: 0 }}>
-            <ListItemButton sx={{ padding: 0 }}>
-              <Link
-                to={"/login"}
-                component={RouterLink}
-                sx={{
-                  padding: "8px 16px",
-                  minWidth: "100%",
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "20px",
-                  width: "100%",
-                  color: "secondary.main",
-                  "&.active": {
-                    color: "primary.main",
-                  },
-                }}
-              >
-                <LoginIcon sx={{ fontSize: 30 }} />
-                <Typography
-                  sx={{
-                    width: "100%",
-                    textAlign: "start",
-                    textTransform: "none",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  Iniciar sesión
-                </Typography>
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        )}
-      </List>
-
-      {/* <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
-    </div>
-  );
-};
-
 export const DrawerResponsive = (props) => {
   const { window, openMenu, handleOpenMenu } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { status } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const onLogout = () => {
+    dispatch(startLogout());
+    handleOpenMenu();
+  };
 
   return (
     <Box sx={{ display: openMenu ? "flex" : "none" }}>
@@ -157,7 +45,6 @@ export const DrawerResponsive = (props) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
           container={container}
           variant="temporary"
@@ -173,7 +60,79 @@ export const DrawerResponsive = (props) => {
             },
           }}
         >
-          <DrawerContent />
+          <div>
+            <Toolbar />
+            <Divider />
+            <List>
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/"} text="Inicio">
+                    <HomeOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/purchases"} text="Mis compras">
+                    <ShoppingBagOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/favorites"} text="Favoritos">
+                    <FavoriteBorderOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/offers"} text="Ofertas">
+                    <LocalOfferOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/account"} text="Mi cuenta">
+                    <AccountCircleOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <Divider />
+              {isAuthenticated ? (
+                <ListItem sx={{ padding: 0 }}>
+                  <ListItemButton sx={{ gap: "20px" }} onClick={onLogout}>
+                    <LogoutOutlinedIcon sx={{ fontSize: 30 }} />
+                    <Typography
+                      sx={{
+                        width: "100%",
+                        textAlign: "start",
+                        textTransform: "none",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      Salir
+                    </Typography>
+                  </ListItemButton>
+                </ListItem>
+              ) : (
+                <ListItem sx={{ padding: 0 }}>
+                  <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                    <LinkItem redirectTo={"/login"} text="Iniciar sesión">
+                      <LoginOutlinedIcon sx={{ fontSize: 30 }} />
+                    </LinkItem>
+                  </ListItemButton>
+                </ListItem>
+              )}
+            </List>
+          </div>
         </Drawer>
       </Box>
     </Box>
