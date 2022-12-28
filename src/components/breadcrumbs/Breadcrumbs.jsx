@@ -9,6 +9,7 @@ const breadcrumbNameMap = {
   "/purchases": "Mis compras",
   "/account": "Mi cuenta",
   "/login": "Iniciar sesión",
+  "/register": "Crear cuenta",
 };
 
 function LinkRouter(props) {

@@ -1,22 +1,29 @@
 import { NavLink as RouterLink } from "react-router-dom";
 import { Link, Typography } from "@mui/material";
 
-export const LinkItem = ({ children, redirectTo, text }) => {
+export const LinkItem = ({
+  children,
+  redirectTo,
+  text,
+  color = "secondary.main",
+  activeColor = "primary.main",
+  padding = "8px 16px",
+}) => {
   return (
     <Link
       to={redirectTo}
       component={RouterLink}
       sx={{
-        padding: "8px 16px",
+        padding: padding,
         minWidth: "100%",
         textDecoration: "none",
         display: "flex",
         alignItems: "center",
-        gap: "20px",
+        gap: 1,
         width: "100%",
-        color: "secondary.main",
+        color: color,
         "&.active": {
-          color: "primary.main",
+          color: activeColor,
         },
       }}
     >

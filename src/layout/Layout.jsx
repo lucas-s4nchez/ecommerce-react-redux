@@ -17,7 +17,6 @@ export const Layout = ({ children }) => {
         alignItems="center"
         justifyContent="center"
         sx={{
-          minHeight: "100vh",
           backgroundColor: "background",
         }}
       >
