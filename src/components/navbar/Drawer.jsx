@@ -10,6 +10,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Avatar,
 } from "@mui/material";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -89,27 +90,40 @@ export const DrawerResponsive = (props) => {
                   <CloseOutlinedIcon />
                 </IconButton>
               </Box>
-              <Box
-                sx={{
-                  height: "56px",
-                  width: "56px",
-                  backgroundColor: "background",
-                  borderRadius: "50%",
-                  float: "left",
-                  marginRight: "16px",
-                  textAlign: "center",
-                  overflow: "hidden",
-                }}
-              >
-                {!!photoURL ? (
-                  <img src={photoURL} width="56px" height="56px" />
-                ) : (
-                  <AccountCircleOutlinedIcon sx={{ fontSize: "56px" }} />
-                )}
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    backgroundColor: "background",
+                    textAlign: "center",
+                  }}
+                >
+                  {isAuthenticated ? (
+                    !!photoURL ? (
+                      <Avatar
+                        alt={displayName}
+                        src={photoURL}
+                        sx={{ width: 56, height: 56 }}
+                      />
+                    ) : (
+                      <Avatar
+                        sx={{
+                          width: 56,
+                          height: 56,
+                          bgcolor: "primary.main",
+                          fontSize: "30px",
+                        }}
+                      >
+                        {displayName.charAt(0)}
+                      </Avatar>
+                    )
+                  ) : (
+                    <AccountCircleOutlinedIcon sx={{ fontSize: "56px" }} />
+                  )}
+                </Box>
+                <Typography>
+                  Bienvenido{!!displayName && `, ${displayName}`} !
+                </Typography>
               </Box>
-              <Typography>
-                Bienvenido{!!displayName && `, ${displayName}`}!
-              </Typography>
               {!isAuthenticated && (
                 <Typography sx={{ fontSize: "14px" }}>
                   Ingresa a tu cuenta para ver tus compras, favoritos, etc.
