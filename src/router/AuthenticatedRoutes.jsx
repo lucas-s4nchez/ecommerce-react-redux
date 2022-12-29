@@ -3,5 +3,5 @@ import { useCheckAuth } from "../hooks/useCheckAuth";
 
 export const AuthenticatedRoutes = ({ children }) => {
   const status = useCheckAuth();
-  return status === "authenticated" ? children : <Navigate to={"/"} />;
+  return status === "authenticated" ? children : <Navigate to={"/login"} />;
 };

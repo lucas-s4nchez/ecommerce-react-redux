@@ -24,10 +24,24 @@ export const AppRoutes = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/purchases" element={<PurchasesPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/offers" element={<OffersPage />} />
         <Route path="/featured" element={<FeaturedPage />} />
+        <Route
+          path="/favorites"
+          element={
+            <AuthenticatedRoutes>
+              <FavoritesPage />
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route
+          path="/purchases"
+          element={
+            <AuthenticatedRoutes>
+              <PurchasesPage />
+            </AuthenticatedRoutes>
+          }
+        />
         <Route
           path="/account"
           element={

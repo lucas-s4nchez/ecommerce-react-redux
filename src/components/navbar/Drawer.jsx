@@ -177,21 +177,31 @@ export const DrawerResponsive = (props) => {
                 </ListItemButton>
               </ListItem>
 
-              <ListItem sx={{ padding: 0 }}>
-                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/purchases"} text="Mis compras">
-                    <ShoppingBagOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
-                </ListItemButton>
-              </ListItem>
+              {isAuthenticated && (
+                <>
+                  <ListItem sx={{ padding: 0 }}>
+                    <ListItemButton
+                      sx={{ padding: 0 }}
+                      onClick={handleOpenMenu}
+                    >
+                      <LinkItem redirectTo={"/purchases"} text="Mis compras">
+                        <ShoppingBagOutlinedIcon sx={{ fontSize: 30 }} />
+                      </LinkItem>
+                    </ListItemButton>
+                  </ListItem>
 
-              <ListItem sx={{ padding: 0 }}>
-                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/favorites"} text="Favoritos">
-                    <FavoriteBorderOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
-                </ListItemButton>
-              </ListItem>
+                  <ListItem sx={{ padding: 0 }}>
+                    <ListItemButton
+                      sx={{ padding: 0 }}
+                      onClick={handleOpenMenu}
+                    >
+                      <LinkItem redirectTo={"/favorites"} text="Favoritos">
+                        <FavoriteBorderOutlinedIcon sx={{ fontSize: 30 }} />
+                      </LinkItem>
+                    </ListItemButton>
+                  </ListItem>
+                </>
+              )}
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
