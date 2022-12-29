@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Alert,
   Button,
@@ -14,13 +17,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-
-import { AuthLayout } from "../layout/AuthLayout";
-import { useDispatch, useSelector } from "react-redux";
-import { startRegisterUserwithEmailAndPassword } from "../store/auth/authThunks";
-import { isError } from "../store/auth/authSlice";
+import { startRegisterUserwithEmailAndPassword } from "../../store/auth/authThunks";
+import { isError } from "../../store/auth/authSlice";
+import { AuthLayout } from "../../layout/AuthLayout";
 
 export const RegisterPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);

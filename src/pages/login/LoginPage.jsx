@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
@@ -17,14 +18,12 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-import { AuthLayout } from "../layout/AuthLayout";
-import { useDispatch, useSelector } from "react-redux";
 import {
   startGoogleSigIn,
   startLoginWithEmailAndPassword,
-} from "../store/auth/authThunks";
-import { isError } from "../store/auth/authSlice";
+} from "../../store/auth/authThunks";
+import { isError } from "../../store/auth/authSlice";
+import { AuthLayout } from "../../layout/AuthLayout";
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
@@ -57,7 +56,6 @@ export const LoginPage = () => {
   };
   const onGoogleSignIn = () => {
     dispatch(startGoogleSigIn());
-    console.log(errorMessage);
   };
   const onRedirect = () => {
     dispatch(isError({ errorMessage: null }));

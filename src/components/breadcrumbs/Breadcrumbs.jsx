@@ -7,6 +7,7 @@ const breadcrumbNameMap = {
   "/offers": "Ofertas",
   "/favorites": "Favoritos",
   "/purchases": "Mis compras",
+  "/featured": "Destacados",
   "/account": "Mi cuenta",
   "/login": "Iniciar sesión",
   "/register": "Crear cuenta",

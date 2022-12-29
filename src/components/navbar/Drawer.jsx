@@ -19,6 +19,7 @@ import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -30,7 +31,7 @@ const drawerWidth = 300;
 
 export const DrawerResponsive = (props) => {
   const { window, openMenu, handleOpenMenu } = props;
-  const { status } = useSelector((state) => state.auth);
+  const { status, displayName, photoURL } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
@@ -69,7 +70,7 @@ export const DrawerResponsive = (props) => {
             <Box
               sx={{
                 height: "auto",
-                padding: "12px 16px",
+                padding: "12px 16px 32px 16px",
                 backgroundColor: "secondary.main",
                 color: "white.cream",
               }}
@@ -97,60 +98,74 @@ export const DrawerResponsive = (props) => {
                   float: "left",
                   marginRight: "16px",
                   textAlign: "center",
+                  overflow: "hidden",
                 }}
               >
-                <AccountCircleOutlinedIcon sx={{ fontSize: "56px" }} />
+                {!!photoURL ? (
+                  <img src={photoURL} width="56px" height="56px" />
+                ) : (
+                  <AccountCircleOutlinedIcon sx={{ fontSize: "56px" }} />
+                )}
               </Box>
-              <Typography>Bienvenido!</Typography>
-              <Typography sx={{ fontSize: "14px" }}>
-                Ingresa a tu cuenta para ver tus compras, favoritos, etc.
+              <Typography>
+                Bienvenido{!!displayName && `, ${displayName}`}!
               </Typography>
-              <List sx={{ display: "flex", gap: 2 }}>
-                <ListItem
-                  sx={{
-                    padding: 0,
-                    backgroundColor: "primary.main",
-                    borderRadius: "10px",
-                  }}
-                >
-                  <ListItemButton
-                    sx={{ padding: 0, color: "white" }}
-                    onClick={handleOpenMenu}
+              {!isAuthenticated && (
+                <Typography sx={{ fontSize: "14px" }}>
+                  Ingresa a tu cuenta para ver tus compras, favoritos, etc.
+                </Typography>
+              )}
+              {!isAuthenticated && (
+                <List sx={{ display: "flex", gap: 2 }}>
+                  <ListItem
+                    sx={{
+                      padding: 0,
+                      backgroundColor: "primary.main",
+                      borderRadius: "10px",
+                    }}
                   >
-                    <LinkItem
-                      redirectTo={"/login"}
-                      text="Ingresá"
-                      color="white.cream"
-                      activeColor="white.cream"
-                      padding="8px"
+                    <ListItemButton
+                      sx={{ padding: 0, color: "white" }}
+                      onClick={handleOpenMenu}
                     >
-                      <LoginOutlinedIcon sx={{ fontSize: 24 }} />
-                    </LinkItem>
-                  </ListItemButton>
-                </ListItem>
+                      <LinkItem
+                        redirectTo={"/login"}
+                        text="Ingresá"
+                        color="white.cream"
+                        activeColor="white.cream"
+                        padding="8px"
+                      >
+                        <LoginOutlinedIcon sx={{ fontSize: 24 }} />
+                      </LinkItem>
+                    </ListItemButton>
+                  </ListItem>
 
-                <ListItem
-                  sx={{
-                    padding: 0,
-                    backgroundColor: "background.default",
-                    borderRadius: "10px",
-                    border: "1px solid",
-                    borderColor: "primary.main",
-                  }}
-                >
-                  <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                    <LinkItem
-                      redirectTo={"/register"}
-                      text="Resgistrate"
-                      color="primary.main"
-                      activeColor="primary.main"
-                      padding="8px"
+                  <ListItem
+                    sx={{
+                      padding: 0,
+                      backgroundColor: "background.default",
+                      borderRadius: "10px",
+                      border: "1px solid",
+                      borderColor: "primary.main",
+                    }}
+                  >
+                    <ListItemButton
+                      sx={{ padding: 0 }}
+                      onClick={handleOpenMenu}
                     >
-                      <PersonAddAltOutlinedIcon sx={{ fontSize: 24 }} />
-                    </LinkItem>
-                  </ListItemButton>
-                </ListItem>
-              </List>
+                      <LinkItem
+                        redirectTo={"/register"}
+                        text="Resgistrate"
+                        color="primary.main"
+                        activeColor="primary.main"
+                        padding="8px"
+                      >
+                        <PersonAddAltOutlinedIcon sx={{ fontSize: 24 }} />
+                      </LinkItem>
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              )}
             </Box>
             <Divider />
             <List>
@@ -188,11 +203,21 @@ export const DrawerResponsive = (props) => {
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/account"} text="Mi cuenta">
-                    <ManageAccountsOutlinedIcon sx={{ fontSize: 30 }} />
+                  <LinkItem redirectTo={"/featured"} text="Destacados">
+                    <StarBorderOutlinedIcon sx={{ fontSize: 30 }} />
                   </LinkItem>
                 </ListItemButton>
               </ListItem>
+
+              {isAuthenticated && (
+                <ListItem sx={{ padding: 0 }}>
+                  <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                    <LinkItem redirectTo={"/account"} text="Mi cuenta">
+                      <ManageAccountsOutlinedIcon sx={{ fontSize: 30 }} />
+                    </LinkItem>
+                  </ListItemButton>
+                </ListItem>
+              )}
 
               <Toolbar />
               <Divider />

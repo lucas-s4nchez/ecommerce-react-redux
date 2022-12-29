@@ -3,14 +3,16 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { Layout } from "../layout/Layout";
 import {
+  AccountPage,
   FavoritesPage,
+  FeaturedPage,
   HomePage,
   LoginPage,
   OffersPage,
   PurchasesPage,
   RegisterPage,
 } from "../pages";
-import { AccountPage } from "../pages/AccountPage";
+import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
 import { NotAuthenticatedRoutes } from "./NotAuthenticatedRoutes";
 
 export const AppRoutes = () => {
@@ -25,7 +27,15 @@ export const AppRoutes = () => {
         <Route path="/purchases" element={<PurchasesPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/offers" element={<OffersPage />} />
-        <Route path="/account" element={<AccountPage />} />
+        <Route path="/featured" element={<FeaturedPage />} />
+        <Route
+          path="/account"
+          element={
+            <AuthenticatedRoutes>
+              <AccountPage />
+            </AuthenticatedRoutes>
+          }
+        />
         <Route
           path="/login"
           element={
