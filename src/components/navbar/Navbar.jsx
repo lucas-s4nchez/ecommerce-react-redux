@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
   AppBar,
   Badge,
@@ -46,11 +47,14 @@ export const Navbar = () => {
               maxWidth: "1200px",
               paddingLeft: 0,
               paddingRight: 0,
+              gap: "10px",
             }}
           >
-            <Typography variant="h6" noWrap>
-              Yury
-            </Typography>
+            <RouterLink to="/">
+              <Box sx={{ width: "120px", height: "100%", display: "flex" }}>
+                <img src="../../../public/logo-white.svg" width="100%" />
+              </Box>
+            </RouterLink>
             <Search open={openSearch}>
               <SearchIconWrapper>
                 <SearchIcon />

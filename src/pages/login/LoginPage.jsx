@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Link as RouterLink,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import {
   Alert,
   Button,
@@ -16,7 +21,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { useFormik } from "formik";
+import { replace, useFormik } from "formik";
 import * as Yup from "yup";
 import {
   startGoogleSigIn,
@@ -28,6 +33,7 @@ import { AuthLayout } from "../../layout/AuthLayout";
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
       email: "",
@@ -42,8 +48,8 @@ export const LoginPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      console.log({ values });
       dispatch(startLoginWithEmailAndPassword(values));
+      history.back();
     },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -56,6 +62,7 @@ export const LoginPage = () => {
   };
   const onGoogleSignIn = () => {
     dispatch(startGoogleSigIn());
+    history.back();
   };
   const onRedirect = () => {
     dispatch(isError({ errorMessage: null }));
