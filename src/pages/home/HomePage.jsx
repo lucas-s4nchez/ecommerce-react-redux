@@ -1,6 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
 import { CarouselItem } from "./CarouselItem";
+import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
 import { ShopSection } from "./ShopSection";
 
@@ -57,6 +59,30 @@ export const HomePage = () => {
       </Box>
       <ShoppingInfoSection />
       <ShopSection />
+      <Box>
+        <Typography variant="h3" fontSize={30}>
+          Aprevecha las increibles ofertas!
+        </Typography>
+        <HomeCardContainer redirectTo={"/offers"}>
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+        </HomeCardContainer>
+      </Box>
+      <Box>
+        <Typography variant="h3" fontSize={30}>
+          Los más Destacados
+        </Typography>
+        <HomeCardContainer redirectTo={"/featured"}>
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+          <CardProduct />
+        </HomeCardContainer>
+      </Box>
     </>
   );
 };
