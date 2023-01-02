@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import RouterBreadcrumbs from "../components/breadcrumbs/Breadcrumbs";
+import { Footer } from "../components/footer/Footer";
 import { Navbar } from "../components/navbar/Navbar";
 import { Wrapper } from "../styles/Wrapper";
 
@@ -25,6 +26,7 @@ export const Layout = ({ children }) => {
           {children}
         </Wrapper>
       </Grid>
+      <Footer />
     </>
   );
 };
