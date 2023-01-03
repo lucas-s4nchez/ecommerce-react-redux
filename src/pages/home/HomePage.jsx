@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
+import { startLoadingProducts } from "../../store/products/productsThunks";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
@@ -64,11 +67,11 @@ export const HomePage = () => {
           Aprevecha las increibles ofertas!
         </Typography>
         <HomeCardContainer redirectTo={"/offers"}>
+          {/* <CardProduct />
           <CardProduct />
           <CardProduct />
           <CardProduct />
-          <CardProduct />
-          <CardProduct />
+          <CardProduct /> */}
         </HomeCardContainer>
       </Box>
       <Box>
@@ -76,11 +79,11 @@ export const HomePage = () => {
           Los más Destacados
         </Typography>
         <HomeCardContainer redirectTo={"/featured"}>
+          {/* <CardProduct />
           <CardProduct />
           <CardProduct />
           <CardProduct />
-          <CardProduct />
-          <CardProduct />
+          <CardProduct /> */}
         </HomeCardContainer>
       </Box>
     </>
