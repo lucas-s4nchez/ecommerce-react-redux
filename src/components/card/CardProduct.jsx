@@ -4,24 +4,61 @@ import {
   CardContent,
   CardMedia,
   IconButton,
-  Typography,
   CardActionArea,
   Skeleton,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import { useSelector } from "react-redux";
+import {
+  ProductContainerDiscountStyled,
+  ProductDiscountStyled,
+  ProductNameStyled,
+  ProductPriceStyled,
+  ProductPriceWithDiscountStyled,
+} from "./CardProductStyles";
+import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
 
-export const CardProduct = ({ model, images, price }) => {
+const ProductPrice = ({ discount, price, isLoading }) => {
+  return (
+    <>
+      {discount > 0 &&
+        (isLoading ? (
+          <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <ProductPriceWithDiscountStyled>
+            {formatPrice(price)}
+          </ProductPriceWithDiscountStyled>
+        ))}
+      {discount ? (
+        isLoading ? (
+          <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
+        ) : (
+          <ProductContainerDiscountStyled>
+            <ProductPriceStyled>
+              {formatPrice(getNewPrice(price, discount))}
+            </ProductPriceStyled>
+            <ProductDiscountStyled>{discount}% off</ProductDiscountStyled>
+          </ProductContainerDiscountStyled>
+        )
+      ) : isLoading ? (
+        <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
+      ) : (
+        <ProductPriceStyled>{formatPrice(price)}</ProductPriceStyled>
+      )}
+    </>
+  );
+};
+
+export const CardProduct = ({ model, images, price, discount }) => {
   const { isLoading } = useSelector((state) => state.products);
   return (
     <Card sx={{ minWidth: 250, maxWidth: 280 }}>
-      <CardActions disableSpacing>
+      <CardActions
+        disableSpacing
+        sx={{ display: "flex", justifyContent: "flex-end" }}
+      >
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
         </IconButton>
       </CardActions>
       <CardActionArea>
@@ -31,8 +68,9 @@ export const CardProduct = ({ model, images, price }) => {
           <CardMedia
             component="img"
             height="194"
-            image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+            image={images[0]}
             alt="Zapatilla"
+            sx={{ objectFit: "contain" }}
           />
         )}
 
@@ -40,13 +78,13 @@ export const CardProduct = ({ model, images, price }) => {
           {isLoading ? (
             <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
           ) : (
-            <Typography>{model}</Typography>
+            <ProductNameStyled>{model}</ProductNameStyled>
           )}
-          {isLoading ? (
-            <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
-          ) : (
-            <Typography>{price}</Typography>
-          )}
+          <ProductPrice
+            discount={discount}
+            price={price}
+            isLoading={isLoading}
+          />
         </CardContent>
       </CardActionArea>
     </Card>

@@ -33,7 +33,7 @@ export const FooterItemTitleStyled = styled(Typography)(({ theme }) => ({
     left: "0px",
   },
 }));
-export const FooterCopyright = styled(Typography)(({ theme }) => ({
+export const FooterCopyrightStyled = styled(Typography)(({ theme }) => ({
   color: theme.palette.white.cream,
   margin: 0,
   padding: "20px 0",

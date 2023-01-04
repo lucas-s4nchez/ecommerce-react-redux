@@ -6,7 +6,7 @@ import { Box } from "@mui/system";
 import { Wrapper } from "../../styles/Wrapper";
 import {
   FooterContainerStyled,
-  FooterCopyright,
+  FooterCopyrightStyled,
   FooterItemContainerStyled,
   FooterItemTitleStyled,
 } from "./FooterStyles";
@@ -118,7 +118,7 @@ export const Footer = () => {
           </FooterItemContainerStyled>
         </FooterContainerStyled>
 
-        <FooterCopyright>
+        <FooterCopyrightStyled>
           Sitio diseñado por{" "}
           <Typography
             sx={{ textDecoration: "none" }}
@@ -128,7 +128,7 @@ export const Footer = () => {
           >
             Lucas Sánchez
           </Typography>
-        </FooterCopyright>
+        </FooterCopyrightStyled>
       </Wrapper>
     </Box>
   );
