@@ -7,10 +7,14 @@ import {
   FavoritesPage,
   FeaturedPage,
   HomePage,
+  KidsShopPage,
   LoginPage,
+  MenShopPage,
   OffersPage,
+  ProductDetails,
   PurchasesPage,
   RegisterPage,
+  WomenShopPage,
 } from "../pages";
 import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
 import { NotAuthenticatedRoutes } from "./NotAuthenticatedRoutes";
@@ -26,6 +30,12 @@ export const AppRoutes = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/offers" element={<OffersPage />} />
         <Route path="/featured" element={<FeaturedPage />} />
+        <Route path="/mens" element={<MenShopPage />} />
+        <Route path="mens/:id" element={<ProductDetails />} />
+        <Route path="/womens" element={<WomenShopPage />} />
+        <Route path="womens/:id" element={<ProductDetails />} />
+        <Route path="/kids" element={<KidsShopPage />} />
+        <Route path="kids/:id" element={<ProductDetails />} />
         <Route
           path="/favorites"
           element={

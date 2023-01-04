@@ -1,27 +1,33 @@
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useParams } from "react-router-dom";
 import { Box, Link, Typography, Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import HomeIcon from "@mui/icons-material/Home";
 
-const breadcrumbNameMap = {
-  "/offers": "Ofertas",
-  "/favorites": "Favoritos",
-  "/purchases": "Mis compras",
-  "/featured": "Destacados",
-  "/account": "Mi cuenta",
-  "/login": "Iniciar sesión",
-  "/register": "Crear cuenta",
-};
-
 function LinkRouter(props) {
   return <Link {...props} component={RouterLink} />;
+}
+function toTitleCase(str) {
+  return str.replace(/\b\w+/g, function (s) {
+    return s.charAt(0).toUpperCase() + s.substr(1).toLowerCase();
+  });
 }
 
 export default function RouterBreadcrumbs() {
   const location = useLocation();
+  const breadcrumbNameMap = {
+    "/offers": "Ofertas",
+    "/favorites": "Favoritos",
+    "/purchases": "Mis compras",
+    "/featured": "Destacados",
+    "/account": "Mi cuenta",
+    "/login": "Iniciar sesión",
+    "/register": "Crear cuenta",
+    "/mens": "Hombres",
+    "/womens": "Mujeres",
+    "/kids": "Niños",
+  };
 
   const pathnames = location.pathname.split("/").filter((x) => x);
-
   return (
     <Box sx={{ padding: "20px 0" }}>
       <Breadcrumbs
@@ -44,14 +50,16 @@ export default function RouterBreadcrumbs() {
 
           return last ? (
             <Typography color="primary.main" key={to} sx={{ fontSize: "14px" }}>
-              {breadcrumbNameMap[to]}
+              {breadcrumbNameMap[to]
+                ? breadcrumbNameMap[to]
+                : toTitleCase(value)}
             </Typography>
           ) : (
             <LinkRouter
               color="inherit"
               to={to}
               key={to}
-              sx={{ fontSize: "14px" }}
+              sx={{ fontSize: "14px", textDecoration: "none" }}
             >
               {breadcrumbNameMap[to]}
             </LinkRouter>

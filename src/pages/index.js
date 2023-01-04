@@ -6,3 +6,7 @@ export * from "./login";
 export * from "./offers";
 export * from "./purchases";
 export * from "./register";
+export * from "./mens";
+export * from "./womens";
+export * from "./kids";
+export * from "./productDetails";

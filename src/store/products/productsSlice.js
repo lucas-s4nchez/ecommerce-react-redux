@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   products: [],
+  menProducts: [],
+  womenProducts: [],
+  kidProducts: [],
   featuredProducts: [],
   productsOnOffer: [],
 };
@@ -17,6 +20,15 @@ const productsSlice = createSlice({
     setProducts: (state, { payload }) => {
       state.products = payload;
     },
+    setMenProducts: (state, { payload }) => {
+      state.menProducts = payload;
+    },
+    setWomenProducts: (state, { payload }) => {
+      state.womenProducts = payload;
+    },
+    setKidProducts: (state, { payload }) => {
+      state.kidProducts = payload;
+    },
     setFeaturedProducts: (state, { payload }) => {
       state.featuredProducts = payload;
     },
@@ -29,6 +41,9 @@ const productsSlice = createSlice({
 export const {
   isLoading,
   setProducts,
+  setMenProducts,
+  setWomenProducts,
+  setKidProducts,
   setFeaturedProducts,
   setProductsOnOffer,
 } = productsSlice.actions;
