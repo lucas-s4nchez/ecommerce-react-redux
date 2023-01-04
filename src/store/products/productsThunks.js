@@ -1,4 +1,10 @@
-import { collection, getDocs, query, where } from "firebase/firestore/lite";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import {
   isLoading,
@@ -60,7 +66,9 @@ export const startLoadingFeaturedProducts = () => {
     docs.forEach((doc) => {
       products.push({ id: doc.id, ...doc.data() });
     });
-
+    // const docRef = await addDoc(collection(FirebaseDB, "products"), {
+    // agregar producto
+    // });
     dispatch(setFeaturedProducts(products));
     dispatch(isLoading());
   };

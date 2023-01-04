@@ -24,6 +24,9 @@ import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import MaleOutlinedIcon from "@mui/icons-material/MaleOutlined";
+import FemaleOutlinedIcon from "@mui/icons-material/FemaleOutlined";
+import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 
 import { startLogout } from "../../store/auth/authThunks";
 import { LinkItem } from "./LinkItem";
@@ -109,7 +112,7 @@ export const DrawerResponsive = (props) => {
                         sx={{
                           width: 56,
                           height: 56,
-                          bgcolor: "primary.main",
+                          backgroundColor: "primary.main",
                           fontSize: "30px",
                         }}
                       >
@@ -216,6 +219,30 @@ export const DrawerResponsive = (props) => {
                   </ListItem>
                 </>
               )}
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/mens"} text="Hombres">
+                    <MaleOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/womens"} text="Mujeres">
+                    <FemaleOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ padding: 0 }}>
+                <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
+                  <LinkItem redirectTo={"/kids"} text="Niños">
+                    <ChildCareOutlinedIcon sx={{ fontSize: 30 }} />
+                  </LinkItem>
+                </ListItemButton>
+              </ListItem>
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>

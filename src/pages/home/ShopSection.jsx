@@ -12,11 +12,7 @@ export const ShopSection = () => {
       }}
     >
       <Box width="100%">
-        <Link
-          sx={{ textDecoration: "none" }}
-          component={RouterLink}
-          to="/offers"
-        >
+        <Link sx={{ textDecoration: "none" }} component={RouterLink} to="/mens">
           <Box
             sx={{
               borderRadius: 1,
@@ -43,7 +39,7 @@ export const ShopSection = () => {
         <Link
           sx={{ textDecoration: "none" }}
           component={RouterLink}
-          to="/offers"
+          to="/womens"
         >
           <Box
             sx={{
@@ -68,11 +64,7 @@ export const ShopSection = () => {
         </Link>
       </Box>
       <Box width="100%">
-        <Link
-          sx={{ textDecoration: "none" }}
-          component={RouterLink}
-          to="/offers"
-        >
+        <Link sx={{ textDecoration: "none" }} component={RouterLink} to="/kids">
           <Box
             sx={{
               borderRadius: 1,
