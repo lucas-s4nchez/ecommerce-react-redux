@@ -12,3 +12,9 @@ export const filterbyColor = (product, color) => {
     return product.colors.includes(color);
   }
 };
+export const filterbySize = (product, size) => {
+  return size ? product.sizes.includes(size) : product;
+};
+export const filterbyMaxPrice = (product, maxPrice) => {
+  return maxPrice ? product.price <= maxPrice : product;
+};
