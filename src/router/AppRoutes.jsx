@@ -1,3 +1,4 @@
+import { CircularProgress, Grid } from "@mui/material";
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
@@ -22,7 +23,18 @@ import { NotAuthenticatedRoutes } from "./NotAuthenticatedRoutes";
 export const AppRoutes = () => {
   const status = useCheckAuth();
   if (status === "checking") {
-    return <h1>Cargando</h1>;
+    return (
+      <Grid
+        container
+        display="flex"
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ backgroundColor: "white.cream", minHeight: "100vh" }}
+      >
+        <CircularProgress />
+      </Grid>
+    );
   }
   return (
     <Layout>

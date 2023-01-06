@@ -52,7 +52,7 @@ const ProductPrice = ({ discount, price, isLoading }) => {
 export const CardProduct = ({ model, images, price, discount }) => {
   const { isLoading } = useSelector((state) => state.products);
   return (
-    <Card sx={{ width: 250 }}>
+    <Card sx={{ minWidth: 250, maxWidth: 250 }}>
       <CardActions
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end" }}

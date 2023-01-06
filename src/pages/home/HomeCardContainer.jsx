@@ -9,14 +9,14 @@ export const HomeCardContainer = ({ children, redirectTo }) => {
         marginBlock: 5,
         padding: 2,
         display: "flex",
-        flexWrap: { md: "wrap" },
-        justifyContent: { md: "space-evenly" },
+        flexWrap: { lg: "wrap" },
+        justifyContent: { lg: "space-evenly" },
         gap: 2,
-        overflowX: "scroll",
+        overflowX: { xs: "scroll", lg: "unset" },
       }}
     >
       {children}
-      <Card sx={{ minWidth: 250, width: { md: 280 } }} title="Ver más">
+      <Card sx={{ minWidth: 250 }} title="Ver más">
         <CardActionArea
           sx={{ height: "100%" }}
           component={Link}

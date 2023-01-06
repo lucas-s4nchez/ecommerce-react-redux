@@ -3,7 +3,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
-import { startLoadingProducts } from "../../store/products/productsThunks";
+import {
+  startLoadingFeaturedProducts,
+  startLoadingProductsOnOffer,
+} from "../../store/products/productsThunks";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
@@ -51,6 +54,23 @@ const items = [
 ];
 
 export const HomePage = () => {
+  const { featuredProducts, productsOnOffer } = useSelector(
+    (state) => state.products
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(startLoadingProductsOnOffer());
+    dispatch(startLoadingFeaturedProducts());
+  }, []);
+  const someProductsOnOffer = [];
+  for (let index = 0; index < 3; index++) {
+    someProductsOnOffer.push(productsOnOffer[index]);
+  }
+  const someFeaturedProducts = [];
+  for (let index = 0; index < 3; index++) {
+    someFeaturedProducts.push(featuredProducts[index]);
+  }
+
   return (
     <>
       <Box sx={{ marginBlock: 5 }}>
@@ -67,11 +87,10 @@ export const HomePage = () => {
           Aprevecha las increibles ofertas!
         </Typography>
         <HomeCardContainer redirectTo={"/offers"}>
-          {/* <CardProduct />
-          <CardProduct />
-          <CardProduct />
-          <CardProduct />
-          <CardProduct /> */}
+          {someProductsOnOffer[0] !== undefined &&
+            someProductsOnOffer.map((product) => {
+              return <CardProduct key={product.id} {...product} />;
+            })}
         </HomeCardContainer>
       </Box>
       <Box>
@@ -79,11 +98,10 @@ export const HomePage = () => {
           Los más Destacados
         </Typography>
         <HomeCardContainer redirectTo={"/featured"}>
-          {/* <CardProduct />
-          <CardProduct />
-          <CardProduct />
-          <CardProduct />
-          <CardProduct /> */}
+          {someFeaturedProducts[0] !== undefined &&
+            someFeaturedProducts.map((product) => {
+              return <CardProduct key={product.id} {...product} />;
+            })}
         </HomeCardContainer>
       </Box>
     </>
