@@ -6,7 +6,9 @@ import {
   filterbySize,
 } from "../helpers/filtersFunctions";
 
-export const useFilterProducts = (array, handleChange) => {
+export const useFilterProducts = (array) => {
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
   const [brand, setBrand] = useState("");
   const [color, setColor] = useState("");
   const [maxPrice, setMaxPrice] = useState(90000);
@@ -14,14 +16,15 @@ export const useFilterProducts = (array, handleChange) => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const handleChange = (newValue) => {
+    setFilteredProducts([...newValue]);
+  };
   const handleOpenModal = () => {
     setOpen(true);
   };
-
   const handleCloseModal = () => {
     setOpen(false);
   };
-
   const handleSubmit = () => {
     const newProducts = array
       .filter((product) => filterbyBrand(product, brand))
@@ -70,6 +73,7 @@ export const useFilterProducts = (array, handleChange) => {
     handleColorChange,
     handleSizeChange,
     handleMaxPriceChange,
+    filteredProducts,
     isEmpty,
     open,
     brand,

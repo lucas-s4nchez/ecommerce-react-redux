@@ -52,7 +52,7 @@ const ProductPrice = ({ discount, price, isLoading }) => {
 export const CardProduct = ({ model, images, price, discount }) => {
   const { isLoading } = useSelector((state) => state.products);
   return (
-    <Card sx={{ minWidth: 250, maxWidth: 280 }}>
+    <Card sx={{ width: 250 }}>
       <CardActions
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end" }}
@@ -61,7 +61,13 @@ export const CardProduct = ({ model, images, price, discount }) => {
           <FavoriteIcon />
         </IconButton>
       </CardActions>
-      <CardActionArea>
+      <CardActionArea
+        sx={{
+          "&:hover img": {
+            transform: "scale(1.05)",
+          },
+        }}
+      >
         {isLoading ? (
           <Skeleton variant="rectangular" width="100%" height={194} />
         ) : (
@@ -70,7 +76,10 @@ export const CardProduct = ({ model, images, price, discount }) => {
             height="194"
             image={images[0]}
             alt="Zapatilla"
-            sx={{ objectFit: "contain" }}
+            sx={{
+              objectFit: "contain",
+              transition: "transform .3s ease",
+            }}
           />
         )}
 

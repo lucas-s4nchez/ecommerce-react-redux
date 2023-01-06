@@ -1,4 +1,3 @@
-import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,16 +12,14 @@ import {
   Slider,
 } from "@mui/material";
 import { useFilterProducts } from "../../hooks";
+import { CardProduct } from "../card/CardProduct";
+import {
+  FiltersContainerStyled,
+  ProductContainerStyled,
+  WrapperLayoutStyled,
+} from "./ProductsContainerStyles";
+import { useEffect, useState } from "react";
 
-const WrapperLayoutStyled = styled("div")(({ theme }) => ({
-  minHeight: "100vh",
-}));
-const ProductContainerStyled = styled("div")(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  gap: "20px",
-  marginBlock: "30px",
-}));
 const marks = [
   {
     value: 15000,
@@ -34,9 +31,18 @@ const marks = [
     label: "$90.000",
   },
 ];
+// if (filteredProducts.length < 1) {
+//   const newArray = [...array];
+//   newArray.sort((a, b) => a.price - b.price);
+//   console.log(array);
+//   setArrayProducts(newArray);
+// } else {
+//   filteredProducts.sort((a, b) => a.price - b.price);
+// }
 
-export const FilterProducts = ({ children, handleChange, array }) => {
+export const ProductsContainer = ({ children, array }) => {
   const {
+    filteredProducts,
     open,
     isEmpty,
     brand,
@@ -51,13 +57,15 @@ export const FilterProducts = ({ children, handleChange, array }) => {
     handleMaxPriceChange,
     handleSubmit,
     handleReset,
-  } = useFilterProducts(array, handleChange);
+  } = useFilterProducts(array);
 
   return (
     <WrapperLayoutStyled>
-      <Button variant="outlined" onClick={handleOpenModal} sx={{ gap: 1 }}>
-        Filtros <TuneIcon />
-      </Button>
+      <FiltersContainerStyled>
+        <Button variant="outlined" onClick={handleOpenModal} sx={{ gap: 1 }}>
+          <TuneIcon />
+        </Button>
+      </FiltersContainerStyled>
       <Dialog open={open} onClose={handleCloseModal} fullWidth>
         <DialogContent
           sx={{
@@ -141,7 +149,15 @@ export const FilterProducts = ({ children, handleChange, array }) => {
         </DialogActions>
       </Dialog>
       <ProductContainerStyled>
-        {isEmpty ? <h3>No hay resultados para esta busqueda</h3> : children}
+        {isEmpty ? (
+          <h3>No hay resultados para esta busqueda</h3>
+        ) : !filteredProducts.length ? (
+          children
+        ) : (
+          filteredProducts.map((product) => {
+            return <CardProduct key={product.id} {...product} />;
+          })
+        )}
       </ProductContainerStyled>
     </WrapperLayoutStyled>
   );
