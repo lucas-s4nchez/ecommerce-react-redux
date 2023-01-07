@@ -4,11 +4,12 @@ import {
   filterbyColor,
   filterbyMaxPrice,
   filterbySize,
+  sortArray,
 } from "../helpers/filtersFunctions";
 
 export const useFilterProducts = (array) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
-
+  const [sort, setSort] = useState("");
   const [brand, setBrand] = useState("");
   const [color, setColor] = useState("");
   const [maxPrice, setMaxPrice] = useState(90000);
@@ -31,6 +32,7 @@ export const useFilterProducts = (array) => {
       .filter((product) => filterbyColor(product, color))
       .filter((product) => filterbySize(product, size))
       .filter((product) => filterbyMaxPrice(product, maxPrice));
+    sortArray(sort, newProducts);
     if (!newProducts.length) {
       setIsEmpty(true);
     } else {
@@ -40,6 +42,7 @@ export const useFilterProducts = (array) => {
     setOpen(false);
   };
   const handleReset = () => {
+    setSort("");
     setColor("");
     setBrand("");
     setSize("");
@@ -47,6 +50,10 @@ export const useFilterProducts = (array) => {
     setIsEmpty(false);
     setOpen(false);
     handleChange(array);
+  };
+  const handleSortChange = (e) => {
+    e.preventDefault();
+    setSort(e.target.value);
   };
   const handleBrandChange = (event) => {
     event.preventDefault();
@@ -69,6 +76,7 @@ export const useFilterProducts = (array) => {
     handleCloseModal,
     handleSubmit,
     handleReset,
+    handleSortChange,
     handleBrandChange,
     handleColorChange,
     handleSizeChange,
@@ -76,6 +84,7 @@ export const useFilterProducts = (array) => {
     filteredProducts,
     isEmpty,
     open,
+    sort,
     brand,
     color,
     size,

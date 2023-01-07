@@ -49,7 +49,7 @@ const ProductPrice = ({ discount, price, isLoading }) => {
   );
 };
 
-export const CardProduct = ({ model, images, price, discount }) => {
+export const CardProduct = ({ model, brand, images, price, discount }) => {
   const { isLoading } = useSelector((state) => state.products);
   return (
     <Card sx={{ minWidth: 250, maxWidth: 250 }}>
@@ -87,7 +87,7 @@ export const CardProduct = ({ model, images, price, discount }) => {
           {isLoading ? (
             <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
           ) : (
-            <ProductNameStyled>{model}</ProductNameStyled>
+            <ProductNameStyled>{`${brand} ${model}`}</ProductNameStyled>
           )}
           <ProductPrice
             discount={discount}

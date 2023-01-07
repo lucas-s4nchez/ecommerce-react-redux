@@ -10,6 +10,7 @@ import {
   DialogActions,
   DialogContent,
   Slider,
+  Typography,
 } from "@mui/material";
 import { useFilterProducts } from "../../hooks";
 import { CardProduct } from "../card/CardProduct";
@@ -18,7 +19,6 @@ import {
   ProductContainerStyled,
   WrapperLayoutStyled,
 } from "./ProductsContainerStyles";
-import { useEffect, useState } from "react";
 
 const marks = [
   {
@@ -31,26 +31,20 @@ const marks = [
     label: "$90.000",
   },
 ];
-// if (filteredProducts.length < 1) {
-//   const newArray = [...array];
-//   newArray.sort((a, b) => a.price - b.price);
-//   console.log(array);
-//   setArrayProducts(newArray);
-// } else {
-//   filteredProducts.sort((a, b) => a.price - b.price);
-// }
 
 export const ProductsContainer = ({ children, array }) => {
   const {
     filteredProducts,
     open,
     isEmpty,
+    sort,
     brand,
     color,
     size,
     maxPrice,
     handleOpenModal,
     handleCloseModal,
+    handleSortChange,
     handleBrandChange,
     handleColorChange,
     handleSizeChange,
@@ -75,6 +69,31 @@ export const ProductsContainer = ({ children, array }) => {
             padding: 5,
           }}
         >
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <FormControl
+              fullWidth
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 1,
+                alignItems: "center",
+              }}
+            >
+              <Typography>Ordenar por: </Typography>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={sort}
+                label="Ordenar por:"
+                onChange={handleSortChange}
+              >
+                <MenuItem value="Mayor Precio">Mayor Precio</MenuItem>
+                <MenuItem value="Menor Precio">Menor Precio</MenuItem>
+                <MenuItem value="A-Z">Alfabéticamente A-Z</MenuItem>
+                <MenuItem value="Z-A">Alfabéticamente Z-A</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Marcas</InputLabel>
