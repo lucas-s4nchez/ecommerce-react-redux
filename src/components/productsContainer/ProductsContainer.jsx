@@ -57,7 +57,7 @@ export const ProductsContainer = ({ children, array }) => {
     <WrapperLayoutStyled>
       <FiltersContainerStyled>
         <Button variant="outlined" onClick={handleOpenModal} sx={{ gap: 1 }}>
-          <TuneIcon />
+          Filtros <TuneIcon />
         </Button>
       </FiltersContainerStyled>
       <Dialog open={open} onClose={handleCloseModal} fullWidth>

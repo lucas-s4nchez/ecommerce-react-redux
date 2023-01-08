@@ -7,8 +7,9 @@ import {
   CardActionArea,
   Skeleton,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useSelector } from "react-redux";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ProductContainerDiscountStyled,
   ProductDiscountStyled,
@@ -17,6 +18,10 @@ import {
   ProductPriceWithDiscountStyled,
 } from "./CardProductStyles";
 import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
+import {
+  startAddingANewProductToFavorites,
+  startDeletingProductFromFavorites,
+} from "../../store/user/userThunks";
 
 const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -49,16 +54,40 @@ const ProductPrice = ({ discount, price, isLoading }) => {
   );
 };
 
-export const CardProduct = ({ model, brand, images, price, discount }) => {
+export const CardProduct = ({ id, model, brand, images, price, discount }) => {
+  const dispatch = useDispatch();
+  const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
+
+  const handleAddProductToFavorites = () => {
+    const newProduct = favorites.find((product) => product.id === id);
+    if (newProduct) {
+      const docId = newProduct.docId;
+      dispatch(startDeletingProductFromFavorites(docId, id));
+      return;
+    }
+    dispatch(startAddingANewProductToFavorites(id));
+  };
   return (
     <Card sx={{ minWidth: 250, maxWidth: 250 }}>
       <CardActions
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end" }}
       >
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton
+          aria-label="add to favorites"
+          onClick={handleAddProductToFavorites}
+          title={
+            favorites.find((product) => product.id === id)
+              ? "Eliminar de Favoritos"
+              : "Agregar a Favoritos"
+          }
+        >
+          {favorites.find((product) => product.id === id) ? (
+            <FavoriteOutlinedIcon sx={{ color: "primary.main" }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />
+          )}
         </IconButton>
       </CardActions>
       <CardActionArea
