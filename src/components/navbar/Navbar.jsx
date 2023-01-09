@@ -5,6 +5,7 @@ import {
   Badge,
   Box,
   IconButton,
+  Link,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -97,15 +98,17 @@ export const Navbar = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-              >
-                <Badge badgeContent={totalItemsInCart} color="error">
-                  <ShoppingBagIcon />
-                </Badge>
-              </IconButton>
+              <Link component={RouterLink} to="/cart" color="inherit">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
+                  <Badge badgeContent={totalItemsInCart} color="error">
+                    <ShoppingBagIcon />
+                  </Badge>
+                </IconButton>
+              </Link>
             </Box>
           </Toolbar>
         </AppBar>

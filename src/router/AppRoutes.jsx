@@ -59,6 +59,14 @@ export const AppRoutes = () => {
           }
         />
         <Route
+          path="/cart"
+          element={
+            <AuthenticatedRoutes status={status}>
+              <h1>Cart</h1>
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route
           path="/purchases"
           element={
             <AuthenticatedRoutes status={status}>

@@ -14,6 +14,7 @@ export default function RouterBreadcrumbs() {
   const breadcrumbNameMap = {
     "/offers": "Ofertas",
     "/favorites": "Favoritos",
+    "/cart": "Carrito",
     "/purchases": "Mis compras",
     "/featured": "Destacados",
     "/account": "Mi cuenta",
