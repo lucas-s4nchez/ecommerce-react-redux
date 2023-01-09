@@ -4,7 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { FirebaseAuth } from "../firebase/config";
 import { login, logout } from "../store/auth";
 import { startLoadingProducts } from "../store/products/productsThunks";
-import { startLoadingFavorites } from "../store/user";
+import { startLoadingCart, startLoadingFavorites } from "../store/user";
 
 export const useCheckAuth = () => {
   const { status } = useSelector((state) => state.auth);
@@ -17,6 +17,7 @@ export const useCheckAuth = () => {
       dispatch(login({ uid, displayName, email, photoURL }));
       dispatch(startLoadingProducts());
       dispatch(startLoadingFavorites());
+      dispatch(startLoadingCart());
     });
   }, []);
 

@@ -1,3 +1,4 @@
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   Card,
   CardActions,
@@ -6,6 +7,7 @@ import {
   IconButton,
   CardActionArea,
   Skeleton,
+  Button,
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -19,7 +21,9 @@ import {
 } from "./CardProductStyles";
 import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
 import {
-  startAddingANewProductToFavorites,
+  startAddingProductToCart,
+  startAddingProductToFavorites,
+  startAddingUnitToProduct,
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
 
@@ -54,9 +58,18 @@ const ProductPrice = ({ discount, price, isLoading }) => {
   );
 };
 
-export const CardProduct = ({ id, model, brand, images, price, discount }) => {
+export const CardProduct = ({
+  id,
+  model,
+  brand,
+  images,
+  price,
+  discount,
+  featured,
+}) => {
   const dispatch = useDispatch();
-  const { favorites } = useSelector((state) => state.user);
+  const location = useLocation();
+  const { favorites, cart } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
 
   const handleAddProductToFavorites = () => {
@@ -66,7 +79,28 @@ export const CardProduct = ({ id, model, brand, images, price, discount }) => {
       dispatch(startDeletingProductFromFavorites(docId, id));
       return;
     }
-    dispatch(startAddingANewProductToFavorites(id));
+    dispatch(startAddingProductToFavorites(id));
+  };
+  const handleAddProductToCart = () => {
+    const isExistingCartProduct = cart.find((product) => product.id === id);
+    if (isExistingCartProduct) {
+      const docId = isExistingCartProduct.docId;
+      dispatch(startAddingUnitToProduct(docId, id));
+    } else {
+      dispatch(startAddingProductToCart(id));
+    }
+  };
+  const setPathname = () => {
+    if (location.pathname === "/") {
+      if (featured) {
+        return "/featured";
+      }
+      if (discount > 0) {
+        return "/offers";
+      }
+    } else {
+      return location.pathname;
+    }
   };
   return (
     <Card sx={{ minWidth: 250, maxWidth: 250 }}>
@@ -89,8 +123,11 @@ export const CardProduct = ({ id, model, brand, images, price, discount }) => {
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />
           )}
         </IconButton>
+        <Button onClick={handleAddProductToCart}>Agregar al carrito</Button>
       </CardActions>
       <CardActionArea
+        component={RouterLink}
+        to={`${setPathname()}/${id}`}
         sx={{
           "&:hover img": {
             transform: "scale(1.05)",

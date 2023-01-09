@@ -2,17 +2,14 @@ import { Link as RouterLink, useLocation, useParams } from "react-router-dom";
 import { Box, Link, Typography, Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import HomeIcon from "@mui/icons-material/Home";
+import { useSelector } from "react-redux";
 
 function LinkRouter(props) {
   return <Link {...props} component={RouterLink} />;
 }
-function toTitleCase(str) {
-  return str.replace(/\b\w+/g, function (s) {
-    return s.charAt(0).toUpperCase() + s.substr(1).toLowerCase();
-  });
-}
 
 export default function RouterBreadcrumbs() {
+  const { products } = useSelector((state) => state.products);
   const location = useLocation();
   const breadcrumbNameMap = {
     "/offers": "Ofertas",
@@ -52,7 +49,13 @@ export default function RouterBreadcrumbs() {
             <Typography color="primary.main" key={to} sx={{ fontSize: "14px" }}>
               {breadcrumbNameMap[to]
                 ? breadcrumbNameMap[to]
-                : toTitleCase(value)}
+                : products.map((product) => {
+                    if (product.id === value) {
+                      return `${product.brand} ${product.model} ${
+                        product.version && product.version
+                      }`;
+                    }
+                  })}
             </Typography>
           ) : (
             <LinkRouter

@@ -4,7 +4,7 @@ import {
   registerUserWithEmailAndPassword,
   signInWithGoogle,
 } from "../../helpers";
-import { clearFavoritesOnLogout } from "../user/userSlice";
+import { clearFavorites } from "../user/userSlice";
 import { checkingCredentials, isError, login, logout } from "./authSlice";
 
 export const startGoogleSigIn = () => {
@@ -62,7 +62,7 @@ export const startLogout = () => {
   return async (dispatch) => {
     await logoutFirebase();
     //vaciar el array de favoritos
-    dispatch(clearFavoritesOnLogout());
+    dispatch(clearFavorites());
     //Logout
     dispatch(logout());
   };
