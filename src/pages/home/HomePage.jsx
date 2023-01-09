@@ -1,12 +1,7 @@
+import { useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
-import {
-  startLoadingFeaturedProducts,
-  startLoadingProductsOnOffer,
-} from "../../store/products/productsThunks";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
@@ -57,11 +52,6 @@ export const HomePage = () => {
   const { featuredProducts, productsOnOffer } = useSelector(
     (state) => state.products
   );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(startLoadingProductsOnOffer());
-    dispatch(startLoadingFeaturedProducts());
-  }, []);
   const someProductsOnOffer = [];
   for (let index = 0; index < 3; index++) {
     someProductsOnOffer.push(productsOnOffer[index]);

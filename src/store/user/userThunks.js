@@ -16,19 +16,25 @@ import {
   setFavorites,
 } from "./userSlice";
 
-export const startLoadingFavorites = () => {
+export const startLoadingUserInfo = () => {
   return async (dispatch, getState) => {
     dispatch(isLoading());
     const { uid } = getState().auth;
+    const cartRef = collection(FirebaseDB, `users/${uid}/cart`);
+    const cartDocs = await getDocs(cartRef);
+    const favoritesRef = collection(FirebaseDB, `users/${uid}/favorites`);
+    const favoritesDocs = await getDocs(favoritesRef);
 
-    const collectionRef = collection(FirebaseDB, `users/${uid}/favorites`);
-    const docs = await getDocs(collectionRef);
-
+    const cart = [];
+    cartDocs.forEach((doc) => {
+      cart.push({ id: doc.id, ...doc.data() });
+    });
     const favorites = [];
-    docs.forEach((doc) => {
+    favoritesDocs.forEach((doc) => {
       favorites.push({ id: doc.id, ...doc.data() });
     });
 
+    dispatch(setCart(cart));
     dispatch(setFavorites(favorites));
     dispatch(isLoading());
   };
@@ -61,23 +67,6 @@ export const startDeletingProductFromFavorites = (docId, id) => {
   };
 };
 
-export const startLoadingCart = () => {
-  return async (dispatch, getState) => {
-    dispatch(isLoading());
-    const { uid } = getState().auth;
-
-    const collectionRef = collection(FirebaseDB, `users/${uid}/cart`);
-    const docs = await getDocs(collectionRef);
-
-    const cart = [];
-    docs.forEach((doc) => {
-      cart.push({ id: doc.id, ...doc.data() });
-    });
-
-    dispatch(setCart(cart));
-    dispatch(isLoading());
-  };
-};
 export const startAddingProductToCart = (id) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
@@ -93,6 +82,7 @@ export const startAddingProductToCart = (id) => {
     dispatch(addProductToCart(newProduct));
   };
 };
+
 export const startAddingUnitToProduct = (docId, id) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;

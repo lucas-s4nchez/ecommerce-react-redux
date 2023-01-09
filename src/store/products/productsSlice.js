@@ -20,20 +20,30 @@ const productsSlice = createSlice({
     setProducts: (state, { payload }) => {
       state.products = payload;
     },
-    setMenProducts: (state, { payload }) => {
-      state.menProducts = payload;
+    setMenProducts: (state) => {
+      state.menProducts = state.products.filter(
+        (product) => product.gender === "Hombre"
+      );
     },
-    setWomenProducts: (state, { payload }) => {
-      state.womenProducts = payload;
+    setWomenProducts: (state) => {
+      state.womenProducts = state.products.filter(
+        (product) => product.gender === "Mujer"
+      );
     },
-    setKidProducts: (state, { payload }) => {
-      state.kidProducts = payload;
+    setKidProducts: (state) => {
+      state.kidProducts = state.products.filter(
+        (product) => product.gender === "Niños"
+      );
     },
-    setFeaturedProducts: (state, { payload }) => {
-      state.featuredProducts = payload;
+    setFeaturedProducts: (state) => {
+      state.featuredProducts = state.products.filter(
+        (product) => product.featured === true
+      );
     },
-    setProductsOnOffer: (state, { payload }) => {
-      state.productsOnOffer = payload;
+    setProductsOnOffer: (state) => {
+      state.productsOnOffer = state.products.filter(
+        (product) => product.discount > 0
+      );
     },
   },
 });

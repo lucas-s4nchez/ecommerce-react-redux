@@ -16,8 +16,10 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { Search, SearchIconWrapper, StyledInputBase } from "./NavbarStyles";
 
 import { DrawerResponsive } from "./Drawer";
+import { useSelector } from "react-redux";
 
 export const Navbar = () => {
+  const { totalItemsInCart } = useSelector((state) => state.user);
   const [openSearch, setOpenSearch] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const handleOpenSearch = () => {
@@ -100,7 +102,7 @@ export const Navbar = () => {
                 aria-label="show 4 new mails"
                 color="inherit"
               >
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={totalItemsInCart} color="error">
                   <ShoppingBagIcon />
                 </Badge>
               </IconButton>

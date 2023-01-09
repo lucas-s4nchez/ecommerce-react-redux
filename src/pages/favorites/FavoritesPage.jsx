@@ -1,3 +1,12 @@
+import { useSelector } from "react-redux";
+
 export const FavoritesPage = () => {
-  return <h1>Favorites Page</h1>;
+  const { favorites } = useSelector((state) => state.user);
+  return (
+    <>
+      {favorites.map((item) => (
+        <h2 key={item.id}>{item.brand}</h2>
+      ))}
+    </>
+  );
 };
