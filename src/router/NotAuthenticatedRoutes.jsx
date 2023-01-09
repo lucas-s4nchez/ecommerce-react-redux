@@ -1,8 +1,6 @@
 import { Navigate } from "react-router-dom";
-import { useCheckAuth } from "../hooks/useCheckAuth";
 
-export const NotAuthenticatedRoutes = ({ children }) => {
-  const status = useCheckAuth();
+export const NotAuthenticatedRoutes = ({ children, status }) => {
   return status === "not-authenticated" ? (
     children
   ) : (

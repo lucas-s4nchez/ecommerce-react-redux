@@ -53,7 +53,7 @@ export const AppRoutes = () => {
         <Route
           path="/favorites"
           element={
-            <AuthenticatedRoutes>
+            <AuthenticatedRoutes status={status}>
               <FavoritesPage />
             </AuthenticatedRoutes>
           }
@@ -61,7 +61,7 @@ export const AppRoutes = () => {
         <Route
           path="/purchases"
           element={
-            <AuthenticatedRoutes>
+            <AuthenticatedRoutes status={status}>
               <PurchasesPage />
             </AuthenticatedRoutes>
           }
@@ -69,7 +69,7 @@ export const AppRoutes = () => {
         <Route
           path="/account"
           element={
-            <AuthenticatedRoutes>
+            <AuthenticatedRoutes status={status}>
               <AccountPage />
             </AuthenticatedRoutes>
           }
@@ -77,7 +77,7 @@ export const AppRoutes = () => {
         <Route
           path="/login"
           element={
-            <NotAuthenticatedRoutes>
+            <NotAuthenticatedRoutes status={status}>
               <LoginPage />
             </NotAuthenticatedRoutes>
           }
@@ -85,7 +85,7 @@ export const AppRoutes = () => {
         <Route
           path="/register"
           element={
-            <NotAuthenticatedRoutes>
+            <NotAuthenticatedRoutes status={status}>
               <RegisterPage />
             </NotAuthenticatedRoutes>
           }

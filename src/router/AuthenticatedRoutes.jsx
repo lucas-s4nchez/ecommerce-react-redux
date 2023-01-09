@@ -1,7 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useCheckAuth } from "../hooks/useCheckAuth";
 
-export const AuthenticatedRoutes = ({ children }) => {
-  const status = useCheckAuth();
+export const AuthenticatedRoutes = ({ children, status }) => {
   return status === "authenticated" ? children : <Navigate to={"/login"} />;
 };
