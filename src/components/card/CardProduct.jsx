@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   ProductContainerDiscountStyled,
@@ -27,7 +28,7 @@ import {
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
 
-const ProductPrice = ({ discount, price, isLoading }) => {
+export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
     <>
       {discount > 0 &&
@@ -60,6 +61,7 @@ const ProductPrice = ({ discount, price, isLoading }) => {
 
 export const CardProduct = ({
   id,
+  docId,
   model,
   brand,
   images,
@@ -73,19 +75,17 @@ export const CardProduct = ({
   const { isLoading } = useSelector((state) => state.products);
 
   const handleAddProductToFavorites = () => {
-    const newProduct = favorites.find((product) => product.id === id);
-    if (newProduct) {
-      const docId = newProduct.docId;
-      dispatch(startDeletingProductFromFavorites(docId, id));
-      return;
+    const isExistingProduct = favorites.find((product) => product.id === id);
+    if (isExistingProduct) {
+      dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
+    } else {
+      dispatch(startAddingProductToFavorites(id));
     }
-    dispatch(startAddingProductToFavorites(id));
   };
   const handleAddProductToCart = () => {
-    const isExistingCartProduct = cart.find((product) => product.id === id);
-    if (isExistingCartProduct) {
-      const docId = isExistingCartProduct.docId;
-      dispatch(startAddingUnitToProduct(docId, id));
+    const isExistingProduct = cart.find((product) => product.id === id);
+    if (isExistingProduct) {
+      dispatch(startAddingUnitToProduct(isExistingProduct.docId, id));
     } else {
       dispatch(startAddingProductToCart(id));
     }

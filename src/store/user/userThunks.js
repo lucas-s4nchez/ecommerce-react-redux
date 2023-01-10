@@ -49,8 +49,8 @@ export const startAddingProductToFavorites = (id) => {
       ...products.find((product) => product.id === id),
     };
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/favorites`));
-    const setDocResp = await setDoc(newDoc, newFavoriteProduct);
     newFavoriteProduct.docId = newDoc.id;
+    const setDocResp = await setDoc(newDoc, newFavoriteProduct);
 
     dispatch(addProductToFavorites(newFavoriteProduct));
   };
@@ -77,8 +77,8 @@ export const startAddingProductToCart = (id) => {
       quantity: 1,
     };
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cart`));
-    const setDocResp = await setDoc(newDoc, newProduct);
     newProduct.docId = newDoc.id;
+    const setDocResp = await setDoc(newDoc, newProduct);
     dispatch(addProductToCart(newProduct));
   };
 };
