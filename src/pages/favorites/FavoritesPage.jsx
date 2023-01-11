@@ -23,6 +23,7 @@ export const FavoritesPage = () => {
         flexDirection: "column",
         minHeight: "100vh",
         gap: 2,
+        marginBottom: 5,
       }}
     >
       {isLoading && <FavoritesButtonSkeleton sx={{ alignSelf: "flex-end" }} />}
