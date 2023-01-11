@@ -10,6 +10,7 @@ import {
   addProductToCart,
   addProductToFavorites,
   addUnitToProduct,
+  clearFavorites,
   deleteProductFromFavorites,
   isLoading,
   setCart,
@@ -64,6 +65,20 @@ export const startDeletingProductFromFavorites = (docId, id) => {
     await deleteDoc(docRef);
 
     dispatch(deleteProductFromFavorites(id));
+  };
+};
+
+export const startDeletingAllProductsFromFavorites = () => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { favorites } = getState().user;
+
+    favorites.forEach(async (product) => {
+      const docRef = doc(FirebaseDB, `users/${uid}/favorites/${product.docId}`);
+      await deleteDoc(docRef);
+    });
+
+    dispatch(clearFavorites());
   };
 };
 

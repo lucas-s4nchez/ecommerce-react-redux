@@ -27,7 +27,6 @@ const userSlice = createSlice({
       );
     },
     clearFavorites: (state) => {
-      state.isLoading = false;
       state.favorites = [];
     },
     setCart: (state, { payload }) => {
