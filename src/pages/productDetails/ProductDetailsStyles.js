@@ -15,7 +15,24 @@ export const ProductDetailsStyled = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  width: "100%",
+  maxWidth: "300",
+  border: "1px solid #adadad",
+  borderRadius: "10px",
+}));
+export const ProductDetailsTitleStyled = styled("span")(({ theme }) => ({
+  fontSize: "20px",
+  fontWeight: "bold",
+}));
+export const ProductDetailsGreenTextStyled = styled("div")(({ theme }) => ({
+  color: theme.palette.green.main,
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+}));
+export const ProductDetailsForm = styled("form")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
 }));
 export const ProductImagesStyled = styled("div")(({ theme }) => ({
   display: "flex",

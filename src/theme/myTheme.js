@@ -19,5 +19,8 @@ export const myTheme = createTheme({
       main: "#FFFFFF",
       cream: "#F2F7F2",
     },
+    green: {
+      main: "#13AD5D",
+    },
   },
 });
