@@ -1,12 +1,31 @@
-import { Box } from "@mui/system";
+import { useSelector } from "react-redux";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 
 import { GiRolledCloth } from "react-icons/gi";
 import { MdCloseFullscreen } from "react-icons/md";
 import { FaShoePrints } from "react-icons/fa";
 import { GiConverseShoe } from "react-icons/gi";
-import { List, ListItem, ListItemIcon, Typography } from "@mui/material";
 
 export const ProductDescription = ({ product }) => {
+  const { isLoading } = useSelector((state) => state.products);
+  if (isLoading) {
+    return (
+      <>
+        <Skeleton variant="text" width="100%" sx={{ fontSize: "2rem" }} />
+        <Skeleton variant="text" width="100%" />
+        <Skeleton variant="text" width="100%" />
+        <Skeleton variant="text" width="100%" />
+        <Skeleton variant="text" width="100%" />
+      </>
+    );
+  }
   return (
     <Box>
       <Typography variant="h5">Características del producto</Typography>
