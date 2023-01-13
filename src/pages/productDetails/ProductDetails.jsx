@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { ProductContainerStyled } from "./ProductDetailsStyles";
 
 import { ProductImage } from "./ProductImage";
 import { ProductContent } from "./ProductContent";
+import { ProductDescription } from "./ProductDescription";
 
 export const ProductDetails = () => {
   const { products, isLoading } = useSelector((state) => state.products);
@@ -21,6 +22,8 @@ export const ProductDetails = () => {
         <ProductImage product={product} />
         <ProductContent product={product} id={id} />
       </Box>
+      <Divider />
+      <ProductDescription product={product} />
     </ProductContainerStyled>
   );
 };
