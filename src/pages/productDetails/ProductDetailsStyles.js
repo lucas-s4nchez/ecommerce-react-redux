@@ -15,7 +15,7 @@ export const ProductDetailsStyled = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  maxWidth: "300",
+  minWidth: "250px",
   border: "1px solid #adadad",
   borderRadius: "10px",
 }));
