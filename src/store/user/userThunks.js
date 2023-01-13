@@ -82,38 +82,48 @@ export const startDeletingAllProductsFromFavorites = () => {
   };
 };
 
-export const startAddingProductToCart = (id) => {
+export const startAddingProductToCart = (id, quantity, size) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
     const { products } = getState().products;
 
-    const newProduct = {
+    const product = {
       ...products.find((product) => product.id === id),
-      quantity: 1,
+    };
+    const cartProduct = {
+      brand: product.brand,
+      model: product.model,
+      version: product.version,
+      price: product.price,
+      quantity: quantity,
+      size: size,
+      image: product.images[0],
+      colors: product.colors,
     };
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cart`));
-    newProduct.docId = newDoc.id;
-    const setDocResp = await setDoc(newDoc, newProduct);
-    dispatch(addProductToCart(newProduct));
+    cartProduct.id = newDoc.id;
+    cartProduct.productId = id;
+    const setDocResp = await setDoc(newDoc, cartProduct);
+    dispatch(addProductToCart(cartProduct));
   };
 };
 
-export const startAddingUnitToProduct = (docId, id) => {
+export const startAddingUnitToProduct = (id, quantity, size) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
     const { cart } = getState().user;
 
     const newProduct = {
-      ...cart.find((product) => product.id === id),
+      ...cart.find((product) => product.id === id && product.size === size),
     };
 
     const newProductUpdate = {
       ...newProduct,
-      quantity: newProduct.quantity + 1,
+      quantity: newProduct.quantity + quantity,
     };
     delete newProductUpdate.id; //Elimino el id porque no quiero crearla de nuevo
-    const docRef = doc(FirebaseDB, `users/${uid}/cart/${docId}`);
+    const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
     await setDoc(docRef, newProductUpdate, { merge: true });
-    dispatch(addUnitToProduct(newProduct));
+    dispatch(addUnitToProduct({ cartProduct: newProduct, quantity: quantity }));
   };
 };

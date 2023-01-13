@@ -31,14 +31,16 @@ import {
   ProductImagesStyled,
 } from "./ProductDetailsStyles";
 import {
+  startAddingProductToCart,
   startAddingProductToFavorites,
+  startAddingUnitToProduct,
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
 import { ProductPrice } from "../../components/card/CardProduct";
 
 export const ProductDetails = () => {
   const { products, isLoading } = useSelector((state) => state.products);
-  const { favorites } = useSelector((state) => state.user);
+  const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { id } = useParams();
   const [currentImage, setCurrentImage] = useState("");
@@ -59,7 +61,18 @@ export const ProductDetails = () => {
       size: Yup.number().required("Por favor selecciona un talle"),
     }),
     onSubmit: (values) => {
-      console.log({ ...values, quantity });
+      const isExistingProduct = cart.find(
+        (cartProduct) =>
+          cartProduct.productId === product.id &&
+          cartProduct.size === values.size
+      );
+      if (isExistingProduct) {
+        dispatch(
+          startAddingUnitToProduct(isExistingProduct.id, quantity, values.size)
+        );
+      } else {
+        dispatch(startAddingProductToCart(product.id, quantity, values.size));
+      }
     },
   });
 

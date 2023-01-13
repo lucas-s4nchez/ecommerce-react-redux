@@ -40,20 +40,21 @@ const userSlice = createSlice({
     },
     addProductToCart: (state, { payload }) => {
       state.cart.push(payload);
-      state.totalItemsInCart = state.totalItemsInCart + 1;
-      state.totalToPay = state.totalToPay + payload.price;
+      state.totalItemsInCart = state.totalItemsInCart + payload.quantity;
+      state.totalToPay = state.totalToPay + payload.price * payload.quantity;
     },
     deleteProductFromCart: (state, { payload }) => {
       state.cart = state.cart.filter((product) => product.id !== payload);
     },
     addUnitToProduct: (state, { payload }) => {
+      const { cartProduct, quantity } = payload;
       state.cart = state.cart.map((product) => {
-        return product.id === payload.id
-          ? { ...product, quantity: product.quantity + 1 }
+        return product.id === cartProduct.id
+          ? { ...product, quantity: cartProduct.quantity + quantity }
           : product;
       });
-      state.totalItemsInCart = state.totalItemsInCart + 1;
-      state.totalToPay = state.totalToPay + payload.price;
+      state.totalItemsInCart = state.totalItemsInCart + quantity;
+      state.totalToPay = state.totalToPay + cartProduct.price * quantity;
     },
     subtractUnitToProduct: (state, { payload }) => {
       state.cart = state.cart.map((product) => {

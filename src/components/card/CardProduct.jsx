@@ -71,7 +71,7 @@ export const CardProduct = ({
 }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { favorites, cart } = useSelector((state) => state.user);
+  const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
 
   const handleAddProductToFavorites = () => {
@@ -82,14 +82,7 @@ export const CardProduct = ({
       dispatch(startAddingProductToFavorites(id));
     }
   };
-  const handleAddProductToCart = () => {
-    const isExistingProduct = cart.find((product) => product.id === id);
-    if (isExistingProduct) {
-      dispatch(startAddingUnitToProduct(isExistingProduct.docId, id));
-    } else {
-      dispatch(startAddingProductToCart(id));
-    }
-  };
+
   const setPathname = () => {
     if (location.pathname === "/") {
       if (featured) {
@@ -123,7 +116,6 @@ export const CardProduct = ({
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />
           )}
         </IconButton>
-        <Button onClick={handleAddProductToCart}>Agregar al carrito</Button>
       </CardActions>
       <CardActionArea
         component={RouterLink}
