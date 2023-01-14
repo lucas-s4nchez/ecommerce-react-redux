@@ -8,6 +8,7 @@ import {
   CardActions,
   IconButton,
   MenuItem,
+  Rating,
   Skeleton,
   TextField,
   Typography,
@@ -73,6 +74,7 @@ export const ProductContent = ({ product, id }) => {
   };
 
   const handleAddUnitProduct = () => {
+    if (quantity >= product.stock) return;
     setQuantity(quantity + 1);
   };
   const handleRemoveUnitProduct = () => {
@@ -106,8 +108,18 @@ export const ProductContent = ({ product, id }) => {
     );
   }
 
+  const averageRating = Number(
+    (
+      product.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+      product.reviews.length
+    ).toFixed(1)
+  );
+
   return (
     <ProductDetailsStyled>
+      <Typography sx={{ fontSize: "14px", color: "GrayText" }}>
+        {product.sold} vendidos
+      </Typography>
       <CardActions
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
@@ -128,10 +140,20 @@ export const ProductContent = ({ product, id }) => {
           )}
         </IconButton>
       </CardActions>
-
       <ProductDetailsTitleStyled>
         {`Zapatillas ${product.brand} ${product.model} ${product.version}`}
       </ProductDetailsTitleStyled>
+      <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
+        <Rating
+          readOnly
+          value={averageRating}
+          size="small"
+          sx={{ color: "primary.main" }}
+        />
+        <Typography
+          sx={{ fontSize: "14px" }}
+        >{`(${product.reviews.length})`}</Typography>
+      </Box>
       <ProductPrice
         discount={product.discount}
         price={product.price}
@@ -145,7 +167,7 @@ export const ProductContent = ({ product, id }) => {
         <UndoOutlinedIcon />
         <span>Devolución Gratis</span>
       </ProductDetailsGreenTextStyled>
-      <Typography variant="span" sx={{ textTransform: "capitalize" }}>
+      <Typography variant="span" sx={{ textTransform: "capitalize", mb: 1 }}>
         {`Color: ${product.colors.toString().split(",").join("/")}`}
       </Typography>
       <ProductDetailsForm onSubmit={handleSubmit}>
@@ -155,6 +177,7 @@ export const ProductContent = ({ product, id }) => {
           {...getFieldProps("size")}
           error={errors.size && touched.size}
           helperText={touched.size && errors.size}
+          sx={{ mb: 1 }}
         >
           {product.sizes.map((size) => (
             <MenuItem key={size} value={size}>{`${size}`}</MenuItem>
@@ -165,6 +188,7 @@ export const ProductContent = ({ product, id }) => {
           <IconButton
             sx={{ color: "primary.main" }}
             onClick={handleRemoveUnitProduct}
+            disabled={quantity <= 1}
           >
             <RemoveIcon />
           </IconButton>
@@ -177,10 +201,14 @@ export const ProductContent = ({ product, id }) => {
           <IconButton
             sx={{ color: "primary.main" }}
             onClick={handleAddUnitProduct}
+            disabled={quantity >= product.stock}
           >
             <AddIcon />
           </IconButton>
         </Box>
+        <Typography
+          sx={{ fontSize: "12px", color: "GrayText", mb: 2 }}
+        >{`(${product.stock} disponibles)`}</Typography>
         <Button
           type="submit"
           sx={{

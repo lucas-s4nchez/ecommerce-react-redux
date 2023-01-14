@@ -14,7 +14,6 @@ export const ProductDetailsStyled = styled("div")(({ theme }) => ({
   padding: "10px",
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
   minWidth: "250px",
   border: "1px solid #adadad",
   borderRadius: "10px",
@@ -28,11 +27,11 @@ export const ProductDetailsGreenTextStyled = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "10px",
+  marginBlock: "8px",
 }));
 export const ProductDetailsForm = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
 }));
 export const ProductImagesStyled = styled("div")(({ theme }) => ({
   display: "flex",
