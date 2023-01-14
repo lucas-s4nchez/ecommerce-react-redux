@@ -7,6 +7,7 @@ import { ProductContainerStyled } from "./ProductDetailsStyles";
 import { ProductImage } from "./ProductImage";
 import { ProductContent } from "./ProductContent";
 import { ProductDescription } from "./ProductDescription";
+import { ProductReviews } from "./ProductReviews";
 
 export const ProductDetails = () => {
   const { products, isLoading } = useSelector((state) => state.products);
@@ -24,6 +25,8 @@ export const ProductDetails = () => {
       </Box>
       <Divider />
       <ProductDescription product={product} />
+      <Divider />
+      <ProductReviews product={product} />
     </ProductContainerStyled>
   );
 };

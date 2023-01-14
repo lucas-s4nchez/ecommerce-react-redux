@@ -27,7 +27,7 @@ export const ProductDescription = ({ product }) => {
     );
   }
   return (
-    <Box>
+    <Box sx={{ paddingLeft: { md: "50px" } }}>
       <Typography variant="h5">Características del producto</Typography>
       <List>
         <ListItem sx={{ gap: 2 }}>

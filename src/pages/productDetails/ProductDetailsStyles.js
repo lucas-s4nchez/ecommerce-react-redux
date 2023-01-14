@@ -73,3 +73,20 @@ export const ProductImagesListItemStyled = styled("div")(({ theme }) => ({
     maxHeight: "60px",
   },
 }));
+export const ProductRatingsContainerStyled = styled("div")(({ theme }) => ({
+  display: "flex",
+  width: "100%",
+  minWidth: "200px",
+  maxWidth: "500px",
+  flexDirection: "column",
+  [theme.breakpoints.up("sm")]: {
+    flexDirection: "row",
+  },
+  [theme.breakpoints.up("md")]: {
+    flexDirection: "column",
+  },
+}));
+export const ProductReviewsContainerStyled = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+}));
