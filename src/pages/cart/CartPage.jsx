@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { formatPrice } from "../../helpers/formatPrice";
 import { CartItem } from "./CartItem";
@@ -17,10 +17,23 @@ export const CartPage = () => {
         {cart.map((product) => {
           return <CartItem key={product.id} {...product} />;
         })}
-        <Box>
-          <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
-            Total: {formatPrice(totalToPay)}
-          </Typography>
+        <Box
+          sx={{
+            mt: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "flex-end",
+          }}
+        >
+          {!!cart.length && (
+            <>
+              <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
+                Total: {formatPrice(totalToPay)}
+              </Typography>
+              <Button variant="contained">Continuar compra</Button>
+            </>
+          )}
         </Box>
       </CartContainerStyled>
     </Box>
