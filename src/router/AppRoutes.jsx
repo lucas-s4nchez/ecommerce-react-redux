@@ -5,6 +5,7 @@ import { useCheckAuth } from "../hooks/useCheckAuth";
 import { Layout } from "../layout/Layout";
 import {
   AccountPage,
+  CartPage,
   FavoritesPage,
   FeaturedPage,
   HomePage,
@@ -62,7 +63,7 @@ export const AppRoutes = () => {
           path="/cart"
           element={
             <AuthenticatedRoutes status={status}>
-              <h1>Cart</h1>
+              <CartPage />
             </AuthenticatedRoutes>
           }
         />

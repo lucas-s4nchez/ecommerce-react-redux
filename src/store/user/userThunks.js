@@ -11,10 +11,13 @@ import {
   addProductToFavorites,
   addUnitToProduct,
   clearFavorites,
+  deleteProductFromCart,
   deleteProductFromFavorites,
+  disabled,
   isLoading,
   setCart,
   setFavorites,
+  subtractUnitToProduct,
 } from "./userSlice";
 
 export const startLoadingUserInfo = () => {
@@ -95,11 +98,18 @@ export const startAddingProductToCart = (id, quantity, size) => {
       model: product.model,
       version: product.version,
       price: product.price,
+      stock: product.stock,
+      discount: product.discount,
       quantity: quantity,
       size: size,
       image: product.images[0],
       colors: product.colors,
     };
+    if (cartProduct.discount > 0) {
+      const newPrice =
+        cartProduct.price - (cartProduct.price * cartProduct.discount) / 100;
+      cartProduct.price = newPrice;
+    }
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cart`));
     cartProduct.id = newDoc.id;
     cartProduct.productId = id;
@@ -110,6 +120,7 @@ export const startAddingProductToCart = (id, quantity, size) => {
 
 export const startAddingUnitToProduct = (id, quantity, size) => {
   return async (dispatch, getState) => {
+    dispatch(disabled());
     const { uid } = getState().auth;
     const { cart } = getState().user;
 
@@ -125,5 +136,42 @@ export const startAddingUnitToProduct = (id, quantity, size) => {
     const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
     await setDoc(docRef, newProductUpdate, { merge: true });
     dispatch(addUnitToProduct({ cartProduct: newProduct, quantity: quantity }));
+    dispatch(disabled());
+  };
+};
+export const startRemoveUnitToProduct = (id, quantity, size) => {
+  return async (dispatch, getState) => {
+    dispatch(disabled());
+    const { uid } = getState().auth;
+    const { cart } = getState().user;
+
+    const newProduct = {
+      ...cart.find((product) => product.id === id && product.size === size),
+    };
+
+    const newProductUpdate = {
+      ...newProduct,
+      quantity: newProduct.quantity - quantity,
+    };
+    delete newProductUpdate.id; //Elimino el id porque no quiero crearla de nuevo
+    const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
+    await setDoc(docRef, newProductUpdate, { merge: true });
+    dispatch(
+      subtractUnitToProduct({ cartProduct: newProduct, quantity: quantity })
+    );
+    dispatch(disabled());
+  };
+};
+export const startDeletingProductFromCart = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { cart } = getState().user;
+
+    const currentProduct = { ...cart.find((product) => product.id === id) };
+
+    const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
+    await deleteDoc(docRef);
+
+    dispatch(deleteProductFromCart(currentProduct));
   };
 };

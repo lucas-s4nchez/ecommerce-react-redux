@@ -23,6 +23,7 @@ export const FavoritesItem = ({
   discount,
   images,
   price,
+  gender,
   brand,
 }) => {
   const dispatch = useDispatch();
@@ -33,15 +34,20 @@ export const FavoritesItem = ({
     dispatch(startDeletingProductFromFavorites(docId, id));
   };
   const setPathname = () => {
-    if (location.pathname === "/favorites") {
-      if (featured) {
-        return "/featured";
-      }
-      if (discount > 0) {
-        return "/offers";
-      }
-    } else {
-      return location.pathname;
+    if (featured) {
+      return "/featured";
+    }
+    if (discount > 0) {
+      return "/offers";
+    }
+    if (gender === "Hombre") {
+      return "/mens";
+    }
+    if (gender === "Mujer") {
+      return "/womens";
+    }
+    if (gender === "Niños") {
+      return "/kids";
     }
   };
   return (
