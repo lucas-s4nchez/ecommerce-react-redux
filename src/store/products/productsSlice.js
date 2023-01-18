@@ -20,6 +20,16 @@ const productsSlice = createSlice({
     setProducts: (state, { payload }) => {
       state.products = payload;
     },
+
+    subtractUnitToStock: (state, { payload }) => {
+      state.products = state.products.map((product) => {
+        if (product.id === payload.productId) {
+          return { id: payload.productId, ...payload.product };
+        } else {
+          return product;
+        }
+      });
+    },
     setMenProducts: (state) => {
       state.menProducts = state.products.filter(
         (product) => product.gender === "Hombre"
@@ -56,6 +66,7 @@ export const {
   setKidProducts,
   setFeaturedProducts,
   setProductsOnOffer,
+  subtractUnitToStock,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

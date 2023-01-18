@@ -6,13 +6,17 @@ import {
   setDoc,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
+import { subtractUnitToStock } from "../products/productsSlice";
 import {
   addNewAddress,
   addNewCard,
+  addNewPurchase,
   addProductToCart,
   addProductToFavorites,
   addUnitToProduct,
+  clearCart,
   clearFavorites,
+  clearPaymentMethod,
   deleteProductFromCart,
   deleteProductFromFavorites,
   disabled,
@@ -21,6 +25,7 @@ import {
   setCards,
   setCart,
   setFavorites,
+  setPurchases,
   subtractUnitToProduct,
 } from "./userSlice";
 
@@ -36,6 +41,8 @@ export const startLoadingUserInfo = () => {
     const addressesDocs = await getDocs(addressesRef);
     const cardsRef = collection(FirebaseDB, `users/${uid}/cards`);
     const cardsDocs = await getDocs(cardsRef);
+    const purchasesRef = collection(FirebaseDB, `users/${uid}/purchases`);
+    const purchasesDocs = await getDocs(purchasesRef);
 
     const cart = [];
     cartDocs.forEach((doc) => {
@@ -53,11 +60,16 @@ export const startLoadingUserInfo = () => {
     cardsDocs.forEach((doc) => {
       cards.push({ id: doc.id, ...doc.data() });
     });
+    const purchases = [];
+    purchasesDocs.forEach((doc) => {
+      purchases.push({ id: doc.id, ...doc.data() });
+    });
 
     dispatch(setCart(cart));
     dispatch(setFavorites(favorites));
     dispatch(setAddresses(addresses));
     dispatch(setCards(cards));
+    dispatch(setPurchases(purchases));
     dispatch(isLoading());
   };
 };
@@ -227,5 +239,43 @@ export const startAddingNewCard = (values) => {
     newCard.id = newDoc.id;
 
     dispatch(addNewCard(newCard));
+  };
+};
+
+export const startAddingNewPurchase = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { cart } = getState().user;
+    const { products } = getState().products;
+
+    const newPurchase = {
+      ...values,
+    };
+    //Añade una compra a la base de datos
+    const newDoc = doc(collection(FirebaseDB, `users/${uid}/purchases`));
+    const setDocResp = await setDoc(newDoc, newPurchase);
+    newPurchase.id = newDoc.id;
+    //Resta las cantidad comprada, del stock
+    const currentProduct = {
+      ...products.find((product) => product.id === values.productId),
+    };
+    const newProduct = {
+      ...currentProduct,
+      stock: currentProduct.stock - values.quantity,
+    };
+    delete newProduct.id;
+    const docRef = doc(FirebaseDB, `/products/${currentProduct.id}`);
+    await setDoc(docRef, newProduct, { merge: true });
+    //Limpia el carrito
+    cart.forEach(async (product) => {
+      const docRef = doc(FirebaseDB, `users/${uid}/cart/${product.id}`);
+      await deleteDoc(docRef);
+    });
+
+    dispatch(addNewPurchase(newPurchase));
+    dispatch(
+      subtractUnitToStock({ productId: values.productId, product: newProduct })
+    );
+    dispatch(clearPaymentMethod());
   };
 };
