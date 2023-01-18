@@ -55,7 +55,7 @@ export const Navbar = () => {
           >
             <RouterLink to="/">
               <Box sx={{ width: "120px", height: "100%", display: "flex" }}>
-                <img src="../../../public/logo-white.svg" width="100%" />
+                <img src="../logo-white.svg" width="100%" />
               </Box>
             </RouterLink>
             <Search open={openSearch}>

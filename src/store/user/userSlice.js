@@ -92,6 +92,9 @@ const userSlice = createSlice({
     setActiveAddress: (state, { payload }) => {
       state.activeAddress = payload;
     },
+    clearActiveAddress: (state) => {
+      state.activeAddress = null;
+    },
     setCards: (state, { payload }) => {
       state.cards = payload;
     },
@@ -133,6 +136,7 @@ export const {
   setAddresses,
   addNewAddress,
   setActiveAddress,
+  clearActiveAddress,
   setCards,
   addNewCard,
   setPaymentMethod,

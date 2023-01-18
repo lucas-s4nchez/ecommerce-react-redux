@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Divider,
@@ -11,7 +10,11 @@ import {
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { clearCart } from "../../store/user/userSlice";
+import {
+  clearActiveAddress,
+  clearCart,
+  clearPaymentMethod,
+} from "../../store/user/userSlice";
 import { startAddingNewPurchase } from "../../store/user/userThunks";
 
 export const ConfirmPayment = () => {
@@ -44,7 +47,11 @@ export const ConfirmPayment = () => {
     dispatch(clearCart());
     navigate("/purchases");
   };
-
+  const handleCancelBuy = () => {
+    dispatch(clearActiveAddress());
+    dispatch(clearPaymentMethod());
+    navigate("/cart");
+  };
   if (isLoading) {
     return <h1>jiji</h1>;
   }
@@ -112,18 +119,50 @@ export const ConfirmPayment = () => {
         Forma de pago:
         <Typography sx={{ textTransform: "capitalize" }} component="span">
           {paymentMethod.cvc
-            ? ` Tarjeta termina en ${paymentMethod.number.split("").splice(12)}`
+            ? ` Tarjeta termina en ${paymentMethod.number
+                .split("")
+                .splice(12)
+                .join("")}`
             : ` ${paymentMethod.name}`}
         </Typography>
       </Typography>
-      <Button
-        variant="contained"
-        disabled={!paymentMethod}
-        sx={{ alignSelf: "flex-end" }}
-        onClick={handleCompleteBuy}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column-reverse", sm: "row" },
+          justifyContent: "flex-end",
+          width: "100%",
+          gap: 2,
+          marginTop: 2,
+        }}
       >
-        Continuar
-      </Button>
+        <Button variant="outlined" onClick={() => navigate(-1)}>
+          Volver
+        </Button>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={handleCancelBuy}
+            sx={{ width: { xs: "100%", sm: "max-content" } }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={!paymentMethod}
+            onClick={handleCompleteBuy}
+            sx={{ width: { xs: "100%", sm: "max-content" } }}
+          >
+            Confirmar
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -6,7 +6,7 @@ import {
   setDoc,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { subtractUnitToStock } from "../products/productsSlice";
+import { updateProduct } from "../products/productsSlice";
 import {
   addNewAddress,
   addNewCard,
@@ -14,7 +14,6 @@ import {
   addProductToCart,
   addProductToFavorites,
   addUnitToProduct,
-  clearCart,
   clearFavorites,
   clearPaymentMethod,
   deleteProductFromCart,
@@ -255,13 +254,14 @@ export const startAddingNewPurchase = (values) => {
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/purchases`));
     const setDocResp = await setDoc(newDoc, newPurchase);
     newPurchase.id = newDoc.id;
-    //Resta las cantidad comprada, del stock
+    //Resta las cantidad comprada, del stock. Añade la cantidad a las ventas
     const currentProduct = {
       ...products.find((product) => product.id === values.productId),
     };
     const newProduct = {
       ...currentProduct,
       stock: currentProduct.stock - values.quantity,
+      sold: currentProduct.sold + values.quantity,
     };
     delete newProduct.id;
     const docRef = doc(FirebaseDB, `/products/${currentProduct.id}`);
@@ -274,7 +274,7 @@ export const startAddingNewPurchase = (values) => {
 
     dispatch(addNewPurchase(newPurchase));
     dispatch(
-      subtractUnitToStock({ productId: values.productId, product: newProduct })
+      updateProduct({ productId: values.productId, product: newProduct })
     );
     dispatch(clearPaymentMethod());
   };

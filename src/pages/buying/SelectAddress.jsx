@@ -247,14 +247,26 @@ export const SelectAddress = () => {
           </Box>
         </DialogContent>
       </Dialog>
-      <Button
-        variant="contained"
-        disabled={!activeAddress}
-        sx={{ alignSelf: "flex-end" }}
-        onClick={() => navigate("/buying/selectPaymentMethod")}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "100%",
+          gap: 2,
+          marginTop: 2,
+        }}
       >
-        Continuar
-      </Button>
+        <Button variant="outlined" onClick={() => navigate("/cart")}>
+          Volver
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!activeAddress}
+          onClick={() => navigate("/buying/selectPaymentMethod")}
+        >
+          Continuar
+        </Button>
+      </Box>
     </Box>
   );
 };

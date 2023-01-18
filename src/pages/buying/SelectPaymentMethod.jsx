@@ -53,19 +53,19 @@ const cashPaymentMethods = [
   {
     id: "pago5678",
     name: "Pago Fácil",
-    image: "../../../public/pago-facil-icon.png",
+    image: "../pago-facil-icon.png",
     description: "Acreditación en 1 día hábil",
   },
   {
     id: "rapi1234",
     name: "Rapipago",
-    image: "../../../public/rapipago-icon.png",
+    image: "../rapipago-icon.png",
     description: "Acreditación instantánea",
   },
   {
     id: "mercado9182",
     name: "Mercado Pago",
-    image: "../../../public/mercado-pago-icon.png",
+    image: "../mercado-pago-icon.png",
     description: "Acreditación instantánea",
   },
 ];
@@ -426,14 +426,26 @@ export const SelectPaymentMethod = () => {
           </Box>
         </Box>
       </Box>
-      <Button
-        variant="contained"
-        disabled={!paymentMethod}
-        sx={{ alignSelf: "flex-end" }}
-        onClick={() => navigate("/buying/confirmPayment")}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "100%",
+          gap: 2,
+          marginTop: 2,
+        }}
       >
-        Continuar
-      </Button>
+        <Button variant="outlined" onClick={() => navigate(-1)}>
+          Volver
+        </Button>
+        <Button
+          variant="contained"
+          disabled={!paymentMethod}
+          onClick={() => navigate("/buying/confirmPayment")}
+        >
+          Continuar
+        </Button>
+      </Box>
     </Box>
   );
 };

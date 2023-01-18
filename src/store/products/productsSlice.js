@@ -21,7 +21,7 @@ const productsSlice = createSlice({
       state.products = payload;
     },
 
-    subtractUnitToStock: (state, { payload }) => {
+    updateProduct: (state, { payload }) => {
       state.products = state.products.map((product) => {
         if (product.id === payload.productId) {
           return { id: payload.productId, ...payload.product };
@@ -66,7 +66,7 @@ export const {
   setKidProducts,
   setFeaturedProducts,
   setProductsOnOffer,
-  subtractUnitToStock,
+  updateProduct,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;
