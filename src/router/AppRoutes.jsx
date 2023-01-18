@@ -1,11 +1,13 @@
 import { CircularProgress, Grid } from "@mui/material";
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 import { Layout } from "../layout/Layout";
 import {
   AccountPage,
+  BuyingPage,
   CartPage,
+  ConfirmPayment,
   FavoritesPage,
   FeaturedPage,
   HomePage,
@@ -16,6 +18,8 @@ import {
   ProductDetails,
   PurchasesPage,
   RegisterPage,
+  SelectAddress,
+  SelectPaymentMethod,
   WomenShopPage,
 } from "../pages";
 import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
@@ -67,6 +71,19 @@ export const AppRoutes = () => {
             </AuthenticatedRoutes>
           }
         />
+        <Route
+          path="/buying"
+          element={
+            <AuthenticatedRoutes status={status}>
+              <BuyingPage />
+            </AuthenticatedRoutes>
+          }
+        >
+          <Route path="selectAddress" element={<SelectAddress />} />
+          <Route path="selectPaymentMethod" element={<SelectPaymentMethod />} />
+          <Route path="confirmPayment" element={<ConfirmPayment />} />
+        </Route>
+
         <Route
           path="/purchases"
           element={

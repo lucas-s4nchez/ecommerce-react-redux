@@ -8,6 +8,7 @@ import { ProductImage } from "./ProductImage";
 import { ProductContent } from "./ProductContent";
 import { ProductDescription } from "./ProductDescription";
 import { ProductReviews } from "./ProductReviews";
+import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 
 export const ProductDetails = () => {
   const { products, isLoading } = useSelector((state) => state.products);
@@ -18,15 +19,20 @@ export const ProductDetails = () => {
   );
 
   return (
-    <ProductContainerStyled>
-      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}>
-        <ProductImage product={product} />
-        <ProductContent product={product} id={id} />
-      </Box>
-      <Divider />
-      <ProductDescription product={product} />
-      <Divider />
-      <ProductReviews product={product} />
-    </ProductContainerStyled>
+    <>
+      <RouterBreadcrumbs />
+      <ProductContainerStyled>
+        <Box
+          sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+        >
+          <ProductImage product={product} />
+          <ProductContent product={product} id={id} />
+        </Box>
+        <Divider />
+        <ProductDescription product={product} />
+        <Divider />
+        <ProductReviews product={product} />
+      </ProductContainerStyled>
+    </>
   );
 };

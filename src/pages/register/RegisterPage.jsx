@@ -20,6 +20,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { startRegisterUserwithEmailAndPassword } from "../../store/auth/authThunks";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";
+import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 
 export const RegisterPage = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
@@ -62,104 +63,107 @@ export const RegisterPage = () => {
   };
 
   return (
-    <AuthLayout title="Crear cuenta">
-      <form onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Nombre completo"
-              type="text"
-              placeholder="Tu nombre"
-              fullWidth
-              name="displayName"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <PersonIcon />
-                  </InputAdornment>
-                ),
-              }}
-              {...getFieldProps("displayName")}
-              error={errors.displayName && touched.displayName}
-              helperText={touched.displayName && errors.displayName}
-            />
-          </Grid>
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Correo"
-              type="email"
-              placeholder="correo@correo.com"
-              fullWidth
-              name="email"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <EmailIcon />
-                  </InputAdornment>
-                ),
-              }}
-              {...getFieldProps("email")}
-              error={errors.email && touched.email}
-              helperText={touched.email && errors.email}
-            />
-          </Grid>
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <TextField
-              label="Contraseña"
-              type={showPassword ? "text" : "password"}
-              placeholder="Contraseña"
-              fullWidth
-              name="password"
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              {...getFieldProps("password")}
-              error={errors.password && touched.password}
-              helperText={touched.password && errors.password}
-            />
-          </Grid>
-          <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-            <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
-              <Alert severity="error">{errorMessage}</Alert>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
+    <>
+      <RouterBreadcrumbs />
+      <AuthLayout title="Crear cuenta">
+        <form onSubmit={handleSubmit}>
+          <Grid container>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Nombre completo"
+                type="text"
+                placeholder="Tu nombre"
                 fullWidth
-                disabled={isCheckingAuthentication}
+                name="displayName"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <PersonIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                {...getFieldProps("displayName")}
+                error={errors.displayName && touched.displayName}
+                helperText={touched.displayName && errors.displayName}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Correo"
+                type="email"
+                placeholder="correo@correo.com"
+                fullWidth
+                name="email"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EmailIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                {...getFieldProps("email")}
+                error={errors.email && touched.email}
+                helperText={touched.email && errors.email}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ mt: 2 }}>
+              <TextField
+                label="Contraseña"
+                type={showPassword ? "text" : "password"}
+                placeholder="Contraseña"
+                fullWidth
+                name="password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                {...getFieldProps("password")}
+                error={errors.password && touched.password}
+                helperText={touched.password && errors.password}
+              />
+            </Grid>
+            <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+              <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
+                <Alert severity="error">{errorMessage}</Alert>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isCheckingAuthentication}
+                >
+                  <Typography>Crear cuenta</Typography>
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container direction="row" justifyContent="end">
+              <Typography sx={{ mr: 1, fontSize: 14 }}>
+                ¿Ya tienes una cuenta?
+              </Typography>
+              <Link
+                onClick={onRedirect}
+                component={RouterLink}
+                sx={{ fontSize: 14 }}
+                color="inherit"
+                to={"/login"}
               >
-                <Typography>Crear cuenta</Typography>
-              </Button>
+                ingresa
+              </Link>
             </Grid>
           </Grid>
-          <Grid container direction="row" justifyContent="end">
-            <Typography sx={{ mr: 1, fontSize: 14 }}>
-              ¿Ya tienes una cuenta?
-            </Typography>
-            <Link
-              onClick={onRedirect}
-              component={RouterLink}
-              sx={{ fontSize: 14 }}
-              color="inherit"
-              to={"/login"}
-            >
-              ingresa
-            </Link>
-          </Grid>
-        </Grid>
-      </form>
-    </AuthLayout>
+        </form>
+      </AuthLayout>
+    </>
   );
 };

@@ -1,3 +1,10 @@
+import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
+
 export const PurchasesPage = () => {
-  return <h1>Purchases Page</h1>;
+  return (
+    <>
+      <RouterBreadcrumbs />
+      <h1>Purchases Page</h1>
+    </>
+  );
 };

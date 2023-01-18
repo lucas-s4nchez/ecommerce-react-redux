@@ -8,7 +8,7 @@ function LinkRouter(props) {
   return <Link {...props} component={RouterLink} />;
 }
 
-export default function RouterBreadcrumbs() {
+export const RouterBreadcrumbs = () => {
   const { products } = useSelector((state) => state.products);
   const location = useLocation();
   const breadcrumbNameMap = {
@@ -72,4 +72,4 @@ export default function RouterBreadcrumbs() {
       </Breadcrumbs>
     </Box>
   );
-}
+};

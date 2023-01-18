@@ -7,6 +7,8 @@ import {
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import {
+  addNewAddress,
+  addNewCard,
   addProductToCart,
   addProductToFavorites,
   addUnitToProduct,
@@ -15,6 +17,8 @@ import {
   deleteProductFromFavorites,
   disabled,
   isLoading,
+  setAddresses,
+  setCards,
   setCart,
   setFavorites,
   subtractUnitToProduct,
@@ -28,6 +32,10 @@ export const startLoadingUserInfo = () => {
     const cartDocs = await getDocs(cartRef);
     const favoritesRef = collection(FirebaseDB, `users/${uid}/favorites`);
     const favoritesDocs = await getDocs(favoritesRef);
+    const addressesRef = collection(FirebaseDB, `users/${uid}/addresses`);
+    const addressesDocs = await getDocs(addressesRef);
+    const cardsRef = collection(FirebaseDB, `users/${uid}/cards`);
+    const cardsDocs = await getDocs(cardsRef);
 
     const cart = [];
     cartDocs.forEach((doc) => {
@@ -37,9 +45,19 @@ export const startLoadingUserInfo = () => {
     favoritesDocs.forEach((doc) => {
       favorites.push({ id: doc.id, ...doc.data() });
     });
+    const addresses = [];
+    addressesDocs.forEach((doc) => {
+      addresses.push({ id: doc.id, ...doc.data() });
+    });
+    const cards = [];
+    cardsDocs.forEach((doc) => {
+      cards.push({ id: doc.id, ...doc.data() });
+    });
 
     dispatch(setCart(cart));
     dispatch(setFavorites(favorites));
+    dispatch(setAddresses(addresses));
+    dispatch(setCards(cards));
     dispatch(isLoading());
   };
 };
@@ -139,6 +157,7 @@ export const startAddingUnitToProduct = (id, quantity, size) => {
     dispatch(disabled());
   };
 };
+
 export const startRemoveUnitToProduct = (id, quantity, size) => {
   return async (dispatch, getState) => {
     dispatch(disabled());
@@ -162,6 +181,7 @@ export const startRemoveUnitToProduct = (id, quantity, size) => {
     dispatch(disabled());
   };
 };
+
 export const startDeletingProductFromCart = (id) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
@@ -173,5 +193,39 @@ export const startDeletingProductFromCart = (id) => {
     await deleteDoc(docRef);
 
     dispatch(deleteProductFromCart(currentProduct));
+  };
+};
+
+export const startAddingNewAddress = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+
+    const newAddress = {
+      ...values,
+    };
+
+    const newDoc = doc(collection(FirebaseDB, `users/${uid}/addresses`));
+    const setDocResp = await setDoc(newDoc, newAddress);
+
+    newAddress.id = newDoc.id;
+
+    dispatch(addNewAddress(newAddress));
+  };
+};
+
+export const startAddingNewCard = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+
+    const newCard = {
+      ...values,
+    };
+
+    const newDoc = doc(collection(FirebaseDB, `users/${uid}/cards`));
+    const setDocResp = await setDoc(newDoc, newCard);
+
+    newCard.id = newDoc.id;
+
+    dispatch(addNewCard(newCard));
   };
 };

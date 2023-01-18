@@ -11,3 +11,4 @@ export * from "./womens";
 export * from "./kids";
 export * from "./productDetails";
 export * from "./cart";
+export * from "./buying";

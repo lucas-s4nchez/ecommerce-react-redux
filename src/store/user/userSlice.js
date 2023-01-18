@@ -7,6 +7,12 @@ const initialState = {
   cart: [],
   totalItemsInCart: 0,
   totalToPay: 0,
+  addresses: [],
+  cards: [],
+  activeCard: null,
+  activeAddress: null,
+  paymentMethod: null,
+  // isSavingAddress: false,
 };
 
 const userSlice = createSlice({
@@ -76,6 +82,31 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.cart = [];
     },
+    setAddresses: (state, { payload }) => {
+      state.addresses = payload;
+    },
+    addNewAddress: (state, { payload }) => {
+      state.addresses.push(payload);
+    },
+    setActiveAddress: (state, { payload }) => {
+      state.activeAddress = payload;
+    },
+    setCards: (state, { payload }) => {
+      state.cards = payload;
+    },
+    addNewCard: (state, { payload }) => {
+      state.cards.push(payload);
+    },
+    setActiveCard: (state, { payload }) => {
+      state.activeCard = payload;
+    },
+    setPaymentMethod: (state, { payload }) => {
+      state.paymentMethod = payload;
+    },
+    confirmPayment: (state) => {
+      state.activeCard = null;
+      state.paymentMethod = null;
+    },
   },
 });
 
@@ -92,6 +123,14 @@ export const {
   addUnitToProduct,
   subtractUnitToProduct,
   clearCart,
+  setAddresses,
+  addNewAddress,
+  setActiveAddress,
+  setCards,
+  addNewCard,
+  setActiveCard,
+  setPaymentMethod,
+  confirmPayment,
 } = userSlice.actions;
 
 export default userSlice.reducer;

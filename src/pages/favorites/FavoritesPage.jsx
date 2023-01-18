@@ -9,6 +9,7 @@ import {
   FavoritesButtonSkeleton,
   FavoritesItemsSkeleton,
 } from "./FavoritesSkeletonLoader";
+import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 
 export const FavoritesPage = () => {
   const { isLoading, favorites } = useSelector((state) => state.user);
@@ -17,28 +18,33 @@ export const FavoritesPage = () => {
     dispatch(startDeletingAllProductsFromFavorites());
   };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        gap: 2,
-        marginBottom: 5,
-      }}
-    >
-      {isLoading && <FavoritesButtonSkeleton sx={{ alignSelf: "flex-end" }} />}
-      {favorites.length >= 1 && (
-        <Button onClick={handleDeleteAll} sx={{ alignSelf: "flex-end" }}>
-          Eliminar Todos <DeleteForeverIcon />
-        </Button>
-      )}
-      {isLoading ? (
-        <FavoritesItemsSkeleton />
-      ) : (
-        favorites.map((item) => {
-          return <FavoritesItem key={item.id} {...item} />;
-        })
-      )}
-    </Box>
+    <>
+      <RouterBreadcrumbs />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          gap: 2,
+          marginBottom: 5,
+        }}
+      >
+        {isLoading && (
+          <FavoritesButtonSkeleton sx={{ alignSelf: "flex-end" }} />
+        )}
+        {favorites.length >= 1 && (
+          <Button onClick={handleDeleteAll} sx={{ alignSelf: "flex-end" }}>
+            Eliminar Todos <DeleteForeverIcon />
+          </Button>
+        )}
+        {isLoading ? (
+          <FavoritesItemsSkeleton />
+        ) : (
+          favorites.map((item) => {
+            return <FavoritesItem key={item.id} {...item} />;
+          })
+        )}
+      </Box>
+    </>
   );
 };
