@@ -29,7 +29,7 @@ export const CreditCard = ({
         <Box sx={{ height: "auto" }}>
           <Box
             component="img"
-            src="./chip.png"
+            src="../chip.png"
             sx={{ width: { xs: 25, sm: 45 } }}
           />
         </Box>

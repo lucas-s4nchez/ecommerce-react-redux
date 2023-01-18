@@ -153,69 +153,75 @@ export const SelectPaymentMethod = () => {
         <Box>
           <Typography sx={{ marginBlock: 2 }}>Tarjetas</Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            {cards.map((card) => {
-              return (
-                <Box
-                  sx={{
-                    padding: 2,
-                    display: "flex",
-                    gap: 1,
-                    borderRadius: "10px",
-                    border: "1px solid #adadad",
-                  }}
-                  key={card.id}
-                >
-                  <Box>
-                    <CreditCardIcon />
-                  </Box>
+            {cards.length < 1 ? (
+              <Alert severity="info">
+                No tienes ninguna tarjeta, agregá una
+              </Alert>
+            ) : (
+              cards.map((card) => {
+                return (
                   <Box
                     sx={{
+                      padding: 2,
                       display: "flex",
-                      flexDirection: "column",
                       gap: 1,
-                      width: "100%",
+                      borderRadius: "10px",
+                      border: "1px solid #adadad",
                     }}
+                    key={card.id}
                   >
-                    <Typography>
-                      Terminada en {card.number.split("").splice(12)}
-                    </Typography>
                     <Box>
-                      <Typography
-                        sx={{
-                          textTransform: "capitalize",
-                          fontSize: "12px",
-                          color: "GrayText",
-                        }}
-                      >
-                        Vencimiento:{" "}
-                        {card.expiryMonth < 10
-                          ? `0${card.expiryMonth}`
-                          : card.expiryMonth}
-                        /{card.expiryYear}
-                      </Typography>
+                      <CreditCardIcon />
                     </Box>
-                    {paymentMethod && paymentMethod.id === card.id ? (
-                      <Alert
-                        severity="success"
-                        sx={{ justifyContent: "center" }}
-                      >
-                        Método de pago Seleccionado
-                      </Alert>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        sx={{ alignSelf: "flex-end" }}
-                        onClick={() => {
-                          dispatch(setPaymentMethod(card));
-                        }}
-                      >
-                        Elegir
-                      </Button>
-                    )}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                        width: "100%",
+                      }}
+                    >
+                      <Typography>
+                        Terminada en {card.number.split("").splice(12)}
+                      </Typography>
+                      <Box>
+                        <Typography
+                          sx={{
+                            textTransform: "capitalize",
+                            fontSize: "12px",
+                            color: "GrayText",
+                          }}
+                        >
+                          Vencimiento:{" "}
+                          {card.expiryMonth < 10
+                            ? `0${card.expiryMonth}`
+                            : card.expiryMonth}
+                          /{card.expiryYear}
+                        </Typography>
+                      </Box>
+                      {paymentMethod && paymentMethod.id === card.id ? (
+                        <Alert
+                          severity="success"
+                          sx={{ justifyContent: "center" }}
+                        >
+                          Método de pago Seleccionado
+                        </Alert>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          sx={{ alignSelf: "flex-end" }}
+                          onClick={() => {
+                            dispatch(setPaymentMethod(card));
+                          }}
+                        >
+                          Elegir
+                        </Button>
+                      )}
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })}
+                );
+              })
+            )}
           </Box>
           <Button
             startIcon={<AddCardIcon />}

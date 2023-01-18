@@ -78,7 +78,75 @@ export const SelectAddress = () => {
       <Box
         sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}
       >
-        {addresses.map((address) => {
+        {addresses.length < 1 ? (
+          <Alert severity="info">No tienes ninguna dirección, agregá una</Alert>
+        ) : (
+          addresses.map((address) => {
+            return (
+              <Box
+                sx={{
+                  padding: 2,
+                  display: "flex",
+                  gap: 1,
+                  border: "1px solid #adadad",
+                  borderRadius: "10px",
+                }}
+                key={address.id}
+              >
+                <Box>
+                  <LocationOnIcon sx={{ color: "primary.main" }} />
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    width: "100%",
+                  }}
+                >
+                  <Typography>
+                    {address.street} {address.streetNumber}
+                  </Typography>
+                  <Box>
+                    <Typography
+                      sx={{
+                        textTransform: "capitalize",
+                        fontSize: "12px",
+                        color: "GrayText",
+                      }}
+                    >
+                      Código Postal {address.postalCode} - {address.province} -{" "}
+                      {address.city}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        textTransform: "capitalize",
+                        fontSize: "12px",
+                        color: "GrayText",
+                      }}
+                    >
+                      {address.fullName} - {address.phoneNumber}
+                    </Typography>
+                  </Box>
+                  {activeAddress && activeAddress.id === address.id ? (
+                    <Alert severity="success" sx={{ justifyContent: "center" }}>
+                      Domicilio Seleccionado
+                    </Alert>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      sx={{ alignSelf: "flex-end" }}
+                      onClick={() => dispatch(setActiveAddress(address))}
+                    >
+                      Elegir
+                    </Button>
+                  )}
+                </Box>
+              </Box>
+            );
+          })
+        )}
+        {/* {addresses.map((address) => {
           return (
             <Box
               sx={{
@@ -141,7 +209,7 @@ export const SelectAddress = () => {
               </Box>
             </Box>
           );
-        })}
+        })} */}
       </Box>
       <Button
         onClick={handleOpenForm}

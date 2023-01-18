@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
@@ -18,7 +19,7 @@ import {
 import { startAddingNewPurchase } from "../../store/user/userThunks";
 
 export const ConfirmPayment = () => {
-  const { cards, paymentMethod, activeAddress, cart, isLoading } = useSelector(
+  const { paymentMethod, activeAddress, cart, isLoading } = useSelector(
     (state) => state.user
   );
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ export const ConfirmPayment = () => {
     navigate("/cart");
   };
   if (isLoading) {
-    return <h1>jiji</h1>;
+    return <Skeleton width="100%" height={400} />;
   }
   return (
     <Box
