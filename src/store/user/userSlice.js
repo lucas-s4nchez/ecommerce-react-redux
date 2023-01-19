@@ -95,11 +95,17 @@ const userSlice = createSlice({
     clearActiveAddress: (state) => {
       state.activeAddress = null;
     },
+    clearAddresses: (state) => {
+      state.addresses = [];
+    },
     setCards: (state, { payload }) => {
       state.cards = payload;
     },
     addNewCard: (state, { payload }) => {
       state.cards.push(payload);
+    },
+    clearCards: (state) => {
+      state.cards = [];
     },
     setPaymentMethod: (state, { payload }) => {
       state.paymentMethod = payload;
@@ -116,6 +122,9 @@ const userSlice = createSlice({
     },
     addNewPurchase: (state, { payload }) => {
       state.purchases.push(payload);
+    },
+    clearPurchases: (state) => {
+      state.purchases = [];
     },
   },
 });
@@ -136,13 +145,16 @@ export const {
   setAddresses,
   addNewAddress,
   setActiveAddress,
+  clearAddresses,
   clearActiveAddress,
   setCards,
   addNewCard,
+  clearCards,
   setPaymentMethod,
   confirmPayment,
   setPurchases,
   addNewPurchase,
+  clearPurchases,
   clearPaymentMethod,
 } = userSlice.actions;
 
