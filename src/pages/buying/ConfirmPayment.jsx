@@ -42,6 +42,10 @@ export const ConfirmPayment = () => {
         model: element.model,
         version: element.version,
         quantity: element.quantity,
+        colors: element.colors,
+        size: element.size,
+        price: element.price,
+        waitingToReceiveRating: true,
       };
     });
     newPurchase.forEach((product) => dispatch(startAddingNewPurchase(product)));

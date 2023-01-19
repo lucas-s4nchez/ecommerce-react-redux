@@ -123,6 +123,15 @@ const userSlice = createSlice({
     addNewPurchase: (state, { payload }) => {
       state.purchases.push(payload);
     },
+    updatePurchase: (state, { payload }) => {
+      state.purchases = state.purchases.map((item) => {
+        if (item.id === payload.purchaseId) {
+          return { id: payload.purchaseId, ...payload.purchase };
+        } else {
+          return item;
+        }
+      });
+    },
     clearPurchases: (state) => {
       state.purchases = [];
     },
@@ -154,6 +163,7 @@ export const {
   confirmPayment,
   setPurchases,
   addNewPurchase,
+  updatePurchase,
   clearPurchases,
   clearPaymentMethod,
 } = userSlice.actions;

@@ -83,9 +83,11 @@ export const ProductRatingsContainerStyled = styled("div")(({ theme }) => ({
   },
   [theme.breakpoints.up("md")]: {
     flexDirection: "column",
+    maxWidth: "fit-content",
   },
 }));
 export const ProductReviewsContainerStyled = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
+  width: "100%",
 }));

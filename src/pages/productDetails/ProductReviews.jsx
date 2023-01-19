@@ -42,8 +42,7 @@ export const ProductReviews = ({ product }) => {
   };
 
   const getFormattedDate = (date) => {
-    const newDate = new Date(date);
-    return new Intl.DateTimeFormat("es-ES").format(newDate);
+    return new Intl.DateTimeFormat("es-ES").format(date);
   };
 
   return (
@@ -61,13 +60,22 @@ export const ProductReviews = ({ product }) => {
             }}
           >
             <ProductRatingsContainerStyled>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  gap: 2,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Box>
                   <Typography
                     sx={{
                       fontSize: "40px",
                       fontWeight: "bolder",
                       lineHeight: 1.03,
+                      textAlign: "center",
                     }}
                   >
                     {averageRating}

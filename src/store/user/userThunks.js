@@ -26,6 +26,7 @@ import {
   setFavorites,
   setPurchases,
   subtractUnitToProduct,
+  updatePurchase,
 } from "./userSlice";
 
 export const startLoadingUserInfo = () => {
@@ -277,5 +278,55 @@ export const startAddingNewPurchase = (values) => {
       updateProduct({ productId: values.productId, product: newProduct })
     );
     dispatch(clearPaymentMethod());
+  };
+};
+
+export const startAddingNewReview = (item) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { purchases } = getState().user;
+    const { products } = getState().products;
+
+    //Agrega la nueva review
+    const currentProduct = {
+      ...products.find((product) => product.id === item.id),
+    };
+    const newProduct = {
+      ...currentProduct,
+      reviews: [
+        ...currentProduct.reviews,
+        {
+          comment: item.comment,
+          rating: item.rating,
+          date: item.date,
+          userName: item.userName,
+        },
+      ],
+    };
+    delete newProduct.id;
+
+    const docRef = doc(FirebaseDB, `/products/${currentProduct.id}`);
+    await setDoc(docRef, newProduct, { merge: true });
+
+    //Cambiar 'waitingToReceiveRating' a false
+    const currentPurchase = {
+      ...purchases.find((product) => product.id === item.purchaseId),
+    };
+    const newPurchase = {
+      ...currentPurchase,
+      waitingToReceiveRating: false,
+    };
+    delete newPurchase.id;
+
+    const purchaseRef = doc(
+      FirebaseDB,
+      `users/${uid}/purchases/${item.purchaseId}`
+    );
+    await setDoc(purchaseRef, newPurchase, { merge: true });
+
+    dispatch(updateProduct({ productId: item.id, product: newProduct }));
+    dispatch(
+      updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
+    );
   };
 };

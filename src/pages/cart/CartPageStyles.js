@@ -2,7 +2,7 @@ import { styled } from "@mui/system";
 
 export const CartContainerStyled = styled("div")(({ theme }) => ({
   padding: "10px",
-  paddingBlock: "50px",
+  paddingBlock: "30px",
   width: "100%",
   height: "100%",
   borderRadius: "10px",
