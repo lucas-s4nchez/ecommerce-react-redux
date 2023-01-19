@@ -8,6 +8,9 @@ import {
   CardActionArea,
   Skeleton,
   Button,
+  Rating,
+  Typography,
+  Box,
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -65,6 +68,7 @@ export const CardProduct = ({
   model,
   brand,
   images,
+  reviews,
   price,
   discount,
   featured,
@@ -95,6 +99,11 @@ export const CardProduct = ({
       return location.pathname;
     }
   };
+  const averageRating = Number(
+    (
+      reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length
+    ).toFixed(1)
+  );
   return (
     <Card sx={{ minWidth: 250, maxWidth: 250 }}>
       <CardActions
@@ -145,7 +154,24 @@ export const CardProduct = ({
           {isLoading ? (
             <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
           ) : (
-            <ProductNameStyled>{`${brand} ${model}`}</ProductNameStyled>
+            <>
+              <ProductNameStyled>{`${brand} ${model}`}</ProductNameStyled>
+              {reviews.length >= 1 && (
+                <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
+                  <Rating
+                    name="read-only"
+                    value={averageRating}
+                    precision={0.1}
+                    readOnly
+                    size="small"
+                    sx={{ color: "primary.main" }}
+                  />
+                  <Typography
+                    sx={{ fontSize: "14px" }}
+                  >{`(${reviews.length})`}</Typography>
+                </Box>
+              )}
+            </>
           )}
           <ProductPrice
             discount={discount}

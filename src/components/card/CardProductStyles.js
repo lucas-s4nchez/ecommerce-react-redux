@@ -4,7 +4,6 @@ import { styled } from "@mui/system";
 export const ProductNameStyled = styled(Typography)(({ theme }) => ({
   fontSize: "18px",
   fontWeight: "bolder",
-  marginBottom: "10px",
 }));
 export const ProductPriceStyled = styled(Typography)(({ theme }) => ({
   fontSize: "20px",

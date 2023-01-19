@@ -23,6 +23,8 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import { formatPrice } from "../../helpers/formatPrice";
 import { startAddingNewReview } from "../../store/user/userThunks";
+import { useNavigate } from "react-router-dom";
+import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
 
 const labels = {
   1: "Inutil",
@@ -36,6 +38,7 @@ export const PurchasesPage = () => {
   const { isLoading, purchases } = useSelector((state) => state.user);
   const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState("");
   const {
@@ -101,7 +104,26 @@ export const PurchasesPage = () => {
           }}
         >
           {isLoading ? (
-            <h1>Cargando...</h1>
+            <PurchasesItemsSkeleton />
+          ) : purchases.length < 1 ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                padding: 3,
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Typography>Aún no compraste nada</Typography>
+              <Typography sx={{ fontSize: "14px", textAlign: "center" }}>
+                Échale un vistazo a nuestros productos mas destacados
+              </Typography>
+              <Button variant="contained" onClick={() => navigate("/featured")}>
+                Ir a productos destacados
+              </Button>
+            </Box>
           ) : (
             purchases.map((item) => {
               return (
