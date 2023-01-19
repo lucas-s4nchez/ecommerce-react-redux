@@ -5,7 +5,6 @@ import { MUICarousel } from "../../components/carousel/Carousel";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
-import { ShopSection } from "./ShopSection";
 
 const items = [
   {
@@ -71,7 +70,6 @@ export const HomePage = () => {
         </MUICarousel>
       </Box>
       <ShoppingInfoSection />
-      <ShopSection />
       <Box>
         <Typography variant="h3" fontSize={30}>
           Aprevecha las increibles ofertas!

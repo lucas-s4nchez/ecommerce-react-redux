@@ -55,8 +55,8 @@ export const ShoppingInfoSection = () => {
         />
         <Typography variant="h6">Métodos de pago</Typography>
         <Typography>
-          Trabajamos con Mercado Pago, transferencias bancarias y con tarjetas
-          de crédito, débito y prepagas!
+          Trabajamos con Mercado Pago, Rapipago, Pago fácil y con tarjetas de
+          crédito, débito y prepagas!
         </Typography>
       </Paper>
       <Paper
