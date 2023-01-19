@@ -1,7 +1,7 @@
 import { NavLink as RouterLink } from "react-router-dom";
 import { Link, Typography } from "@mui/material";
 
-export const LinkItem = ({
+export const MenuItem = ({
   children,
   redirectTo,
   text,

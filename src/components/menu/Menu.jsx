@@ -28,12 +28,12 @@ import MaleOutlinedIcon from "@mui/icons-material/MaleOutlined";
 import FemaleOutlinedIcon from "@mui/icons-material/FemaleOutlined";
 import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
 
+import { MenuItem } from "../menuItem/MenuItem";
 import { startLogout } from "../../store/auth/authThunks";
-import { LinkItem } from "./LinkItem";
 
 const drawerWidth = 300;
 
-export const DrawerResponsive = (props) => {
+export const Menu = (props) => {
   const { window, openMenu, handleOpenMenu } = props;
   const { status, displayName, photoURL } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -145,7 +145,7 @@ export const DrawerResponsive = (props) => {
                       sx={{ padding: 0, color: "white" }}
                       onClick={handleOpenMenu}
                     >
-                      <LinkItem
+                      <MenuItem
                         redirectTo={"/login"}
                         text="Ingresá"
                         color="white.cream"
@@ -153,7 +153,7 @@ export const DrawerResponsive = (props) => {
                         padding="8px"
                       >
                         <LoginOutlinedIcon sx={{ fontSize: 24 }} />
-                      </LinkItem>
+                      </MenuItem>
                     </ListItemButton>
                   </ListItem>
 
@@ -170,7 +170,7 @@ export const DrawerResponsive = (props) => {
                       sx={{ padding: 0 }}
                       onClick={handleOpenMenu}
                     >
-                      <LinkItem
+                      <MenuItem
                         redirectTo={"/register"}
                         text="Resgistrate"
                         color="primary.main"
@@ -178,7 +178,7 @@ export const DrawerResponsive = (props) => {
                         padding="8px"
                       >
                         <PersonAddAltOutlinedIcon sx={{ fontSize: 24 }} />
-                      </LinkItem>
+                      </MenuItem>
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -188,9 +188,9 @@ export const DrawerResponsive = (props) => {
             <List>
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/"} text="Inicio">
+                  <MenuItem redirectTo={"/"} text="Inicio">
                     <HomeOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
@@ -201,9 +201,9 @@ export const DrawerResponsive = (props) => {
                       sx={{ padding: 0 }}
                       onClick={handleOpenMenu}
                     >
-                      <LinkItem redirectTo={"/purchases"} text="Mis compras">
+                      <MenuItem redirectTo={"/purchases"} text="Mis compras">
                         <ShoppingBagOutlinedIcon sx={{ fontSize: 30 }} />
-                      </LinkItem>
+                      </MenuItem>
                     </ListItemButton>
                   </ListItem>
 
@@ -212,9 +212,9 @@ export const DrawerResponsive = (props) => {
                       sx={{ padding: 0 }}
                       onClick={handleOpenMenu}
                     >
-                      <LinkItem redirectTo={"/favorites"} text="Favoritos">
+                      <MenuItem redirectTo={"/favorites"} text="Favoritos">
                         <FavoriteBorderOutlinedIcon sx={{ fontSize: 30 }} />
-                      </LinkItem>
+                      </MenuItem>
                     </ListItemButton>
                   </ListItem>
                 </>
@@ -222,50 +222,50 @@ export const DrawerResponsive = (props) => {
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/mens"} text="Hombres">
+                  <MenuItem redirectTo={"/mens"} text="Hombres">
                     <MaleOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/womens"} text="Mujeres">
+                  <MenuItem redirectTo={"/womens"} text="Mujeres">
                     <FemaleOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/kids"} text="Niños">
+                  <MenuItem redirectTo={"/kids"} text="Niños">
                     <ChildCareOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/offers"} text="Ofertas">
+                  <MenuItem redirectTo={"/offers"} text="Ofertas">
                     <LocalOfferOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
               <ListItem sx={{ padding: 0 }}>
                 <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                  <LinkItem redirectTo={"/featured"} text="Destacados">
+                  <MenuItem redirectTo={"/featured"} text="Destacados">
                     <StarBorderOutlinedIcon sx={{ fontSize: 30 }} />
-                  </LinkItem>
+                  </MenuItem>
                 </ListItemButton>
               </ListItem>
 
               {isAuthenticated && (
                 <ListItem sx={{ padding: 0 }}>
                   <ListItemButton sx={{ padding: 0 }} onClick={handleOpenMenu}>
-                    <LinkItem redirectTo={"/account"} text="Mi cuenta">
+                    <MenuItem redirectTo={"/account"} text="Mi cuenta">
                       <ManageAccountsOutlinedIcon sx={{ fontSize: 30 }} />
-                    </LinkItem>
+                    </MenuItem>
                   </ListItemButton>
                 </ListItem>
               )}
