@@ -180,12 +180,9 @@ export const ProductReviews = ({ product }) => {
             </ProductRatingsContainerStyled>
 
             <ProductReviewsContainerStyled>
-              {reviews.map((review) => {
+              {reviews.map((review, index) => {
                 return (
-                  <Box
-                    sx={{ padding: 2 }}
-                    key={`${review.userName}${review.fecha}`}
-                  >
+                  <Box sx={{ padding: 2 }} key={index}>
                     <Box
                       sx={{ display: "flex", justifyContent: "space-between" }}
                     >
@@ -197,7 +194,7 @@ export const ProductReviews = ({ product }) => {
                         sx={{ color: "primary.main" }}
                       />
                       <Typography sx={{ fontSize: "14px", color: "GrayText" }}>
-                        {getFormattedDate(review.fecha)}
+                        {getFormattedDate(review.date)}
                       </Typography>
                     </Box>
                     <Typography sx={{ fontSize: "14px", color: "GrayText" }}>

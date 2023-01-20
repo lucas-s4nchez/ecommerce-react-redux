@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import { updateProduct } from "../products/productsSlice";
+import { startLoadingProducts } from "../products/productsThunks";
 import {
   addNewAddress,
   addNewCard,
@@ -330,5 +331,6 @@ export const startAddingNewReview = (item) => {
     dispatch(
       updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
     );
+    dispatch(startLoadingProducts());
   };
 };

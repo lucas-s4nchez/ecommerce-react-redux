@@ -25,6 +25,7 @@ import { formatPrice } from "../../helpers/formatPrice";
 import { startAddingNewReview } from "../../store/user/userThunks";
 import { useNavigate } from "react-router-dom";
 import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
+import { startLoadingProducts } from "../../store/products/productsThunks";
 
 const labels = {
   1: "Inutil",
@@ -76,6 +77,7 @@ export const PurchasesPage = () => {
       dispatch(startAddingNewReview(newProduct));
       resetForm();
       setOpen(false);
+      dispatch(startLoadingProducts());
     },
     onReset: () => {
       setOpen(false);
