@@ -18,6 +18,7 @@ import {
   ProductDetails,
   PurchasesPage,
   RegisterPage,
+  SearchPage,
   SelectAddress,
   SelectPaymentMethod,
   WomenShopPage,
@@ -45,6 +46,8 @@ export const AppRoutes = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="search/:id" element={<ProductDetails />} />
         <Route path="/offers" element={<OffersPage />} />
         <Route path="offers/:id" element={<ProductDetails />} />
         <Route path="/featured" element={<FeaturedPage />} />

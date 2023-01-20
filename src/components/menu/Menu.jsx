@@ -37,7 +37,7 @@ export const Menu = (props) => {
   const { window, openMenu, handleOpenMenu } = props;
   const { status, displayName, photoURL } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  // const firstLetterUser = useMemo(() => displayName.charAt(0), [displayName]);
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
 
   const container =
@@ -101,7 +101,7 @@ export const Menu = (props) => {
                   }}
                 >
                   {isAuthenticated ? (
-                    !!photoURL ? (
+                    photoURL !== null ? (
                       <Avatar
                         alt={displayName}
                         src={photoURL}
@@ -116,7 +116,7 @@ export const Menu = (props) => {
                           fontSize: "30px",
                         }}
                       >
-                        {displayName.charAt(0)}
+                        {displayName?.charAt(0)}
                       </Avatar>
                     )
                   ) : (

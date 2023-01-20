@@ -48,7 +48,7 @@ export const Navbar = () => {
                 alignItems: "center",
               }}
             >
-              <Link component={RouterLink} to="/cart" color="inherit">
+              <Link component={RouterLink} to="/search" color="inherit">
                 <IconButton
                   size="large"
                   color="inherit"

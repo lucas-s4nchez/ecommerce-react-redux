@@ -12,6 +12,7 @@ export const RouterBreadcrumbs = () => {
   const { products } = useSelector((state) => state.products);
   const location = useLocation();
   const breadcrumbNameMap = {
+    "/search": "Buscar",
     "/offers": "Ofertas",
     "/favorites": "Favoritos",
     "/cart": "Carrito",

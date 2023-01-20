@@ -324,7 +324,9 @@ export const startAddingNewReview = (item) => {
     );
     await setDoc(purchaseRef, newPurchase, { merge: true });
 
-    dispatch(updateProduct({ productId: item.id, product: newProduct }));
+    dispatch(
+      updateProduct({ productId: currentProduct.id, product: newProduct })
+    );
     dispatch(
       updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
     );

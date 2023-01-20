@@ -125,7 +125,7 @@ export const PurchasesPage = () => {
               </Button>
             </Box>
           ) : (
-            purchases.map((item) => {
+            purchases.map((item, index) => {
               return (
                 <Box
                   sx={{
@@ -135,7 +135,7 @@ export const PurchasesPage = () => {
                     flexDirection: "column",
                     gap: 1,
                   }}
-                  key={item.id}
+                  key={index}
                 >
                   <Box
                     sx={{
