@@ -11,6 +11,8 @@ import {
   Rating,
   Typography,
   Box,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -30,6 +32,7 @@ import {
   startAddingUnitToProduct,
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
+import { useMemo, useState } from "react";
 
 export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -75,16 +78,28 @@ export const CardProduct = ({
 }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const { status } = useSelector((state) => state.auth);
   const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
 
   const handleAddProductToFavorites = () => {
+    if (!isAuthenticated) {
+      setOpenAlert(true);
+      return;
+    }
     const isExistingProduct = favorites.find((product) => product.id === id);
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
     } else {
       dispatch(startAddingProductToFavorites(id));
     }
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   const setPathname = () => {
@@ -110,6 +125,21 @@ export const CardProduct = ({
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end" }}
       >
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+        >
+          <Alert
+            onClose={handleCloseAlert}
+            severity="info"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Para agregar un producto a favoritos, primero debes iniciar sesión
+            con tu cuenta
+          </Alert>
+        </Snackbar>
         <IconButton
           aria-label="add to favorites"
           onClick={handleAddProductToFavorites}

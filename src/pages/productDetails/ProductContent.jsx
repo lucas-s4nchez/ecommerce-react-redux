@@ -11,6 +11,7 @@ import {
   MenuItem,
   Rating,
   Skeleton,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -42,6 +43,7 @@ export const ProductContent = ({ product, id }) => {
   const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
@@ -69,6 +71,10 @@ export const ProductContent = ({ product, id }) => {
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
 
   const handleAddProductToFavorites = () => {
+    if (!isAuthenticated) {
+      setOpenAlert(true);
+      return;
+    }
     const isExistingProduct = favorites.find((product) => product.id === id);
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
@@ -83,6 +89,9 @@ export const ProductContent = ({ product, id }) => {
   const handleRemoveUnitProduct = () => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
+  };
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
   };
 
   if (isLoading) {
@@ -127,6 +136,21 @@ export const ProductContent = ({ product, id }) => {
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
       >
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+        >
+          <Alert
+            onClose={handleCloseAlert}
+            severity="info"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Para agregar un producto a favoritos, primero debes iniciar sesión
+            con tu cuenta
+          </Alert>
+        </Snackbar>
         <IconButton
           aria-label="añadir a favoritos"
           onClick={handleAddProductToFavorites}
@@ -227,9 +251,9 @@ export const ProductContent = ({ product, id }) => {
           <ShoppingBagIcon />
         </Button>
         {!isAuthenticated && (
-          <Alert severity="info" sx={{ mt: 2 }}>
-            Para agregar un producto al carrito, debes iniciar sesión con tu
-            cuenta
+          <Alert severity="info" variant="filled" sx={{ mt: 2 }}>
+            Para agregar un producto al carrito, primero debes iniciar sesión
+            con tu cuenta
           </Alert>
         )}
       </ProductDetailsForm>
