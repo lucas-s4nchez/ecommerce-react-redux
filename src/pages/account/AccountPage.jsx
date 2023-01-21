@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Outlet, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -120,7 +120,6 @@ export const AccountPage = () => {
           </Link>
         </List>
       </Paper>
-      <Outlet />
     </>
   );
 };

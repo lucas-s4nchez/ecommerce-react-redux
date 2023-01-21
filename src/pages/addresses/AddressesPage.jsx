@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -25,7 +26,6 @@ import {
   startAddingNewAddress,
   startDeletingAddress,
 } from "../../store/user/userThunks";
-import { useNavigate } from "react-router-dom";
 
 export const AddressesPage = () => {
   const { addresses } = useSelector((state) => state.user);

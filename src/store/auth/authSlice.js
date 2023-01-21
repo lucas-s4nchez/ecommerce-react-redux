@@ -6,7 +6,9 @@ const initialState = {
   email: null,
   displayName: null,
   photoURL: null,
-  errorMessage: null,
+  errorMessage: "",
+  // error: false,
+  successUpdate: false,
 };
 
 export const authSlice = createSlice({
@@ -19,7 +21,9 @@ export const authSlice = createSlice({
       state.email = payload.email;
       state.displayName = payload.displayName;
       state.photoURL = payload.photoURL;
-      state.errorMessage = null;
+      state.errorMessage = "";
+      // state.error = false;
+      state.successUpdate = false;
     },
     logout: (state, { payload }) => {
       state.status = "not-authenticated";
@@ -27,17 +31,40 @@ export const authSlice = createSlice({
       state.email = null;
       state.displayName = null;
       state.photoURL = null;
+      state.errorMessage = payload;
+      // state.error = false;
+      state.successUpdate = false;
     },
     checkingCredentials: (state) => {
       state.status = "checking";
     },
+    // hasError: (state, { payload }) => {
+    //   state.error = payload;
+    // },
     isError: (state, { payload }) => {
       state.errorMessage = payload.errorMessage;
+    },
+    isSuccess: (state, { payload }) => {
+      state.successUpdate = payload;
+    },
+    updateEmail: (state, { payload }) => {
+      state.email = payload;
+    },
+    updateDisplayName: (state, { payload }) => {
+      state.displayName = payload;
     },
   },
 });
 
-export const { login, logout, checkingCredentials, isError } =
-  authSlice.actions;
+export const {
+  login,
+  logout,
+  checkingCredentials,
+  // hasError,
+  isError,
+  isSuccess,
+  updateEmail,
+  updateDisplayName,
+} = authSlice.actions;
 
 export default authSlice.reducer;

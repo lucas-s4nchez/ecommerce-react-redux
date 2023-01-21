@@ -4,6 +4,8 @@ import {
   registerUserWithEmailAndPassword,
   signInWithGoogle,
 } from "../../helpers";
+import { changeDisplayName } from "../../helpers/changeDisplayName";
+import { changeEmail } from "../../helpers/changeEmail";
 import {
   clearActiveAddress,
   clearAddresses,
@@ -13,7 +15,15 @@ import {
   clearPaymentMethod,
   clearPurchases,
 } from "../user/userSlice";
-import { checkingCredentials, isError, login, logout } from "./authSlice";
+import {
+  checkingCredentials,
+  isError,
+  isSuccess,
+  login,
+  logout,
+  updateDisplayName,
+  updateEmail,
+} from "./authSlice";
 
 export const startGoogleSigIn = () => {
   return async (dispatch) => {
@@ -45,10 +55,10 @@ export const startRegisterUserwithEmailAndPassword = ({
         password,
         displayName,
       });
-    if (!ok && errorMessage) {
-      dispatch(isError({ errorMessage }));
-    }
-    if (!ok) return dispatch(logout());
+    // if (!ok && errorMessage) {
+    //   dispatch(isError({ errorMessage }));
+    // }
+    if (!ok) return dispatch(logout(errorMessage));
 
     dispatch(login({ ok, uid, email, displayName, photoURL }));
   };
@@ -59,10 +69,8 @@ export const startLoginWithEmailAndPassword = ({ email, password }) => {
 
     const { ok, uid, displayName, photoURL, errorMessage } =
       await loginWithEmailAndPassword({ email, password });
-    if (!ok && errorMessage) {
-      dispatch(isError({ errorMessage }));
-    }
-    if (!ok) return dispatch(logout());
+
+    if (!ok) return dispatch(logout(errorMessage));
     dispatch(login({ ok, uid, email, displayName, photoURL }));
   };
 };
@@ -79,5 +87,34 @@ export const startLogout = () => {
     dispatch(clearActiveAddress());
     //Logout
     dispatch(logout());
+  };
+};
+export const startChangingEmail = (newEmail, password) => {
+  return async (dispatch, getState) => {
+    const { email: oldEmail } = getState().auth;
+    const { ok, email, errorMessage } = await changeEmail(
+      oldEmail,
+      newEmail,
+      password
+    );
+    if (!ok && errorMessage) {
+      dispatch(isError({ errorMessage }));
+      return;
+    }
+
+    dispatch(updateEmail(email));
+    dispatch(isError(""));
+    dispatch(isSuccess(true));
+  };
+};
+export const startchangingDisplayName = (newDisplayName) => {
+  return async (dispatch) => {
+    const { ok, displayName, errorMessage } = await changeDisplayName(
+      newDisplayName
+    );
+    if (!ok && errorMessage) return dispatch(isError({ errorMessage }));
+    dispatch(isError(""));
+    dispatch(updateDisplayName(displayName));
+    dispatch(isSuccess(true));
   };
 };
