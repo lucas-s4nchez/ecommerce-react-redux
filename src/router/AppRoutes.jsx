@@ -5,7 +5,9 @@ import { useCheckAuth } from "../hooks/useCheckAuth";
 import { Layout } from "../layout/Layout";
 import {
   AccountPage,
+  AddressesPage,
   BuyingPage,
+  CardsPage,
   CartPage,
   ConfirmPayment,
   FavoritesPage,
@@ -21,6 +23,7 @@ import {
   SearchPage,
   SelectAddress,
   SelectPaymentMethod,
+  UserInfoPage,
   WomenShopPage,
 } from "../pages";
 import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
@@ -100,6 +103,30 @@ export const AppRoutes = () => {
           element={
             <AuthenticatedRoutes status={status}>
               <AccountPage />
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route
+          path="/addresses"
+          element={
+            <AuthenticatedRoutes status={status}>
+              <AddressesPage />
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route
+          path="/cards"
+          element={
+            <AuthenticatedRoutes status={status}>
+              <CardsPage />
+            </AuthenticatedRoutes>
+          }
+        />
+        <Route
+          path="/userInfo"
+          element={
+            <AuthenticatedRoutes status={status}>
+              <UserInfoPage />
             </AuthenticatedRoutes>
           }
         />

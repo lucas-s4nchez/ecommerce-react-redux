@@ -89,6 +89,11 @@ const userSlice = createSlice({
     addNewAddress: (state, { payload }) => {
       state.addresses.push(payload);
     },
+    deleteAddress: (state, { payload }) => {
+      state.addresses = state.addresses.filter(
+        (address) => address.id !== payload.id
+      );
+    },
     setActiveAddress: (state, { payload }) => {
       state.activeAddress = payload;
     },
@@ -103,6 +108,9 @@ const userSlice = createSlice({
     },
     addNewCard: (state, { payload }) => {
       state.cards.push(payload);
+    },
+    deleteCard: (state, { payload }) => {
+      state.cards = state.cards.filter((card) => card.id !== payload.id);
     },
     clearCards: (state) => {
       state.cards = [];
@@ -153,11 +161,13 @@ export const {
   clearCart,
   setAddresses,
   addNewAddress,
+  deleteAddress,
   setActiveAddress,
   clearAddresses,
   clearActiveAddress,
   setCards,
   addNewCard,
+  deleteCard,
   clearCards,
   setPaymentMethod,
   confirmPayment,

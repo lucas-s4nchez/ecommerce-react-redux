@@ -17,6 +17,8 @@ import {
   addUnitToProduct,
   clearFavorites,
   clearPaymentMethod,
+  deleteAddress,
+  deleteCard,
   deleteProductFromCart,
   deleteProductFromFavorites,
   disabled,
@@ -226,6 +228,22 @@ export const startAddingNewAddress = (values) => {
   };
 };
 
+export const startDeletingAddress = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { addresses } = getState().user;
+
+    const currentAddress = {
+      ...addresses.find((address) => address.id === id),
+    };
+
+    const docRef = doc(FirebaseDB, `users/${uid}/addresses/${id}`);
+    await deleteDoc(docRef);
+
+    dispatch(deleteAddress(currentAddress));
+  };
+};
+
 export const startAddingNewCard = (values) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
@@ -240,6 +258,22 @@ export const startAddingNewCard = (values) => {
     newCard.id = newDoc.id;
 
     dispatch(addNewCard(newCard));
+  };
+};
+
+export const startDeletingCard = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { cards } = getState().user;
+
+    const currentCard = {
+      ...cards.find((address) => address.id === id),
+    };
+
+    const docRef = doc(FirebaseDB, `users/${uid}/cards/${id}`);
+    await deleteDoc(docRef);
+
+    dispatch(deleteCard(currentCard));
   };
 };
 
