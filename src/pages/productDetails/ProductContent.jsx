@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
+  Alert,
   Box,
   Button,
   CardActions,
@@ -36,6 +37,7 @@ import {
 import { ProductDetailsActionsSkeleton } from "./ProductDetailsSkeleton";
 
 export const ProductContent = ({ product, id }) => {
+  const { status } = useSelector((state) => state.auth);
   const { isLoading } = useSelector((state) => state.products);
   const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -64,6 +66,8 @@ export const ProductContent = ({ product, id }) => {
     },
   });
 
+  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
+
   const handleAddProductToFavorites = () => {
     const isExistingProduct = favorites.find((product) => product.id === id);
     if (isExistingProduct) {
@@ -72,7 +76,6 @@ export const ProductContent = ({ product, id }) => {
       dispatch(startAddingProductToFavorites(id));
     }
   };
-
   const handleAddUnitProduct = () => {
     if (quantity >= product.stock) return;
     setQuantity(quantity + 1);
@@ -211,21 +214,24 @@ export const ProductContent = ({ product, id }) => {
         >{`(${product.stock} disponibles)`}</Typography>
         <Button
           type="submit"
+          variant="contained"
+          disabled={!isAuthenticated}
           sx={{
             display: "flex",
             alignItems: "center",
             gap: 1,
             lineHeight: "unset",
-            backgroundColor: "primary.main",
-            color: "white.cream",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
           }}
         >
           <Typography variant="span">Añadir al Carrito</Typography>
           <ShoppingBagIcon />
         </Button>
+        {!isAuthenticated && (
+          <Alert severity="info" sx={{ mt: 2 }}>
+            Para agregar un producto al carrito, debes iniciar sesión con tu
+            cuenta
+          </Alert>
+        )}
       </ProductDetailsForm>
     </ProductDetailsStyled>
   );
