@@ -6,6 +6,7 @@ import {
 } from "../../helpers";
 import { changeDisplayName } from "../../helpers/changeDisplayName";
 import { changeEmail } from "../../helpers/changeEmail";
+import { changePassword } from "../../helpers/changePassword";
 import {
   clearActiveAddress,
   clearAddresses,
@@ -107,7 +108,7 @@ export const startChangingEmail = (newEmail, password) => {
     dispatch(isSuccess(true));
   };
 };
-export const startchangingDisplayName = (newDisplayName) => {
+export const startChangingDisplayName = (newDisplayName) => {
   return async (dispatch) => {
     const { ok, displayName, errorMessage } = await changeDisplayName(
       newDisplayName
@@ -115,6 +116,23 @@ export const startchangingDisplayName = (newDisplayName) => {
     if (!ok && errorMessage) return dispatch(isError({ errorMessage }));
     dispatch(isError(""));
     dispatch(updateDisplayName(displayName));
+    dispatch(isSuccess(true));
+  };
+};
+export const startChangingPassword = (oldPassword, newPassword) => {
+  return async (dispatch, getState) => {
+    const { email } = getState().auth;
+    const { ok, password, errorMessage } = await changePassword(
+      email,
+      oldPassword,
+      newPassword
+    );
+    if (!ok && errorMessage) {
+      dispatch(isError({ errorMessage }));
+      return;
+    }
+
+    dispatch(isError(""));
     dispatch(isSuccess(true));
   };
 };

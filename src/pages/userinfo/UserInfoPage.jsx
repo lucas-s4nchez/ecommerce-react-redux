@@ -21,8 +21,9 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
 import {
-  startchangingDisplayName,
+  startChangingDisplayName,
   startChangingEmail,
+  startChangingPassword,
 } from "../../store/auth/authThunks";
 import { isError, isSuccess } from "../../store/auth/authSlice";
 
@@ -213,8 +214,7 @@ export const UserInfoPage = () => {
                       .min(3, "Minimo 3 caracteres"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    dispatch(startchangingDisplayName(values.displayName));
-                    resetForm();
+                    dispatch(startChangingDisplayName(values.displayName));
                   }}
                   onReset={() => {
                     handleCloseDisplayNameModal();
@@ -232,6 +232,11 @@ export const UserInfoPage = () => {
                         component="form"
                         onSubmit={handleSubmit}
                         onReset={handleReset}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 2,
+                        }}
                       >
                         <TextField
                           label="Nuevo nombre de usuario"
@@ -242,17 +247,32 @@ export const UserInfoPage = () => {
                           error={errors.displayName && touched.displayName}
                           helperText={touched.displayName && errors.displayName}
                         />
-                        {errorMessage && (
+                        {!!errorMessage && (
                           <Alert severity="error">{errorMessage}</Alert>
                         )}
-                        <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-                          <Button type="reset" variant="outlined">
-                            Cancelar
-                          </Button>
-                          <Button type="submit" variant="contained">
-                            Cambiar
-                          </Button>
-                        </Box>
+                        {successUpdate ? (
+                          <>
+                            <Alert>Usuario actualizado con éxito</Alert>
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                dispatch(isSuccess(false));
+                                handleCloseDisplayNameModal();
+                              }}
+                            >
+                              Ok
+                            </Button>
+                          </>
+                        ) : (
+                          <Box sx={{ display: "flex", gap: 1 }}>
+                            <Button type="reset" variant="outlined">
+                              Cancelar
+                            </Button>
+                            <Button type="submit" variant="contained">
+                              Cambiar
+                            </Button>
+                          </Box>
+                        )}
                       </Box>
                     </DialogContent>
                   )}
@@ -281,16 +301,21 @@ export const UserInfoPage = () => {
               </Button>
               <Dialog open={openPasswordModal}>
                 <Formik
-                  initialValues={{ password: "" }}
+                  initialValues={{ password: "", newPassword: "" }}
                   validationSchema={Yup.object({
                     password: Yup.string()
                       .trim()
                       .min(6, "Minimo 6 caracteres")
                       .required("Campo requerido"),
+                    newPassword: Yup.string()
+                      .trim()
+                      .min(6, "Minimo 6 caracteres")
+                      .required("Campo requerido"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    console.log(values);
-                    resetForm();
+                    dispatch(
+                      startChangingPassword(values.password, values.newPassword)
+                    );
                   }}
                   onReset={() => {
                     handleClosePasswordModal();
@@ -308,9 +333,14 @@ export const UserInfoPage = () => {
                         component="form"
                         onSubmit={handleSubmit}
                         onReset={handleReset}
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 2,
+                        }}
                       >
                         <TextField
-                          label="Nueva contraseña"
+                          label="Contraseña actual"
                           variant="outlined"
                           fullWidth
                           type="password"
@@ -319,14 +349,42 @@ export const UserInfoPage = () => {
                           error={errors.password && touched.password}
                           helperText={touched.password && errors.password}
                         />
-                        <Box sx={{ mt: 2, display: "flex", gap: 1 }}>
-                          <Button type="reset" variant="outlined">
-                            Cancelar
-                          </Button>
-                          <Button type="submit" variant="contained">
-                            Cambiar
-                          </Button>
-                        </Box>
+                        <TextField
+                          label="Nueva contraseña"
+                          variant="outlined"
+                          fullWidth
+                          type="password"
+                          name="newPassword"
+                          onChange={handleChange}
+                          error={errors.newPassword && touched.newPassword}
+                          helperText={touched.newPassword && errors.newPassword}
+                        />
+                        {!!errorMessage && (
+                          <Alert severity="error">{errorMessage}</Alert>
+                        )}
+                        {successUpdate ? (
+                          <>
+                            <Alert>Contraseña actualizada con éxito</Alert>{" "}
+                            <Button
+                              variant="contained"
+                              onClick={() => {
+                                dispatch(isSuccess(false));
+                                handleClosePasswordModal();
+                              }}
+                            >
+                              Ok
+                            </Button>
+                          </>
+                        ) : (
+                          <Box sx={{ display: "flex", gap: 1 }}>
+                            <Button type="reset" variant="outlined">
+                              Cancelar
+                            </Button>
+                            <Button type="submit" variant="contained">
+                              Cambiar
+                            </Button>
+                          </Box>
+                        )}
                       </Box>
                     </DialogContent>
                   )}
