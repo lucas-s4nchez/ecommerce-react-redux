@@ -16,9 +16,11 @@ export const FavoritesPage = () => {
   const { isLoading, favorites } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleDeleteAll = () => {
     dispatch(startDeletingAllProductsFromFavorites());
   };
+
   return (
     <>
       <RouterBreadcrumbs />

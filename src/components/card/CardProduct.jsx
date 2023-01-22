@@ -81,25 +81,39 @@ export const CardProduct = ({
   const { status } = useSelector((state) => state.auth);
   const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
-  const [openAlert, setOpenAlert] = useState(false);
+  const [messageOfNotAuthenticatedUser, setMessageOfNotAuthenticatedUser] =
+    useState(false);
+  const [messageAddProductToFavorites, setMessageAddProductToFavorites] =
+    useState(false);
+  const [messageRemoveProductToFavorites, setMessageRemoveProductToFavorites] =
+    useState(false);
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
+  const isExistingProduct = favorites.find((product) => product.id === id);
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
       setOpenAlert(true);
       return;
     }
-    const isExistingProduct = favorites.find((product) => product.id === id);
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
+      setMessageRemoveProductToFavorites(true);
     } else {
       dispatch(startAddingProductToFavorites(id));
+      setMessageAddProductToFavorites(true);
     }
   };
 
-  const handleCloseAlert = () => {
-    setOpenAlert(false);
+  const handleCloseMessageOfNotAuthenticatedUser = () => {
+    setMessageOfNotAuthenticatedUser(false);
+  };
+
+  const handleCloseMessageAddProductToFavorites = () => {
+    setMessageAddProductToFavorites(false);
+  };
+  const handleCloseMessageRemoveProductToFavorites = () => {
+    setMessageRemoveProductToFavorites(false);
   };
 
   const setPathname = () => {
@@ -126,12 +140,12 @@ export const CardProduct = ({
         sx={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Snackbar
-          open={openAlert}
+          open={messageOfNotAuthenticatedUser}
           autoHideDuration={6000}
-          onClose={handleCloseAlert}
+          onClose={handleCloseMessageOfNotAuthenticatedUser}
         >
           <Alert
-            onClose={handleCloseAlert}
+            onClose={handleCloseMessageOfNotAuthenticatedUser}
             severity="info"
             variant="filled"
             sx={{ width: "100%" }}
@@ -155,6 +169,38 @@ export const CardProduct = ({
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />
           )}
         </IconButton>
+        {/* //alerta cuando agrega un producto a favoritos */}
+        <Snackbar
+          open={messageAddProductToFavorites}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageAddProductToFavorites}
+        >
+          <Alert
+            onClose={handleCloseMessageAddProductToFavorites}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Agregaste a "${brand} ${model}" a tus favoritos`}
+          </Alert>
+        </Snackbar>
+        {/* //alerta cuando elimina un producto a favoritos */}
+        <Snackbar
+          open={messageRemoveProductToFavorites}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageRemoveProductToFavorites}
+        >
+          <Alert
+            onClose={handleCloseMessageRemoveProductToFavorites}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Eliminaste a "${brand} ${model}" de tus favoritos`}
+          </Alert>
+        </Snackbar>
       </CardActions>
       <CardActionArea
         component={RouterLink}

@@ -43,7 +43,12 @@ export const ProductContent = ({ product, id }) => {
   const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [openAlert, setOpenAlert] = useState(false);
+  const [messageOfNotAuthenticatedUser, setMessageOfNotAuthenticatedUser] =
+    useState(false);
+  const [messageAddProductToFavorites, setMessageAddProductToFavorites] =
+    useState(false);
+  const [messageRemoveProductToFavorites, setMessageRemoveProductToFavorites] =
+    useState(false);
 
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
@@ -69,17 +74,20 @@ export const ProductContent = ({ product, id }) => {
   });
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
+  const isExistingProduct = favorites.find((product) => product.id === id);
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
-      setOpenAlert(true);
+      setMessageOfNotAuthenticatedUser(true);
       return;
     }
-    const isExistingProduct = favorites.find((product) => product.id === id);
+
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
+      setMessageRemoveProductToFavorites(true);
     } else {
       dispatch(startAddingProductToFavorites(id));
+      setMessageAddProductToFavorites(true);
     }
   };
   const handleAddUnitProduct = () => {
@@ -90,8 +98,14 @@ export const ProductContent = ({ product, id }) => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
   };
-  const handleCloseAlert = () => {
-    setOpenAlert(false);
+  const handleCloseMessageOfNotAuthenticatedUser = () => {
+    setMessageOfNotAuthenticatedUser(false);
+  };
+  const handleCloseMessageAddProductToFavorites = () => {
+    setMessageAddProductToFavorites(false);
+  };
+  const handleCloseMessageRemoveProductToFavorites = () => {
+    setMessageRemoveProductToFavorites(false);
   };
 
   if (isLoading) {
@@ -136,13 +150,15 @@ export const ProductContent = ({ product, id }) => {
         disableSpacing
         sx={{ display: "flex", justifyContent: "flex-end", padding: 0 }}
       >
+        {/* //alerta cuando agrega/elimina un producto a favoritos y no está autenticado */}
         <Snackbar
-          open={openAlert}
+          open={messageOfNotAuthenticatedUser}
           autoHideDuration={6000}
-          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageOfNotAuthenticatedUser}
         >
           <Alert
-            onClose={handleCloseAlert}
+            onClose={handleCloseMessageOfNotAuthenticatedUser}
             severity="info"
             variant="filled"
             sx={{ width: "100%" }}
@@ -166,6 +182,38 @@ export const ProductContent = ({ product, id }) => {
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />
           )}
         </IconButton>
+        {/* //alerta cuando agrega un producto a favoritos */}
+        <Snackbar
+          open={messageAddProductToFavorites}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageAddProductToFavorites}
+        >
+          <Alert
+            onClose={handleCloseMessageAddProductToFavorites}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Agregaste a "${product.brand} ${product.model}" a tus favoritos`}
+          </Alert>
+        </Snackbar>
+        {/* //alerta cuando elimina un producto a favoritos */}
+        <Snackbar
+          open={messageRemoveProductToFavorites}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageRemoveProductToFavorites}
+        >
+          <Alert
+            onClose={handleCloseMessageRemoveProductToFavorites}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Eliminaste a "${product.brand} ${product.model}" de tus favoritos`}
+          </Alert>
+        </Snackbar>
       </CardActions>
       <ProductDetailsTitleStyled>
         {`Zapatillas ${product.brand} ${product.model} ${product.version}`}
