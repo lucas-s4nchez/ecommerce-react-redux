@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   Card,
@@ -7,7 +9,6 @@ import {
   IconButton,
   CardActionArea,
   Skeleton,
-  Button,
   Rating,
   Typography,
   Box,
@@ -17,7 +18,6 @@ import {
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-import { useDispatch, useSelector } from "react-redux";
 import {
   ProductContainerDiscountStyled,
   ProductDiscountStyled,
@@ -27,12 +27,10 @@ import {
 } from "./CardProductStyles";
 import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
 import {
-  startAddingProductToCart,
   startAddingProductToFavorites,
-  startAddingUnitToProduct,
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
-import { useMemo, useState } from "react";
+import { useAlerts } from "../../hooks/useAlerts";
 
 export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -81,39 +79,33 @@ export const CardProduct = ({
   const { status } = useSelector((state) => state.auth);
   const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
-  const [messageOfNotAuthenticatedUser, setMessageOfNotAuthenticatedUser] =
-    useState(false);
-  const [messageAddProductToFavorites, setMessageAddProductToFavorites] =
-    useState(false);
-  const [messageRemoveProductToFavorites, setMessageRemoveProductToFavorites] =
-    useState(false);
+  const {
+    messageOfNotAuthenticatedUser,
+    handleOpenMessageOfNotAuthenticatedUser,
+    handleCloseMessageOfNotAuthenticatedUser,
+    messageAddProductToFavorites,
+    handleOpenMessageAddProductToFavorites,
+    handleCloseMessageAddProductToFavorites,
+    messageRemoveProductToFavorites,
+    handleOpenMessageRemoveProductToFavorites,
+    handleCloseMessageRemoveProductToFavorites,
+  } = useAlerts();
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
   const isExistingProduct = favorites.find((product) => product.id === id);
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
-      setOpenAlert(true);
+      handleOpenMessageOfNotAuthenticatedUser();
       return;
     }
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
-      setMessageRemoveProductToFavorites(true);
+      handleOpenMessageRemoveProductToFavorites();
     } else {
       dispatch(startAddingProductToFavorites(id));
-      setMessageAddProductToFavorites(true);
+      handleOpenMessageAddProductToFavorites();
     }
-  };
-
-  const handleCloseMessageOfNotAuthenticatedUser = () => {
-    setMessageOfNotAuthenticatedUser(false);
-  };
-
-  const handleCloseMessageAddProductToFavorites = () => {
-    setMessageAddProductToFavorites(false);
-  };
-  const handleCloseMessageRemoveProductToFavorites = () => {
-    setMessageRemoveProductToFavorites(false);
   };
 
   const setPathname = () => {
