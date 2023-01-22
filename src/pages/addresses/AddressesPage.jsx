@@ -97,7 +97,7 @@ export const AddressesPage = () => {
             }}
           >
             {addresses.length < 1 ? (
-              <Alert severity="info">
+              <Alert severity="info" variant="filled">
                 No tienes ninguna dirección, agregá una
               </Alert>
             ) : (

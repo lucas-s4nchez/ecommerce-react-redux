@@ -71,7 +71,7 @@ export const HomePage = () => {
       </Box>
       <ShoppingInfoSection />
       <Box>
-        <Typography variant="h3" fontSize={30}>
+        <Typography variant="h3" sx={{ fontSize: { xs: 22, sm: 30 } }}>
           Aprevecha las increibles ofertas!
         </Typography>
         <HomeCardContainer redirectTo={"/offers"}>
@@ -82,7 +82,7 @@ export const HomePage = () => {
         </HomeCardContainer>
       </Box>
       <Box>
-        <Typography variant="h3" fontSize={30}>
+        <Typography variant="h3" sx={{ fontSize: { xs: 22, sm: 30 } }}>
           Los más Destacados
         </Typography>
         <HomeCardContainer redirectTo={"/featured"}>

@@ -53,6 +53,7 @@ export const Navbar = () => {
                   size="large"
                   color="inherit"
                   aria-label="Buscar un producto"
+                  sx={{ padding: { xs: "5px", sm: "12px" } }}
                 >
                   <SearchIcon />
                 </IconButton>
@@ -63,6 +64,7 @@ export const Navbar = () => {
                   size="large"
                   aria-label="Ir al carrito"
                   color="inherit"
+                  sx={{ padding: { xs: "5px", sm: "12px" } }}
                 >
                   <Badge badgeContent={totalItemsInCart} color="error">
                     <ShoppingBagIcon />
@@ -72,8 +74,9 @@ export const Navbar = () => {
               <IconButton
                 size="large"
                 color="inherit"
-                aria-label="open drawer"
+                aria-label="Abrir Menú"
                 onClick={handleOpenMenu}
+                sx={{ padding: { xs: "5px", sm: "12px" } }}
               >
                 <MenuIcon />
               </IconButton>

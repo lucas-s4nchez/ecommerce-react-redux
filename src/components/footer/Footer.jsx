@@ -50,13 +50,19 @@ export const Footer = () => {
             </FooterItemTitleStyled>
             {isAuthenticated ? (
               <>
-                {" "}
                 <Link
                   sx={{ textDecoration: "none", color: "white.cream" }}
                   component={RouterLink}
                   to="/purchases"
                 >
                   Mis compras
+                </Link>
+                <Link
+                  sx={{ textDecoration: "none", color: "white.cream" }}
+                  component={RouterLink}
+                  to="/cart"
+                >
+                  Carrito
                 </Link>
                 <Link
                   sx={{ textDecoration: "none", color: "white.cream" }}
@@ -117,7 +123,18 @@ export const Footer = () => {
             </Box>
           </FooterItemContainerStyled>
         </FooterContainerStyled>
-
+        <Typography
+          sx={{
+            color: "HighlightText",
+            margin: 0,
+            textAlign: "center",
+            fontSize: "14px",
+          }}
+        >
+          Este sitio web no tiene como objetivo vender nada, es un proyecto
+          personal para demostrar mis habilidades. Por favor no utilices
+          información real
+        </Typography>
         <FooterCopyrightStyled>
           Sitio diseñado por{" "}
           <Typography

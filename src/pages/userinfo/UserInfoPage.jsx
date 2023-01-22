@@ -78,11 +78,11 @@ export const UserInfoPage = () => {
           }}
         >
           <List sx={{ width: "100%" }}>
-            <ListItem>
+            <ListItem sx={{ flexDirection: { xs: "column", sm: "row" } }}>
               <ListItemText
                 primary="E-mail"
                 secondary={email}
-                sx={{ color: "secondary.light" }}
+                sx={{ color: "secondary.light", alignSelf: "start" }}
               />
               <Button
                 endIcon={<EditIcon sx={{ fontSize: 20 }} />}
@@ -190,11 +190,11 @@ export const UserInfoPage = () => {
             </ListItem>
             <Divider />
 
-            <ListItem>
+            <ListItem sx={{ flexDirection: { xs: "column", sm: "row" } }}>
               <ListItemText
                 primary="Usuario"
                 secondary={displayName}
-                sx={{ color: "secondary.light" }}
+                sx={{ color: "secondary.light", alignSelf: "start" }}
               />
               <Button
                 endIcon={<EditIcon sx={{ fontSize: 20 }} />}
@@ -289,11 +289,11 @@ export const UserInfoPage = () => {
             </ListItem>
             <Divider />
 
-            <ListItem>
+            <ListItem sx={{ flexDirection: { xs: "column", sm: "row" } }}>
               <ListItemText
                 primary="Contraseña"
                 secondary="******"
-                sx={{ color: "secondary.light" }}
+                sx={{ color: "secondary.light", alignSelf: "start" }}
               />
               <Button
                 endIcon={<EditIcon sx={{ fontSize: 20 }} />}

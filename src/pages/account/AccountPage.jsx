@@ -71,13 +71,13 @@ export const AccountPage = () => {
               to="/userInfo"
             >
               <ListItem sx={{ padding: 0 }}>
-                <ListItemButton sx={{ padding: 2 }}>
+                <ListItemButton sx={{ padding: { xs: 1, sm: 2 } }}>
                   <ListItemText
                     primary="Mis Datos"
                     secondary="Gestioná tus datos personales"
                     sx={{ color: "secondary.light" }}
                   />
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ justifyContent: "end" }}>
                     <ArrowForwardIosIcon />
                   </ListItemIcon>
                 </ListItemButton>
@@ -89,13 +89,13 @@ export const AccountPage = () => {
               to="/cards"
             >
               <ListItem sx={{ padding: 0 }}>
-                <ListItemButton sx={{ padding: 2 }}>
+                <ListItemButton sx={{ padding: { xs: 1, sm: 2 } }}>
                   <ListItemText
                     primary="Mis Tarjetas"
                     secondary="Gestioná tus tarjetas"
                     sx={{ color: "secondary.light" }}
                   />
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ justifyContent: "end" }}>
                     <ArrowForwardIosIcon />
                   </ListItemIcon>
                 </ListItemButton>
@@ -107,13 +107,13 @@ export const AccountPage = () => {
               to="/addresses"
             >
               <ListItem sx={{ padding: 0 }}>
-                <ListItemButton sx={{ padding: 2 }}>
+                <ListItemButton sx={{ padding: { xs: 1, sm: 2 } }}>
                   <ListItemText
                     primary="Direcciones"
                     secondary="Gestioná tus direcciones"
                     sx={{ color: "secondary.light" }}
                   />
-                  <ListItemIcon>
+                  <ListItemIcon sx={{ justifyContent: "end" }}>
                     <ArrowForwardIosIcon />
                   </ListItemIcon>
                 </ListItemButton>

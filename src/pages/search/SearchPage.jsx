@@ -90,13 +90,24 @@ export const SearchPage = () => {
               Lo siento, no tenemos ninguna zapatilla que coincida con: {q}
             </Alert>
           )}
-          {searchedProducts.map((product) => (
-            <CardProduct
-              key={product.id}
-              {...product}
-              onSearch={`?q=${values.search.toLowerCase()}`}
-            />
-          ))}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "20px",
+              marginBlock: "30px",
+            }}
+          >
+            {searchedProducts.map((product) => (
+              <CardProduct
+                key={product.id}
+                {...product}
+                onSearch={`?q=${values.search.toLowerCase()}`}
+              />
+            ))}
+          </Box>
         </Box>
       </Box>
     </>

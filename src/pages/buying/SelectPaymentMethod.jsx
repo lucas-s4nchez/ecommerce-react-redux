@@ -154,7 +154,7 @@ export const SelectPaymentMethod = () => {
           <Typography sx={{ marginBlock: 2 }}>Tarjetas</Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             {cards.length < 1 ? (
-              <Alert severity="info">
+              <Alert severity="info" variant="filled">
                 No tienes ninguna tarjeta, agregá una
               </Alert>
             ) : (
