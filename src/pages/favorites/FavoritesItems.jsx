@@ -8,14 +8,11 @@ import {
   CardActionArea,
   Button,
   Box,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ProductNameStyled } from "../../components/card/CardProductStyles";
 import { ProductPrice } from "../../components/card/CardProduct";
 import { startDeletingProductFromFavorites } from "../../store/user/userThunks";
-import { useState } from "react";
 
 export const FavoritesItem = ({
   id,
@@ -109,21 +106,6 @@ export const FavoritesItem = ({
           </CardActions>
         </Box>
       </Card>
-      {/* <Snackbar
-        open={messageRemoveProductToFavorites}
-        autoHideDuration={2000}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-        onClose={handleCloseMessageRemoveProductToFavorites}
-      >
-        <Alert
-          onClose={handleCloseMessageRemoveProductToFavorites}
-          severity="error"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {`Eliminaste a "${brand} ${model}" de tus favoritos`}
-        </Alert>
-      </Snackbar> */}
     </>
   );
 };

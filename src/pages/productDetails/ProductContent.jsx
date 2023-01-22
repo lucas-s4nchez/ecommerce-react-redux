@@ -36,6 +36,7 @@ import {
   startDeletingProductFromFavorites,
 } from "../../store/user/userThunks";
 import { ProductDetailsActionsSkeleton } from "./ProductDetailsSkeleton";
+import { useAlerts } from "../../hooks/useAlerts";
 
 export const ProductContent = ({ product, id }) => {
   const { status } = useSelector((state) => state.auth);
@@ -43,12 +44,23 @@ export const ProductContent = ({ product, id }) => {
   const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
-  const [messageOfNotAuthenticatedUser, setMessageOfNotAuthenticatedUser] =
-    useState(false);
-  const [messageAddProductToFavorites, setMessageAddProductToFavorites] =
-    useState(false);
-  const [messageRemoveProductToFavorites, setMessageRemoveProductToFavorites] =
-    useState(false);
+  const {
+    messageOfNotAuthenticatedUser,
+    handleOpenMessageOfNotAuthenticatedUser,
+    handleCloseMessageOfNotAuthenticatedUser,
+    messageAddProductToFavorites,
+    handleOpenMessageAddProductToFavorites,
+    handleCloseMessageAddProductToFavorites,
+    messageRemoveProductToFavorites,
+    handleOpenMessageRemoveProductToFavorites,
+    handleCloseMessageRemoveProductToFavorites,
+    messageAddProductToCart,
+    handleOpenMessageAddProductToCart,
+    handleCloseMessageAddProductToCart,
+    messageAddUnitProductToCart,
+    handleOpenMessageAddUnitProductToCart,
+    handleCloseMessageAddUnitProductToCart,
+  } = useAlerts();
 
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
     initialValues: {
@@ -67,8 +79,10 @@ export const ProductContent = ({ product, id }) => {
         dispatch(
           startAddingUnitToProduct(isExistingProduct.id, quantity, values.size)
         );
+        handleOpenMessageAddUnitProductToCart();
       } else {
         dispatch(startAddingProductToCart(product.id, quantity, values.size));
+        handleOpenMessageAddProductToCart();
       }
     },
   });
@@ -78,16 +92,16 @@ export const ProductContent = ({ product, id }) => {
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
-      setMessageOfNotAuthenticatedUser(true);
+      handleOpenMessageOfNotAuthenticatedUser();
       return;
     }
 
     if (isExistingProduct) {
       dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
-      setMessageRemoveProductToFavorites(true);
+      handleOpenMessageRemoveProductToFavorites();
     } else {
       dispatch(startAddingProductToFavorites(id));
-      setMessageAddProductToFavorites(true);
+      handleOpenMessageAddProductToFavorites();
     }
   };
   const handleAddUnitProduct = () => {
@@ -97,15 +111,6 @@ export const ProductContent = ({ product, id }) => {
   const handleRemoveUnitProduct = () => {
     if (quantity <= 1) return;
     setQuantity(quantity - 1);
-  };
-  const handleCloseMessageOfNotAuthenticatedUser = () => {
-    setMessageOfNotAuthenticatedUser(false);
-  };
-  const handleCloseMessageAddProductToFavorites = () => {
-    setMessageAddProductToFavorites(false);
-  };
-  const handleCloseMessageRemoveProductToFavorites = () => {
-    setMessageRemoveProductToFavorites(false);
   };
 
   if (isLoading) {
@@ -304,6 +309,38 @@ export const ProductContent = ({ product, id }) => {
             con tu cuenta
           </Alert>
         )}
+        {/* //alerta cuando agrega un producto al carrito*/}
+        <Snackbar
+          open={messageAddProductToCart}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageAddProductToCart}
+        >
+          <Alert
+            onClose={handleCloseMessageAddProductToCart}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Agregaste a "${product.brand} ${product.model} (${quantity})" a tu carrito de compras`}
+          </Alert>
+        </Snackbar>
+        {/* //alerta cuando agrega una unidad a un producto existente en el carrito */}
+        <Snackbar
+          open={messageAddUnitProductToCart}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          onClose={handleCloseMessageAddUnitProductToCart}
+        >
+          <Alert
+            onClose={handleCloseMessageAddUnitProductToCart}
+            severity="success"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {`Añadiste ${quantity} unidades a "${product.brand} ${product.model}"`}
+          </Alert>
+        </Snackbar>
       </ProductDetailsForm>
     </ProductDetailsStyled>
   );
