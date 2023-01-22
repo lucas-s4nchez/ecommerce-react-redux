@@ -28,7 +28,7 @@ export const FavoritesPage = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh",
+          minHeight: "80vh",
           gap: 2,
           marginBottom: 5,
         }}

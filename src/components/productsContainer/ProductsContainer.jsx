@@ -5,6 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TuneIcon from "@mui/icons-material/Tune";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -169,7 +170,9 @@ export const ProductsContainer = ({ children, array }) => {
       </Dialog>
       <ProductContainerStyled>
         {isEmpty ? (
-          <h3>No hay resultados para esta busqueda</h3>
+          <Alert variant="filled" severity="error">
+            No hay resultados que coincidan con los filtros aplicados
+          </Alert>
         ) : !filteredProducts.length ? (
           children
         ) : (

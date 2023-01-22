@@ -18,9 +18,7 @@ export const CartPage = () => {
   return (
     <>
       <RouterBreadcrumbs />
-      <Box
-        sx={{ display: "flex", minHeight: "100vh", gap: 2, marginBottom: 5 }}
-      >
+      <Box sx={{ display: "flex", minHeight: "80vh", gap: 2, marginBottom: 5 }}>
         <CartContainerStyled>
           {isLoading ? (
             <CartItemsSkeleton />

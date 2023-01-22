@@ -6,7 +6,7 @@ import { formatPrice } from "../../helpers";
 export const BuyingPage = () => {
   const { totalToPay } = useSelector((state) => state.user);
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <Box sx={{ minHeight: "80vh" }}>
       <Box
         sx={{
           display: "flex",

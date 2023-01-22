@@ -91,9 +91,7 @@ export const PurchasesPage = () => {
   return (
     <>
       <RouterBreadcrumbs />
-      <Box
-        sx={{ display: "flex", minHeight: "100vh", gap: 2, marginBottom: 5 }}
-      >
+      <Box sx={{ display: "flex", minHeight: "80vh", gap: 2, marginBottom: 5 }}>
         <Box
           sx={{
             padding: "10px",
@@ -219,7 +217,7 @@ export const PurchasesPage = () => {
                         Deja una calificación <RateReviewIcon />
                       </Button>
                     ) : (
-                      <Alert severity="success">
+                      <Alert severity="success" variant="filled">
                         Gracias por calificar nuestro producto :)
                       </Alert>
                     )}

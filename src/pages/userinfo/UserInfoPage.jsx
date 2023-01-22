@@ -153,11 +153,15 @@ export const UserInfoPage = () => {
                           helperText={touched.password && errors.password}
                         />
                         {!!errorMessage && (
-                          <Alert severity="error">{errorMessage}</Alert>
+                          <Alert severity="error" variant="filled">
+                            {errorMessage}
+                          </Alert>
                         )}
                         {successUpdate ? (
                           <>
-                            <Alert>Email actualizado con éxito</Alert>{" "}
+                            <Alert severity="success" variant="filled">
+                              Email actualizado con éxito
+                            </Alert>{" "}
                             <Button
                               variant="contained"
                               onClick={() => {
@@ -248,11 +252,15 @@ export const UserInfoPage = () => {
                           helperText={touched.displayName && errors.displayName}
                         />
                         {!!errorMessage && (
-                          <Alert severity="error">{errorMessage}</Alert>
+                          <Alert severity="error" variant="filled">
+                            {errorMessage}
+                          </Alert>
                         )}
                         {successUpdate ? (
                           <>
-                            <Alert>Usuario actualizado con éxito</Alert>
+                            <Alert severity="success" variant="filled">
+                              Usuario actualizado con éxito
+                            </Alert>
                             <Button
                               variant="contained"
                               onClick={() => {
@@ -360,11 +368,15 @@ export const UserInfoPage = () => {
                           helperText={touched.newPassword && errors.newPassword}
                         />
                         {!!errorMessage && (
-                          <Alert severity="error">{errorMessage}</Alert>
+                          <Alert severity="error" variant="filled">
+                            {errorMessage}
+                          </Alert>
                         )}
                         {successUpdate ? (
                           <>
-                            <Alert>Contraseña actualizada con éxito</Alert>{" "}
+                            <Alert severity="success" variant="filled">
+                              Contraseña actualizada con éxito
+                            </Alert>{" "}
                             <Button
                               variant="contained"
                               onClick={() => {

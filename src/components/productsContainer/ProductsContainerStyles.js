@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 
 export const WrapperLayoutStyled = styled("div")(({ theme }) => ({
-  minHeight: "100vh",
+  minHeight: "80vh",
 }));
 export const ProductContainerStyled = styled("div")(({ theme }) => ({
   display: "flex",

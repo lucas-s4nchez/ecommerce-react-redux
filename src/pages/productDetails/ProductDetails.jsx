@@ -21,18 +21,20 @@ export const ProductDetails = () => {
   return (
     <>
       <RouterBreadcrumbs />
-      <ProductContainerStyled>
-        <Box
-          sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
-        >
-          <ProductImage product={product} />
-          <ProductContent product={product} id={id} />
-        </Box>
-        <Divider />
-        <ProductDescription product={product} />
-        <Divider />
-        <ProductReviews product={product} />
-      </ProductContainerStyled>
+      <Box sx={{ minHeight: "80vh" }}>
+        <ProductContainerStyled>
+          <Box
+            sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+          >
+            <ProductImage product={product} />
+            <ProductContent product={product} id={id} />
+          </Box>
+          <Divider />
+          <ProductDescription product={product} />
+          <Divider />
+          <ProductReviews product={product} />
+        </ProductContainerStyled>
+      </Box>
     </>
   );
 };

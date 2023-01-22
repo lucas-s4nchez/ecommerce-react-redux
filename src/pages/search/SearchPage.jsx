@@ -50,7 +50,7 @@ export const SearchPage = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          minHeight: "100vh",
+          minHeight: "80vh",
           gap: 2,
           marginBottom: 5,
         }}
@@ -81,12 +81,12 @@ export const SearchPage = () => {
         </Box>
         <Box>
           {showSearch && (
-            <Alert severity="info">
+            <Alert severity="info" variant="filled">
               Busca una zapatilla por su marca, modelo o versión
             </Alert>
           )}
           {showError && (
-            <Alert severity="error">
+            <Alert severity="error" variant="filled">
               Lo siento, no tenemos ninguna zapatilla que coincida con: {q}
             </Alert>
           )}

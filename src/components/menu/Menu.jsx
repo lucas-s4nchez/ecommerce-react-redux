@@ -123,9 +123,12 @@ export const Menu = (props) => {
                     <AccountCircleOutlinedIcon sx={{ fontSize: "56px" }} />
                   )}
                 </Box>
-                <Typography>
-                  Bienvenido{!!displayName && `, ${displayName}`} !
-                </Typography>
+                <Box>
+                  <Typography>Bienvenid@,</Typography>
+                  <Typography sx={{ fontSize: "20px" }}>
+                    {!!displayName && `${displayName}`}
+                  </Typography>
+                </Box>
               </Box>
               {!isAuthenticated && (
                 <Typography sx={{ fontSize: "14px" }}>
