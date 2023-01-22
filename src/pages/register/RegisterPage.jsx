@@ -59,7 +59,7 @@ export const RegisterPage = () => {
     event.preventDefault();
   };
   const onRedirect = () => {
-    dispatch(isError({ errorMessage: null }));
+    dispatch(isError({ errorMessage: "" }));
   };
 
   return (
@@ -133,9 +133,14 @@ export const RegisterPage = () => {
               />
             </Grid>
             <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-              <Grid item xs={12} display={!!errorMessage ? "" : "none"}>
-                <Alert severity="error">{errorMessage}</Alert>
-              </Grid>
+              {!!errorMessage && (
+                <Grid item xs={12}>
+                  <Alert severity="error" variant="filled">
+                    {errorMessage}
+                  </Alert>
+                </Grid>
+              )}
+
               <Grid item xs={12}>
                 <Button
                   type="submit"
