@@ -15,6 +15,7 @@ import {
   addProductToCart,
   addProductToFavorites,
   addUnitToProduct,
+  clearActiveAddress,
   clearFavorites,
   clearPaymentMethod,
   deleteAddress,
@@ -313,6 +314,7 @@ export const startAddingNewPurchase = (values) => {
       updateProduct({ productId: values.productId, product: newProduct })
     );
     dispatch(clearPaymentMethod());
+    dispatch(clearActiveAddress());
   };
 };
 

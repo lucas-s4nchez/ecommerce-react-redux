@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -24,7 +23,6 @@ import { setActiveAddress } from "../../store/user/userSlice";
 export const SelectAddress = () => {
   const { addresses, activeAddress } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const { getFieldProps, handleSubmit, handleReset, errors, touched } =
     useFormik({
@@ -65,7 +63,6 @@ export const SelectAddress = () => {
   return (
     <Box
       sx={{
-        padding: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -87,7 +84,7 @@ export const SelectAddress = () => {
             return (
               <Box
                 sx={{
-                  padding: 2,
+                  padding: { xs: 1, sm: 2 },
                   display: "flex",
                   gap: 1,
                   border: "1px solid #adadad",
@@ -257,26 +254,6 @@ export const SelectAddress = () => {
           </Box>
         </DialogContent>
       </Dialog>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "100%",
-          gap: 2,
-          marginTop: 2,
-        }}
-      >
-        <Button variant="outlined" onClick={() => navigate("/cart")}>
-          Volver
-        </Button>
-        <Button
-          variant="contained"
-          disabled={!activeAddress}
-          onClick={() => navigate("/buying/selectPaymentMethod")}
-        >
-          Continuar
-        </Button>
-      </Box>
     </Box>
   );
 };

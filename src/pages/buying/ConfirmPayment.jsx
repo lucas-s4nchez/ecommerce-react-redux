@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   List,
   ListItem,
@@ -8,62 +7,18 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import {
-  clearActiveAddress,
-  clearCart,
-  clearPaymentMethod,
-} from "../../store/user/userSlice";
-import { startAddingNewPurchase } from "../../store/user/userThunks";
+import { useSelector } from "react-redux";
 
 export const ConfirmPayment = () => {
   const { paymentMethod, activeAddress, cart, isLoading } = useSelector(
     (state) => state.user
   );
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!activeAddress) {
-      navigate("/buying/selectAddress");
-    }
-    if (!paymentMethod) {
-      navigate("/buying/selectPaymentMethod");
-    }
-  }, []);
-
-  const handleCompleteBuy = () => {
-    const newPurchase = cart.map((element) => {
-      return {
-        productId: element.productId,
-        image: element.image,
-        brand: element.brand,
-        model: element.model,
-        version: element.version,
-        quantity: element.quantity,
-        colors: element.colors,
-        size: element.size,
-        price: element.price,
-        waitingToReceiveRating: true,
-      };
-    });
-    newPurchase.forEach((product) => dispatch(startAddingNewPurchase(product)));
-    dispatch(clearCart());
-    navigate("/purchases");
-  };
-  const handleCancelBuy = () => {
-    dispatch(clearActiveAddress());
-    dispatch(clearPaymentMethod());
-    navigate("/cart");
-  };
   if (isLoading) {
     return <Skeleton width="100%" height={400} />;
   }
   return (
     <Box
       sx={{
-        padding: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -131,43 +86,6 @@ export const ConfirmPayment = () => {
             : ` ${paymentMethod.name}`}
         </Typography>
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column-reverse", sm: "row" },
-          justifyContent: "flex-end",
-          width: "100%",
-          gap: 2,
-          marginTop: 2,
-        }}
-      >
-        <Button variant="outlined" onClick={() => navigate(-1)}>
-          Volver
-        </Button>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={handleCancelBuy}
-            sx={{ width: { xs: "100%", sm: "max-content" } }}
-          >
-            Cancelar
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            disabled={!paymentMethod}
-            onClick={handleCompleteBuy}
-            sx={{ width: { xs: "100%", sm: "max-content" } }}
-          >
-            Confirmar
-          </Button>
-        </Box>
-      </Box>
     </Box>
   );
 };

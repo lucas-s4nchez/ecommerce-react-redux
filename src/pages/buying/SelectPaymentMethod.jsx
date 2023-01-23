@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -21,7 +21,6 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import { CreditCard } from "../../components/creditCard/CreditCard";
 import { startAddingNewCard } from "../../store/user/userThunks";
 import { setPaymentMethod } from "../../store/user/userSlice";
-import { useNavigate } from "react-router-dom";
 
 const months = [
   { value: 1, text: "Enero" },
@@ -78,7 +77,6 @@ export const SelectPaymentMethod = () => {
     (state) => state.user
   );
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [rotateCard, setRotateCard] = useState(false);
   const { getFieldProps, handleSubmit, handleReset, errors, touched, values } =
@@ -116,11 +114,6 @@ export const SelectPaymentMethod = () => {
         handleCloseForm();
       },
     });
-  useEffect(() => {
-    if (!activeAddress) {
-      navigate("/buying/selectAddress");
-    }
-  }, []);
 
   const handleRotateBackCard = () => {
     setRotateCard(true);
@@ -137,7 +130,6 @@ export const SelectPaymentMethod = () => {
   return (
     <Box
       sx={{
-        padding: 2,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -162,7 +154,7 @@ export const SelectPaymentMethod = () => {
                 return (
                   <Box
                     sx={{
-                      padding: 2,
+                      padding: { xs: 1, sm: 2 },
                       display: "flex",
                       gap: 1,
                       borderRadius: "10px",
@@ -202,6 +194,7 @@ export const SelectPaymentMethod = () => {
                       {paymentMethod && paymentMethod.id === card.id ? (
                         <Alert
                           severity="success"
+                          variant="filled"
                           sx={{ justifyContent: "center" }}
                         >
                           Método de pago Seleccionado
@@ -374,7 +367,7 @@ export const SelectPaymentMethod = () => {
               return (
                 <Box
                   sx={{
-                    padding: 2,
+                    padding: { xs: 1, sm: 2 },
                     display: "flex",
                     gap: 1,
                     borderRadius: "10px",
@@ -385,7 +378,7 @@ export const SelectPaymentMethod = () => {
                   <Box
                     component="img"
                     src={item.image}
-                    sx={{ width: "80px", objectFit: "contain" }}
+                    sx={{ width: "50px", objectFit: "contain" }}
                   />
                   <Box
                     sx={{
@@ -410,6 +403,7 @@ export const SelectPaymentMethod = () => {
                     {paymentMethod && paymentMethod.id === item.id ? (
                       <Alert
                         severity="success"
+                        variant="filled"
                         sx={{ justifyContent: "center" }}
                       >
                         Método de pago Seleccionado
@@ -431,26 +425,6 @@ export const SelectPaymentMethod = () => {
             })}
           </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "100%",
-          gap: 2,
-          marginTop: 2,
-        }}
-      >
-        <Button variant="outlined" onClick={() => navigate(-1)}>
-          Volver
-        </Button>
-        <Button
-          variant="contained"
-          disabled={!paymentMethod}
-          onClick={() => navigate("/buying/confirmPayment")}
-        >
-          Continuar
-        </Button>
       </Box>
     </Box>
   );
