@@ -31,6 +31,7 @@ export const UserInfoPage = () => {
   const { email, displayName, errorMessage, successUpdate } = useSelector(
     (state) => state.auth
   );
+  const { disabled } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openEmailModal, setOpenEmailModal] = useState(false);
@@ -174,10 +175,18 @@ export const UserInfoPage = () => {
                           </>
                         ) : (
                           <Box sx={{ display: "flex", gap: 1 }}>
-                            <Button type="reset" variant="outlined">
+                            <Button
+                              type="reset"
+                              variant="outlined"
+                              disabled={disabled}
+                            >
                               Cancelar
                             </Button>
-                            <Button type="submit" variant="contained">
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              disabled={disabled}
+                            >
                               Cambiar
                             </Button>
                           </Box>
@@ -273,10 +282,18 @@ export const UserInfoPage = () => {
                           </>
                         ) : (
                           <Box sx={{ display: "flex", gap: 1 }}>
-                            <Button type="reset" variant="outlined">
+                            <Button
+                              type="reset"
+                              variant="outlined"
+                              disabled={disabled}
+                            >
                               Cancelar
                             </Button>
-                            <Button type="submit" variant="contained">
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              disabled={disabled}
+                            >
                               Cambiar
                             </Button>
                           </Box>
@@ -389,10 +406,18 @@ export const UserInfoPage = () => {
                           </>
                         ) : (
                           <Box sx={{ display: "flex", gap: 1 }}>
-                            <Button type="reset" variant="outlined">
+                            <Button
+                              type="reset"
+                              variant="outlined"
+                              disabled={disabled}
+                            >
                               Cancelar
                             </Button>
-                            <Button type="submit" variant="contained">
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              disabled={disabled}
+                            >
                               Cambiar
                             </Button>
                           </Box>

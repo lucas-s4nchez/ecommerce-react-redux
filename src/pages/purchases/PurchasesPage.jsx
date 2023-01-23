@@ -36,7 +36,7 @@ const labels = {
 };
 
 export const PurchasesPage = () => {
-  const { isLoading, purchases } = useSelector((state) => state.user);
+  const { isLoading, purchases, disabled } = useSelector((state) => state.user);
   const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -213,6 +213,7 @@ export const PurchasesPage = () => {
                         color="success"
                         sx={{ gap: 1 }}
                         onClick={() => handleAddReview(item)}
+                        disabled={disabled}
                       >
                         Deja una calificación <RateReviewIcon />
                       </Button>

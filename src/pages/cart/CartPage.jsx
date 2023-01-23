@@ -8,11 +8,13 @@ import { CartItemsSkeleton } from "./CartPageSkeletonLoader";
 import { CartContainerStyled } from "./CartPageStyles";
 
 export const CartPage = () => {
-  const { isLoading, cart, totalToPay } = useSelector((state) => state.user);
+  const { isLoading, cart, totalToPay, disabled } = useSelector(
+    (state) => state.user
+  );
   const navigate = useNavigate();
 
   const handleBuying = () => {
-    navigate("/buying/selectAddress", { replace: true });
+    navigate("/buying", { replace: true });
   };
 
   return (
@@ -60,7 +62,11 @@ export const CartPage = () => {
                 <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
                   Total: {formatPrice(totalToPay)}
                 </Typography>
-                <Button onClick={handleBuying} variant="contained">
+                <Button
+                  onClick={handleBuying}
+                  variant="contained"
+                  disabled={disabled}
+                >
                   Continuar compra
                 </Button>
               </>

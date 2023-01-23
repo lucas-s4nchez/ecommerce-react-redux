@@ -15,6 +15,7 @@ import {
   clearFavorites,
   clearPaymentMethod,
   clearPurchases,
+  disabled,
 } from "../user/userSlice";
 import {
   checkingCredentials,
@@ -92,6 +93,7 @@ export const startLogout = () => {
 };
 export const startChangingEmail = (newEmail, password) => {
   return async (dispatch, getState) => {
+    dispatch(disabled());
     const { email: oldEmail } = getState().auth;
     const { ok, email, errorMessage } = await changeEmail(
       oldEmail,
@@ -99,6 +101,7 @@ export const startChangingEmail = (newEmail, password) => {
       password
     );
     if (!ok && errorMessage) {
+      dispatch(disabled());
       dispatch(isError({ errorMessage }));
       return;
     }
@@ -106,21 +109,29 @@ export const startChangingEmail = (newEmail, password) => {
     dispatch(updateEmail(email));
     dispatch(isError(""));
     dispatch(isSuccess(true));
+    dispatch(disabled());
   };
 };
 export const startChangingDisplayName = (newDisplayName) => {
   return async (dispatch) => {
+    dispatch(disabled());
     const { ok, displayName, errorMessage } = await changeDisplayName(
       newDisplayName
     );
-    if (!ok && errorMessage) return dispatch(isError({ errorMessage }));
+    if (!ok && errorMessage) {
+      dispatch(disabled());
+      dispatch(isError({ errorMessage }));
+      return;
+    }
     dispatch(isError(""));
     dispatch(updateDisplayName(displayName));
     dispatch(isSuccess(true));
+    dispatch(disabled());
   };
 };
 export const startChangingPassword = (oldPassword, newPassword) => {
   return async (dispatch, getState) => {
+    dispatch(disabled());
     const { email } = getState().auth;
     const { ok, password, errorMessage } = await changePassword(
       email,
@@ -128,11 +139,13 @@ export const startChangingPassword = (oldPassword, newPassword) => {
       newPassword
     );
     if (!ok && errorMessage) {
+      dispatch(disabled());
       dispatch(isError({ errorMessage }));
       return;
     }
 
     dispatch(isError(""));
     dispatch(isSuccess(true));
+    dispatch(disabled());
   };
 };

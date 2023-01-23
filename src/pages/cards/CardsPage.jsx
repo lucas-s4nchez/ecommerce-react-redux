@@ -61,7 +61,7 @@ const numberRegex = /^\d*$/;
 const nameRegex = /[a-zA-Z]$/;
 
 export const CardsPage = () => {
-  const { cards } = useSelector((state) => state.user);
+  const { cards, disabled } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

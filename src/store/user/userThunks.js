@@ -320,6 +320,7 @@ export const startAddingNewPurchase = (values) => {
 
 export const startAddingNewReview = (item) => {
   return async (dispatch, getState) => {
+    dispatch(disabled());
     const { uid } = getState().auth;
     const { purchases } = getState().user;
     const { products } = getState().products;
@@ -367,6 +368,7 @@ export const startAddingNewReview = (item) => {
     dispatch(
       updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
     );
+    dispatch(disabled());
     dispatch(startLoadingProducts());
   };
 };
