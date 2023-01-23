@@ -13,6 +13,7 @@ import {
   DialogTitle,
   IconButton,
   Paper,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,7 +29,7 @@ import {
 } from "../../store/user/userThunks";
 
 export const AddressesPage = () => {
-  const { addresses } = useSelector((state) => state.user);
+  const { isLoading, addresses } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -96,7 +97,13 @@ export const AddressesPage = () => {
               width: "100%",
             }}
           >
-            {addresses.length < 1 ? (
+            {isLoading ? (
+              <>
+                <Skeleton variant="rectangular" width={"100%"} height={102} />
+                <Skeleton variant="rectangular" width={"100%"} height={102} />
+                <Skeleton variant="rectangular" width={"100%"} height={102} />
+              </>
+            ) : addresses.length < 1 ? (
               <Alert severity="info" variant="filled">
                 No tienes ninguna dirección, agregá una
               </Alert>

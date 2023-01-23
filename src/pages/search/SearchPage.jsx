@@ -4,9 +4,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Alert, Box, Button, TextField } from "@mui/material";
+import { Alert, Box, Button, Skeleton, TextField } from "@mui/material";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
+import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
 
 export const SearchPage = () => {
   const { isLoading, products } = useSelector((state) => state.products);
@@ -41,7 +42,7 @@ export const SearchPage = () => {
     },
   });
   if (isLoading) {
-    return <h1>Cargando...</h1>;
+    return <CardsSkeleton />;
   }
   return (
     <>

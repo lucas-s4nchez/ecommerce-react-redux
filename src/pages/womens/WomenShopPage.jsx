@@ -1,10 +1,15 @@
 import { useSelector } from "react-redux";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
+import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
 import { ProductsContainer } from "../../components/productsContainer/ProductsContainer";
 
 export const WomenShopPage = () => {
-  const { womenProducts } = useSelector((state) => state.products);
+  const { isLoading, womenProducts } = useSelector((state) => state.products);
+
+  if (isLoading) {
+    return <CardsSkeleton />;
+  }
 
   return (
     <>

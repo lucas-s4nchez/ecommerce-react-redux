@@ -15,6 +15,7 @@ import {
   IconButton,
   MenuItem,
   Paper,
+  Skeleton,
   TextField,
   Typography,
 } from "@mui/material";
@@ -61,7 +62,7 @@ const numberRegex = /^\d*$/;
 const nameRegex = /[a-zA-Z]$/;
 
 export const CardsPage = () => {
-  const { cards, disabled } = useSelector((state) => state.user);
+  const { cards, disabled, isLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -142,7 +143,13 @@ export const CardsPage = () => {
               width: "100%",
             }}
           >
-            {cards.length < 1 ? (
+            {isLoading ? (
+              <>
+                <Skeleton variant="rectangular" width={"100%"} height={84} />
+                <Skeleton variant="rectangular" width={"100%"} height={84} />
+                <Skeleton variant="rectangular" width={"100%"} height={84} />
+              </>
+            ) : cards.length < 1 ? (
               <Alert severity="info" variant="filled">
                 No tienes ninguna tarjeta, agregá una
               </Alert>
