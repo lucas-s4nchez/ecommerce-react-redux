@@ -7,7 +7,6 @@ const initialState = {
   displayName: null,
   photoURL: null,
   errorMessage: "",
-  // error: false,
   successUpdate: false,
 };
 
@@ -22,7 +21,6 @@ export const authSlice = createSlice({
       state.displayName = payload.displayName;
       state.photoURL = payload.photoURL;
       state.errorMessage = "";
-      // state.error = false;
       state.successUpdate = false;
     },
     logout: (state, { payload }) => {
@@ -31,16 +29,12 @@ export const authSlice = createSlice({
       state.email = null;
       state.displayName = null;
       state.photoURL = null;
-      state.errorMessage = payload;
-      // state.error = false;
+      state.errorMessage = payload || "";
       state.successUpdate = false;
     },
     checkingCredentials: (state) => {
       state.status = "checking";
     },
-    // hasError: (state, { payload }) => {
-    //   state.error = payload;
-    // },
     isError: (state, { payload }) => {
       state.errorMessage = payload.errorMessage;
     },
@@ -60,7 +54,6 @@ export const {
   login,
   logout,
   checkingCredentials,
-  // hasError,
   isError,
   isSuccess,
   updateEmail,
