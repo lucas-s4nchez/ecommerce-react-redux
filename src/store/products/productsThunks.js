@@ -38,3 +38,10 @@ export const startLoadingProducts = () => {
     dispatch(isLoading());
   };
 };
+
+// export const startLoadingFeaturedProducts = () => {
+
+// const docRef = await addDoc(collection(FirebaseDB, "products"), {
+// agregar producto
+// });
+// };

@@ -10,7 +10,7 @@ const initialState = {
   productsOnOffer: [],
 };
 
-const productsSlice = createSlice({
+export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
