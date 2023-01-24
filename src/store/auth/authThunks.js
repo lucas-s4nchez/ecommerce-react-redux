@@ -1,12 +1,12 @@
 import {
+  changeDisplayName,
+  changeEmail,
+  changePassword,
   loginWithEmailAndPassword,
   logoutFirebase,
   registerUserWithEmailAndPassword,
   signInWithGoogle,
-} from "../../helpers";
-import { changeDisplayName } from "../../helpers/changeDisplayName";
-import { changeEmail } from "../../helpers/changeEmail";
-import { changePassword } from "../../helpers/changePassword";
+} from "../../firebase/providers";
 import {
   clearActiveAddress,
   clearAddresses,
@@ -42,7 +42,6 @@ export const startGoogleSigIn = () => {
     dispatch(login(result));
   };
 };
-
 export const startRegisterUserwithEmailAndPassword = ({
   email,
   password,
