@@ -362,3 +362,101 @@ export const purchasesState = {
   ...userInitialState,
   purchases: [...purchasesList],
 };
+//Firebase
+export const productsFirebase = [
+  {
+    id: "4hekghyh5jgwMcImmKPQ",
+    brand: "Fila",
+    model: "Float Knit",
+    version: "",
+    gender: "Hombre",
+    adjustment: "Cordones",
+    price: 30000,
+    style: "Deportivo",
+    exterior: "Tela",
+    sole: "Goma",
+    colors: ["blanco", "negro"],
+    images: [
+      "https://i.ibb.co/V2MrJ2w/float-knit-1.webp",
+      "https://i.ibb.co/5R5yyn0/float-knit-2.webp",
+      "https://i.ibb.co/9ctTLGF/float-knit-3.webp",
+      "https://i.ibb.co/r0HjcTR/float-knit-4.webp",
+    ],
+    sizes: [38, 39, 42, 44, 45],
+    stock: 20,
+    discount: 0,
+    featured: true,
+    reviews: [
+      {
+        comment: "de 10! muy lindas",
+        date: 1674196527218,
+        userName: "Stipe Miocic",
+        rating: 5,
+      },
+    ],
+  },
+  {
+    id: "cCtpg8sCQzVDH2ScfRX5",
+    brand: "Adidas",
+    model: "Duramo",
+    version: "SL",
+    gender: "Mujer",
+    adjustment: "Cordones",
+    price: 19000,
+    style: "Deportivo",
+    exterior: "Malla",
+    sole: "Goma",
+    colors: ["blanco", "rosa"],
+    images: [
+      "https://i.ibb.co/Gk9CSH0/duramo-1.webp",
+      "https://i.ibb.co/w6tVFKJ/duramo-2.webp",
+      "https://i.ibb.co/VVx5WsY/duramo-3.webp",
+      "https://i.ibb.co/0FpFHVy/duramo-4.webp",
+    ],
+    sizes: [34, 35, 36, 37, 38],
+    stock: 119,
+    discount: 0,
+    featured: true,
+    reviews: [
+      {
+        comment:
+          "Muy buena calidad, excelente confección, muy prolija y con buenos materiales. Ultra livianas y muy confortables. El color es tal cual se ve en la foto. Muy conforme con la compra.",
+        date: 1674196527218,
+        userName: "Stipe Miocic",
+        rating: 5,
+      },
+    ],
+  },
+];
+
+export const newFavoriteProductFirebase = {
+  id: "4hekghyh5jgwMcImmKPQ",
+  brand: "Fila",
+  model: "Float Knit",
+  version: "",
+  gender: "Hombre",
+  adjustment: "Cordones",
+  price: 30000,
+  style: "Deportivo",
+  exterior: "Tela",
+  sole: "Goma",
+  colors: ["blanco", "negro"],
+  images: [
+    "https://i.ibb.co/V2MrJ2w/float-knit-1.webp",
+    "https://i.ibb.co/5R5yyn0/float-knit-2.webp",
+    "https://i.ibb.co/9ctTLGF/float-knit-3.webp",
+    "https://i.ibb.co/r0HjcTR/float-knit-4.webp",
+  ],
+  sizes: [38, 39, 42, 44, 45],
+  stock: 20,
+  discount: 0,
+  featured: true,
+  reviews: [
+    {
+      comment: "de 10! muy lindas",
+      date: 1674196527218,
+      userName: "Stipe Miocic",
+      rating: 5,
+    },
+  ],
+};
