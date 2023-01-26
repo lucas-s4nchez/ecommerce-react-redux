@@ -13,10 +13,10 @@ import {
   ProductRatingsContainerStyled,
   ProductReviewsContainerStyled,
 } from "./ProductDetailsStyles";
-import { useSelector } from "react-redux";
+import { useProductsStore } from "../../hooks/useProductsStore";
 
 export const ProductReviews = ({ product }) => {
-  const { isLoading } = useSelector((state) => state.products);
+  const { isLoading } = useProductsStore();
 
   if (isLoading) {
     return (

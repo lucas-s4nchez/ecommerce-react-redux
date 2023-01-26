@@ -37,10 +37,12 @@ import {
 } from "../../store/user/userThunks";
 import { ProductDetailsActionsSkeleton } from "./ProductDetailsSkeleton";
 import { useAlerts } from "../../hooks/useAlerts";
+import { useProductsStore } from "../../hooks/useProductsStore";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const ProductContent = ({ product, id }) => {
-  const { status } = useSelector((state) => state.auth);
-  const { isLoading } = useSelector((state) => state.products);
+  const { status } = useAuthStore();
+  const { isLoading } = useProductsStore();
   const { favorites, cart } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);

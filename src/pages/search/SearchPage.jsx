@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import { useFormik } from "formik";
@@ -8,9 +6,10 @@ import { Alert, Box, Button, Skeleton, TextField } from "@mui/material";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
 import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
+import { useProductsStore } from "../../hooks/useProductsStore";
 
 export const SearchPage = () => {
-  const { isLoading, products } = useSelector((state) => state.products);
+  const { isLoading, products } = useProductsStore();
   const navigate = useNavigate();
   const location = useLocation();
 

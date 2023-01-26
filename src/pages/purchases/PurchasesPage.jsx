@@ -25,8 +25,8 @@ import { formatPrice } from "../../helpers/formatPrice";
 import { startAddingNewReview } from "../../store/user/userThunks";
 import { useNavigate } from "react-router-dom";
 import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
-import { startLoadingProducts } from "../../store/products/productsThunks";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import { useProductsStore } from "../../hooks/useProductsStore";
 
 const labels = {
   1: "Inutil",
@@ -39,10 +39,14 @@ const labels = {
 export const PurchasesPage = () => {
   const { isLoading, purchases, disabled } = useSelector((state) => state.user);
   const { displayName } = useAuthStore();
+  const { startLoadingProducts } = useProductsStore();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState("");
+  const loadingProducts = () => {
+    startLoadingProducts();
+  };
   const {
     getFieldProps,
     handleSubmit,
@@ -78,7 +82,7 @@ export const PurchasesPage = () => {
       dispatch(startAddingNewReview(newProduct));
       resetForm();
       setOpen(false);
-      dispatch(startLoadingProducts());
+      loadingProducts();
     },
     onReset: () => {
       setOpen(false);

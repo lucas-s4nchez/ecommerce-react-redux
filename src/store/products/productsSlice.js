@@ -14,7 +14,7 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    isLoading: (state) => {
+    isLoadingProducts: (state) => {
       state.isLoading = !state.isLoading;
     },
     setProducts: (state, { payload }) => {
@@ -59,7 +59,7 @@ export const productsSlice = createSlice({
 });
 
 export const {
-  isLoading,
+  isLoadingProducts,
   setProducts,
   setMenProducts,
   setWomenProducts,

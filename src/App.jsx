@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useProductsStore } from "./hooks/useProductsStore";
 import { AppRoutes } from "./router/AppRoutes";
-import { startLoadingProducts } from "./store/products/productsThunks";
 import { Theme } from "./theme/Theme";
 
 export const App = () => {
-  const dispatch = useDispatch();
+  const { startLoadingProducts } = useProductsStore();
   useEffect(() => {
-    dispatch(startLoadingProducts());
+    startLoadingProducts();
   }, []);
 
   return (

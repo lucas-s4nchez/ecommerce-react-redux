@@ -9,9 +9,10 @@ import { ProductContent } from "./ProductContent";
 import { ProductDescription } from "./ProductDescription";
 import { ProductReviews } from "./ProductReviews";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
+import { useProductsStore } from "../../hooks/useProductsStore";
 
 export const ProductDetails = () => {
-  const { products, isLoading } = useSelector((state) => state.products);
+  const { products } = useProductsStore();
   const { id } = useParams();
   const product = useMemo(
     () => products.find((product) => product.id === id),

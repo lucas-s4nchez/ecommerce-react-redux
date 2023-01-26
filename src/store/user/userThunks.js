@@ -6,8 +6,9 @@ import {
   setDoc,
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
+import { useProductsStore } from "../../hooks/useProductsStore";
 import { updateProduct } from "../products/productsSlice";
-import { startLoadingProducts } from "../products/productsThunks";
+// import { startLoadingProducts } from "../products/productsThunks";
 import {
   addNewAddress,
   addNewCard,
@@ -32,6 +33,8 @@ import {
   subtractUnitToProduct,
   updatePurchase,
 } from "./userSlice";
+
+// const { startLoadingProducts } = useProductsStore();
 
 export const startLoadingUserInfo = () => {
   return async (dispatch, getState) => {
@@ -369,6 +372,6 @@ export const startAddingNewReview = (item) => {
       updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
     );
     dispatch(disabled());
-    dispatch(startLoadingProducts());
+    // startLoadingProducts();
   };
 };

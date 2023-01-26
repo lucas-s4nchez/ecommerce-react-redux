@@ -1,10 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
+import { useProductsStore } from "../../hooks/useProductsStore";
+import { useEffect } from "react";
+import {
+  setFeaturedProducts,
+  setProductsOnOffer,
+} from "../../store/products/productsSlice";
 
 const items = [
   {
@@ -48,9 +54,14 @@ const items = [
 ];
 
 export const HomePage = () => {
-  const { featuredProducts, productsOnOffer } = useSelector(
-    (state) => state.products
-  );
+  const { isLoading, featuredProducts, productsOnOffer } = useProductsStore();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setFeaturedProducts());
+    dispatch(setProductsOnOffer());
+  }, [isLoading]);
+
   const someProductsOnOffer = [];
   for (let index = 0; index < 3; index++) {
     someProductsOnOffer.push(productsOnOffer[index]);
