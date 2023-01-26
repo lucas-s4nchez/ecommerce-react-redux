@@ -36,10 +36,10 @@ export const useAuthStore = () => {
 
     const result = await signInWithGoogle();
 
-    if (!result.ok && result.errorMessage) {
-      dispatch(isError(result));
-    }
-    if (!result.ok) return dispatch(logout());
+    // if (!result.ok && result.errorMessage) {
+    //   dispatch(isError(result));
+    // }
+    if (!result.ok) return dispatch(logout(result.errorMessage));
 
     dispatch(login(result));
   };
