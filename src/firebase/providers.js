@@ -82,7 +82,7 @@ export const changeEmail = async (oldEmail, newEmail, password) => {
   try {
     await signInWithEmailAndPassword(FirebaseAuth, oldEmail, password);
     await updateEmail(FirebaseAuth.currentUser, newEmail);
-    return { ok: true, email: newEmail };
+    return { ok: true, updatedEmail: newEmail };
   } catch (error) {
     return { ok: false, errorMessage: error.message };
   }

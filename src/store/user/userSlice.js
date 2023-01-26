@@ -143,6 +143,19 @@ export const userSlice = createSlice({
     clearPurchases: (state) => {
       state.purchases = [];
     },
+    clearUserInfo: (state) => {
+      state.isLoading = false;
+      state.disabled = false;
+      state.favorites = [];
+      state.cart = [];
+      state.purchases = [];
+      state.totalItemsInCart = 0;
+      state.totalToPay = 0;
+      state.addresses = [];
+      state.cards = [];
+      state.activeAddress = null;
+      state.paymentMethod = null;
+    },
   },
 });
 
@@ -176,6 +189,7 @@ export const {
   updatePurchase,
   clearPurchases,
   clearPaymentMethod,
+  clearUserInfo,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -24,16 +24,14 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import { replace, useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  startGoogleSigIn,
-  startLoginWithEmailAndPassword,
-} from "../../store/auth/authThunks";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const LoginPage = () => {
-  const { status, errorMessage } = useSelector((state) => state.auth);
+  const { errorMessage, startGoogleSigIn, startLoginWithEmailAndPassword } =
+    useAuthStore();
   const dispatch = useDispatch();
 
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
@@ -50,7 +48,7 @@ export const LoginPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      dispatch(startLoginWithEmailAndPassword(values));
+      startLoginWithEmailAndPassword(values);
     },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -61,7 +59,7 @@ export const LoginPage = () => {
     event.preventDefault();
   };
   const onGoogleSignIn = () => {
-    dispatch(startGoogleSigIn());
+    startGoogleSigIn();
     history.back();
   };
   const onRedirect = () => {

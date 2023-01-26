@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
-import { Link, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { useAuthStore } from "../../hooks/useAuthStore";
+
 import { Wrapper } from "../../styles/Wrapper";
 import {
   FooterContainerStyled,
@@ -11,12 +10,14 @@ import {
   FooterItemTitleStyled,
 } from "./FooterStyles";
 
+import { Link, Typography, Box } from "@mui/material";
+
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
 export const Footer = () => {
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useAuthStore();
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
   return (
     <Box sx={{ backgroundColor: "secondary.main" }}>

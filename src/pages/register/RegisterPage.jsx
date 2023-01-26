@@ -18,13 +18,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { startRegisterUserwithEmailAndPassword } from "../../store/auth/authThunks";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const RegisterPage = () => {
-  const { status, errorMessage } = useSelector((state) => state.auth);
+  const { status, errorMessage, startRegisterUserwithEmailAndPassword } =
+    useAuthStore();
   const dispatch = useDispatch();
   const isCheckingAuthentication = useMemo(
     () => status === "checking",
@@ -49,7 +50,7 @@ export const RegisterPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      dispatch(startRegisterUserwithEmailAndPassword(values));
+      startRegisterUserwithEmailAndPassword(values);
     },
   });
   const [showPassword, setShowPassword] = useState(false);

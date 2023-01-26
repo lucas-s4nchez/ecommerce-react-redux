@@ -26,6 +26,7 @@ import { startAddingNewReview } from "../../store/user/userThunks";
 import { useNavigate } from "react-router-dom";
 import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
 import { startLoadingProducts } from "../../store/products/productsThunks";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 const labels = {
   1: "Inutil",
@@ -37,7 +38,7 @@ const labels = {
 
 export const PurchasesPage = () => {
   const { isLoading, purchases, disabled } = useSelector((state) => state.user);
-  const { displayName } = useSelector((state) => state.auth);
+  const { displayName } = useAuthStore();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);

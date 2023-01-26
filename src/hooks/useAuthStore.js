@@ -1,22 +1,12 @@
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeDisplayName,
-  changeEmail,
   changePassword,
   loginWithEmailAndPassword,
   logoutFirebase,
   registerUserWithEmailAndPassword,
   signInWithGoogle,
-} from "../../firebase/providers";
-import {
-  clearActiveAddress,
-  clearAddresses,
-  clearCards,
-  clearCart,
-  clearFavorites,
-  clearPaymentMethod,
-  clearPurchases,
-  disabled,
-} from "../user/userSlice";
+} from "../firebase/providers";
 import {
   checkingCredentials,
   isError,
@@ -25,29 +15,38 @@ import {
   logout,
   updateDisplayName,
   updateEmail,
-} from "./authSlice";
+} from "../store/auth/authSlice";
+import { clearUserInfo, disabled } from "../store/user/userSlice";
 
-export const startGoogleSigIn = () => {
-  return async (dispatch) => {
-    //comienza el login
+export const useAuthStore = () => {
+  const {
+    uid,
+    email,
+    displayName,
+    photoURL,
+    errorMessage,
+    status,
+    successUpdate,
+  } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const startGoogleSigIn = async () => {
     dispatch(checkingCredentials());
-    //obtiene los resultados
+
     const result = await signInWithGoogle();
-    //si hay un error
+
     if (!result.ok && result.errorMessage) {
       dispatch(isError(result));
     }
     if (!result.ok) return dispatch(logout());
-    //si no hay un error
+
     dispatch(login(result));
   };
-};
-export const startRegisterUserwithEmailAndPassword = ({
-  email,
-  password,
-  displayName,
-}) => {
-  return async (dispatch) => {
+  const startRegisterUserwithEmailAndPassword = async ({
+    email,
+    password,
+    displayName,
+  }) => {
     dispatch(checkingCredentials());
 
     const { ok, uid, photoURL, errorMessage } =
@@ -63,9 +62,7 @@ export const startRegisterUserwithEmailAndPassword = ({
 
     dispatch(login({ ok, uid, email, displayName, photoURL }));
   };
-};
-export const startLoginWithEmailAndPassword = ({ email, password }) => {
-  return async (dispatch) => {
+  const startLoginWithEmailAndPassword = async ({ email, password }) => {
     dispatch(checkingCredentials());
 
     const { ok, uid, displayName, photoURL, errorMessage } =
@@ -74,28 +71,18 @@ export const startLoginWithEmailAndPassword = ({ email, password }) => {
     if (!ok) return dispatch(logout(errorMessage));
     dispatch(login({ ok, uid, email, displayName, photoURL }));
   };
-};
-export const startLogout = () => {
-  return async (dispatch) => {
+  const startLogout = async () => {
     await logoutFirebase();
     //resetear el estado inicial
-    dispatch(clearFavorites());
-    dispatch(clearCart());
-    dispatch(clearAddresses());
-    dispatch(clearPurchases());
-    dispatch(clearCards());
-    dispatch(clearPaymentMethod());
-    dispatch(clearActiveAddress());
+    dispatch(clearUserInfo());
     //Logout
     dispatch(logout());
   };
-};
-export const startChangingEmail = (newEmail, password) => {
-  return async (dispatch, getState) => {
+
+  const startChangingEmail = async (newEmail, password) => {
     dispatch(disabled());
-    const { email: oldEmail } = getState().auth;
-    const { ok, email, errorMessage } = await changeEmail(
-      oldEmail,
+    const { ok, updatedEmail, errorMessage } = await changeEmail(
+      email,
       newEmail,
       password
     );
@@ -105,14 +92,12 @@ export const startChangingEmail = (newEmail, password) => {
       return;
     }
 
-    dispatch(updateEmail(email));
+    dispatch(updateEmail(updatedEmail));
     dispatch(isError(""));
     dispatch(isSuccess(true));
     dispatch(disabled());
   };
-};
-export const startChangingDisplayName = (newDisplayName) => {
-  return async (dispatch) => {
+  const startChangingDisplayName = async (newDisplayName) => {
     dispatch(disabled());
     const { ok, displayName, errorMessage } = await changeDisplayName(
       newDisplayName
@@ -127,12 +112,9 @@ export const startChangingDisplayName = (newDisplayName) => {
     dispatch(isSuccess(true));
     dispatch(disabled());
   };
-};
-export const startChangingPassword = (oldPassword, newPassword) => {
-  return async (dispatch, getState) => {
+  const startChangingPassword = async (oldPassword, newPassword) => {
     dispatch(disabled());
-    const { email } = getState().auth;
-    const { ok, password, errorMessage } = await changePassword(
+    const { ok, errorMessage } = await changePassword(
       email,
       oldPassword,
       newPassword
@@ -146,5 +128,25 @@ export const startChangingPassword = (oldPassword, newPassword) => {
     dispatch(isError(""));
     dispatch(isSuccess(true));
     dispatch(disabled());
+  };
+
+  return {
+    //Propiedades
+    uid,
+    email,
+    displayName,
+    photoURL,
+    errorMessage,
+    status,
+    successUpdate,
+
+    //Métodos
+    startGoogleSigIn,
+    startRegisterUserwithEmailAndPassword,
+    startLoginWithEmailAndPassword,
+    startLogout,
+    startChangingEmail,
+    startChangingDisplayName,
+    startChangingPassword,
   };
 };

@@ -1,6 +1,20 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import { useAlerts } from "../../hooks/useAlerts";
+import { useAuthStore } from "../../hooks/useAuthStore";
+import {
+  ProductContainerDiscountStyled,
+  ProductDiscountStyled,
+  ProductNameStyled,
+  ProductPriceStyled,
+  ProductPriceWithDiscountStyled,
+} from "./CardProductStyles";
+import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
+import {
+  startAddingProductToFavorites,
+  startDeletingProductFromFavorites,
+} from "../../store/user/userThunks";
 import {
   Card,
   CardActions,
@@ -17,20 +31,6 @@ import {
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-
-import {
-  ProductContainerDiscountStyled,
-  ProductDiscountStyled,
-  ProductNameStyled,
-  ProductPriceStyled,
-  ProductPriceWithDiscountStyled,
-} from "./CardProductStyles";
-import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
-import {
-  startAddingProductToFavorites,
-  startDeletingProductFromFavorites,
-} from "../../store/user/userThunks";
-import { useAlerts } from "../../hooks/useAlerts";
 
 export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -76,7 +76,7 @@ export const CardProduct = ({
 }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useAuthStore();
   const { favorites } = useSelector((state) => state.user);
   const { isLoading } = useSelector((state) => state.products);
   const {

@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Avatar,
@@ -15,9 +14,10 @@ import {
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const AccountPage = () => {
-  const { status, displayName, photoURL } = useSelector((state) => state.auth);
+  const { displayName, photoURL } = useAuthStore();
   return (
     <>
       <RouterBreadcrumbs />

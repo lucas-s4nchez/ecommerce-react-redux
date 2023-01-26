@@ -20,17 +20,19 @@ import {
 } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  startChangingDisplayName,
-  startChangingEmail,
-  startChangingPassword,
-} from "../../store/auth/authThunks";
 import { isError, isSuccess } from "../../store/auth/authSlice";
+import { useAuthStore } from "../../hooks/useAuthStore";
 
 export const UserInfoPage = () => {
-  const { email, displayName, errorMessage, successUpdate } = useSelector(
-    (state) => state.auth
-  );
+  const {
+    email,
+    displayName,
+    errorMessage,
+    successUpdate,
+    startChangingDisplayName,
+    startChangingEmail,
+    startChangingPassword,
+  } = useAuthStore();
   const { disabled } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -110,7 +112,7 @@ export const UserInfoPage = () => {
                       .required("Campo requerido"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    dispatch(startChangingEmail(values.email, values.password));
+                    startChangingEmail(values.email, values.password);
                   }}
                   onReset={() => {
                     handleCloseEmailModal();
@@ -227,7 +229,7 @@ export const UserInfoPage = () => {
                       .min(3, "Minimo 3 caracteres"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    dispatch(startChangingDisplayName(values.displayName));
+                    startChangingDisplayName(values.displayName);
                   }}
                   onReset={() => {
                     handleCloseDisplayNameModal();
@@ -338,9 +340,7 @@ export const UserInfoPage = () => {
                       .required("Campo requerido"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    dispatch(
-                      startChangingPassword(values.password, values.newPassword)
-                    );
+                    startChangingPassword(values.password, values.newPassword);
                   }}
                   onReset={() => {
                     handleClosePasswordModal();

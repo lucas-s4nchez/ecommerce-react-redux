@@ -33,6 +33,7 @@ import {
   clearFavorites,
   clearPaymentMethod,
   clearPurchases,
+  clearUserInfo,
   disabled,
 } from "../../../src/store/user/userSlice";
 import { testUser } from "../../fixtures/authFixtures";
@@ -135,13 +136,7 @@ describe('Pruebas en el archivo "authThunks.js"', () => {
     await startLogout()(dispatch);
 
     expect(dispatch).toHaveBeenCalled(logoutFirebase());
-    expect(dispatch).toHaveBeenCalledWith(clearFavorites());
-    expect(dispatch).toHaveBeenCalledWith(clearCart());
-    expect(dispatch).toHaveBeenCalledWith(clearAddresses());
-    expect(dispatch).toHaveBeenCalledWith(clearPurchases());
-    expect(dispatch).toHaveBeenCalledWith(clearCards());
-    expect(dispatch).toHaveBeenCalledWith(clearPaymentMethod());
-    expect(dispatch).toHaveBeenCalledWith(clearActiveAddress());
+    expect(dispatch).toHaveBeenCalledWith(clearUserInfo());
     expect(dispatch).toHaveBeenCalledWith(logout());
   });
 
