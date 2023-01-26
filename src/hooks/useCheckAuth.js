@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { FirebaseAuth } from "../firebase/config";
 import { login, logout } from "../store/auth";
-import { startLoadingUserInfo } from "../store/user";
+import { useUserStore } from "./useUserStore";
 
 export const useCheckAuth = () => {
   const { status } = useSelector((state) => state.auth);
+  const { startLoadingUserInfo } = useUserStore();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,7 +15,7 @@ export const useCheckAuth = () => {
       if (!user) return dispatch(logout());
       const { uid, displayName, email, photoURL } = user;
       dispatch(login({ uid, displayName, email, photoURL }));
-      dispatch(startLoadingUserInfo());
+      startLoadingUserInfo(uid);
     });
   }, []);
 

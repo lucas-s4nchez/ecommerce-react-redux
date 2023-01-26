@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -10,6 +9,7 @@ import {
 import { ConfirmPayment } from "./ConfirmPayment";
 import { SelectAddress } from "./SelectAddress";
 import { SelectPaymentMethod } from "./SelectPaymentMethod";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const MobileStepper = ({
   steps,
@@ -19,7 +19,7 @@ export const MobileStepper = ({
   handleCancelBuy,
   handleCompleteBuy,
 }) => {
-  const { paymentMethod, activeAddress } = useSelector((state) => state.user);
+  const { paymentMethod, activeAddress } = useUserStore();
 
   return (
     <>

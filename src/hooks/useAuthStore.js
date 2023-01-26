@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDisplayName,
+  changeEmail,
   changePassword,
   loginWithEmailAndPassword,
   logoutFirebase,
@@ -16,7 +17,7 @@ import {
   updateDisplayName,
   updateEmail,
 } from "../store/auth/authSlice";
-import { clearUserInfo, disabled } from "../store/user/userSlice";
+import { clearUserInfo, isDisabled } from "../store/user/userSlice";
 
 export const useAuthStore = () => {
   const {
@@ -80,14 +81,14 @@ export const useAuthStore = () => {
   };
 
   const startChangingEmail = async (newEmail, password) => {
-    dispatch(disabled());
+    dispatch(isDisabled());
     const { ok, updatedEmail, errorMessage } = await changeEmail(
       email,
       newEmail,
       password
     );
     if (!ok && errorMessage) {
-      dispatch(disabled());
+      dispatch(isDisabled());
       dispatch(isError({ errorMessage }));
       return;
     }
@@ -95,39 +96,39 @@ export const useAuthStore = () => {
     dispatch(updateEmail(updatedEmail));
     dispatch(isError(""));
     dispatch(isSuccess(true));
-    dispatch(disabled());
+    dispatch(isDisabled());
   };
   const startChangingDisplayName = async (newDisplayName) => {
-    dispatch(disabled());
+    dispatch(isDisabled());
     const { ok, displayName, errorMessage } = await changeDisplayName(
       newDisplayName
     );
     if (!ok && errorMessage) {
-      dispatch(disabled());
+      dispatch(isDisabled());
       dispatch(isError({ errorMessage }));
       return;
     }
     dispatch(isError(""));
     dispatch(updateDisplayName(displayName));
     dispatch(isSuccess(true));
-    dispatch(disabled());
+    dispatch(isDisabled());
   };
   const startChangingPassword = async (oldPassword, newPassword) => {
-    dispatch(disabled());
+    dispatch(isDisabled());
     const { ok, errorMessage } = await changePassword(
       email,
       oldPassword,
       newPassword
     );
     if (!ok && errorMessage) {
-      dispatch(disabled());
+      dispatch(isDisabled());
       dispatch(isError({ errorMessage }));
       return;
     }
 
     dispatch(isError(""));
     dispatch(isSuccess(true));
-    dispatch(disabled());
+    dispatch(isDisabled());
   };
 
   return {

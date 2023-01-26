@@ -27,10 +27,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import { CreditCard } from "../../components/creditCard/CreditCard";
-import {
-  startAddingNewCard,
-  startDeletingCard,
-} from "../../store/user/userThunks";
+import { useUserStore } from "../../hooks/useUserStore";
 
 const months = [
   { value: 1, text: "Enero" },
@@ -62,8 +59,8 @@ const numberRegex = /^\d*$/;
 const nameRegex = /[a-zA-Z]$/;
 
 export const CardsPage = () => {
-  const { cards, disabled, isLoading } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { cards, isLoading, startAddingNewCard, startDeletingCard } =
+    useUserStore();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [rotateCard, setRotateCard] = useState(false);
@@ -94,7 +91,7 @@ export const CardsPage = () => {
           .min(3, "Mínimo 3 caracteres"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewCard(values));
+        startAddingNewCard(values);
         handleCloseForm();
         resetForm();
       },
@@ -198,7 +195,7 @@ export const CardsPage = () => {
                       </Box>
                     </Box>
                     <IconButton
-                      onClick={() => dispatch(startDeletingCard(card.id))}
+                      onClick={() => startDeletingCard(card.id)}
                       sx={{ height: "max-content", color: "primary.main" }}
                       title="Eliminar"
                       aria-label="Eliminar Direccion"

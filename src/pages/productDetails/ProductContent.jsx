@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -29,22 +28,23 @@ import {
   ProductDetailsTitleStyled,
 } from "./ProductDetailsStyles";
 import { ProductPrice } from "../../components/card/CardProduct";
-import {
-  startAddingProductToCart,
-  startAddingProductToFavorites,
-  startAddingUnitToProduct,
-  startDeletingProductFromFavorites,
-} from "../../store/user/userThunks";
 import { ProductDetailsActionsSkeleton } from "./ProductDetailsSkeleton";
 import { useAlerts } from "../../hooks/useAlerts";
 import { useProductsStore } from "../../hooks/useProductsStore";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const ProductContent = ({ product, id }) => {
   const { status } = useAuthStore();
   const { isLoading } = useProductsStore();
-  const { favorites, cart } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const {
+    favorites,
+    cart,
+    startAddingProductToCart,
+    startAddingProductToFavorites,
+    startAddingUnitToProduct,
+    startDeletingProductFromFavorites,
+  } = useUserStore();
   const [quantity, setQuantity] = useState(1);
   const {
     messageOfNotAuthenticatedUser,
@@ -78,12 +78,11 @@ export const ProductContent = ({ product, id }) => {
           cartProduct.size === values.size
       );
       if (isExistingProduct) {
-        dispatch(
-          startAddingUnitToProduct(isExistingProduct.id, quantity, values.size)
-        );
+        startAddingUnitToProduct(isExistingProduct.id, quantity, values.size);
+
         handleOpenMessageAddUnitProductToCart();
       } else {
-        dispatch(startAddingProductToCart(product.id, quantity, values.size));
+        startAddingProductToCart(product.id, quantity, values.size);
         handleOpenMessageAddProductToCart();
       }
     },
@@ -99,10 +98,10 @@ export const ProductContent = ({ product, id }) => {
     }
 
     if (isExistingProduct) {
-      dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
+      startDeletingProductFromFavorites(isExistingProduct.docId, id);
       handleOpenMessageRemoveProductToFavorites();
     } else {
-      dispatch(startAddingProductToFavorites(id));
+      startAddingProductToFavorites(id);
       handleOpenMessageAddProductToFavorites();
     }
   };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -22,11 +22,11 @@ import CheckIcon from "@mui/icons-material/Check";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import { formatPrice } from "../../helpers/formatPrice";
-import { startAddingNewReview } from "../../store/user/userThunks";
 import { useNavigate } from "react-router-dom";
 import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import { useProductsStore } from "../../hooks/useProductsStore";
+import { useUserStore } from "../../hooks/useUserStore";
 
 const labels = {
   1: "Inutil",
@@ -37,7 +37,8 @@ const labels = {
 };
 
 export const PurchasesPage = () => {
-  const { isLoading, purchases, disabled } = useSelector((state) => state.user);
+  const { isLoading, purchases, disabled, startAddingNewReview } =
+    useUserStore();
   const { displayName } = useAuthStore();
   const { startLoadingProducts } = useProductsStore();
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ export const PurchasesPage = () => {
         rating: values.rating,
         userName: displayName,
       };
-      dispatch(startAddingNewReview(newProduct));
+      startAddingNewReview(newProduct);
       resetForm();
       setOpen(false);
       loadingProducts();

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -22,6 +22,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
 import { isError, isSuccess } from "../../store/auth/authSlice";
 import { useAuthStore } from "../../hooks/useAuthStore";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const UserInfoPage = () => {
   const {
@@ -33,7 +34,7 @@ export const UserInfoPage = () => {
     startChangingEmail,
     startChangingPassword,
   } = useAuthStore();
-  const { disabled } = useSelector((state) => state.user);
+  const { disabled } = useUserStore();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openEmailModal, setOpenEmailModal] = useState(false);

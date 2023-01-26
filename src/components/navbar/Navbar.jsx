@@ -6,9 +6,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { Menu } from "../menu/Menu";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const Navbar = () => {
-  const { totalItemsInCart } = useSelector((state) => state.user);
+  const { totalItemsInCart } = useUserStore();
   const [openMenu, setOpenMenu] = useState(false);
 
   const handleOpenMenu = () => {

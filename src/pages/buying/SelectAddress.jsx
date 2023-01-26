@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -17,11 +17,11 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import SaveIcon from "@mui/icons-material/Save";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { startAddingNewAddress } from "../../store/user/userThunks";
 import { setActiveAddress } from "../../store/user/userSlice";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const SelectAddress = () => {
-  const { addresses, activeAddress } = useSelector((state) => state.user);
+  const { addresses, activeAddress, startAddingNewAddress } = useUserStore();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const { getFieldProps, handleSubmit, handleReset, errors, touched } =
@@ -45,7 +45,7 @@ export const SelectAddress = () => {
         phoneNumber: Yup.number().required("Campo requerido"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewAddress(values));
+        startAddingNewAddress(values);
         handleCloseForm();
         resetForm();
       },

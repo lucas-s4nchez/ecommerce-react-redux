@@ -12,7 +12,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ProductNameStyled } from "../../components/card/CardProductStyles";
 import { ProductPrice } from "../../components/card/CardProduct";
-import { startDeletingProductFromFavorites } from "../../store/user/userThunks";
+import { useProductsStore } from "../../hooks/useProductsStore";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const FavoritesItem = ({
   id,
@@ -26,10 +27,11 @@ export const FavoritesItem = ({
   brand,
 }) => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.products);
+  const { isLoading } = useProductsStore();
+  const { startDeletingProductFromFavorites } = useUserStore();
 
   const handleDelete = () => {
-    dispatch(startDeletingProductFromFavorites(docId, id));
+    startDeletingProductFromFavorites(docId, id);
   };
 
   const setPathname = () => {

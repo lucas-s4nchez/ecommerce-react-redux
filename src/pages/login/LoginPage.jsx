@@ -22,7 +22,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { replace, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";

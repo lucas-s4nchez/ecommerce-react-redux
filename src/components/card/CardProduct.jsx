@@ -12,10 +12,6 @@ import {
 } from "./CardProductStyles";
 import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
 import {
-  startAddingProductToFavorites,
-  startDeletingProductFromFavorites,
-} from "../../store/user/userThunks";
-import {
   Card,
   CardActions,
   CardContent,
@@ -31,6 +27,8 @@ import {
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useProductsStore } from "../../hooks/useProductsStore";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -77,8 +75,12 @@ export const CardProduct = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const { status } = useAuthStore();
-  const { favorites } = useSelector((state) => state.user);
-  const { isLoading } = useSelector((state) => state.products);
+  const {
+    favorites,
+    startAddingProductToFavorites,
+    startDeletingProductFromFavorites,
+  } = useUserStore();
+  const { isLoading } = useProductsStore();
   const {
     messageOfNotAuthenticatedUser,
     handleOpenMessageOfNotAuthenticatedUser,
@@ -100,10 +102,10 @@ export const CardProduct = ({
       return;
     }
     if (isExistingProduct) {
-      dispatch(startDeletingProductFromFavorites(isExistingProduct.docId, id));
+      startDeletingProductFromFavorites(isExistingProduct.docId, id);
       handleOpenMessageRemoveProductToFavorites();
     } else {
-      dispatch(startAddingProductToFavorites(id));
+      startAddingProductToFavorites(id);
       handleOpenMessageAddProductToFavorites();
     }
   };

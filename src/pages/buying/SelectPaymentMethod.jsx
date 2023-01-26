@@ -19,8 +19,8 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import SaveIcon from "@mui/icons-material/Save";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import { CreditCard } from "../../components/creditCard/CreditCard";
-import { startAddingNewCard } from "../../store/user/userThunks";
 import { setPaymentMethod } from "../../store/user/userSlice";
+import { useUserStore } from "../../hooks/useUserStore";
 
 const months = [
   { value: 1, text: "Enero" },
@@ -73,9 +73,7 @@ const numberRegex = /^\d*$/;
 const nameRegex = /[a-zA-Z]$/;
 
 export const SelectPaymentMethod = () => {
-  const { cards, paymentMethod, activeAddress } = useSelector(
-    (state) => state.user
-  );
+  const { cards, paymentMethod, startAddingNewCard } = useUserStore();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [rotateCard, setRotateCard] = useState(false);
@@ -106,7 +104,7 @@ export const SelectPaymentMethod = () => {
           .min(3, "Mínimo 3 caracteres"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewCard(values));
+        startAddingNewCard(values);
         handleCloseForm();
         resetForm();
       },

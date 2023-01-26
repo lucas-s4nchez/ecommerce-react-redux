@@ -18,10 +18,10 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    isLoading: (state) => {
+    isLoadingUserInfo: (state) => {
       state.isLoading = !state.isLoading;
     },
-    disabled: (state) => {
+    isDisabled: (state) => {
       state.disabled = !state.disabled;
     },
     setFavorites: (state, { payload }) => {
@@ -160,8 +160,8 @@ export const userSlice = createSlice({
 });
 
 export const {
-  isLoading,
-  disabled,
+  isLoadingUserInfo,
+  isDisabled,
   setFavorites,
   addProductToFavorites,
   deleteProductFromFavorites,

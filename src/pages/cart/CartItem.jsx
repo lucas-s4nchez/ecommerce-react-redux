@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -15,13 +14,9 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-import { formatPrice, getNewPrice } from "../../helpers/formatPrice";
+import { formatPrice } from "../../helpers/formatPrice";
 import { useState } from "react";
-import {
-  startAddingUnitToProduct,
-  startDeletingProductFromCart,
-  startRemoveUnitToProduct,
-} from "../../store/user/userThunks";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const CartItem = ({
   id,
@@ -36,24 +31,29 @@ export const CartItem = ({
   quantity,
   stock,
 }) => {
-  const { disabled } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const {
+    disabled,
+    startAddingUnitToProduct,
+    startDeletingProductFromCart,
+    startRemoveUnitToProduct,
+  } = useUserStore();
+
   const [newQuantity, setNewQuantity] = useState(quantity);
 
   const handleDelete = () => {
-    dispatch(startDeletingProductFromCart(id));
+    startDeletingProductFromCart(id);
   };
   const handleAddUnitProduct = () => {
     if (newQuantity >= stock) return;
 
     setNewQuantity(newQuantity + 1);
-    dispatch(startAddingUnitToProduct(id, 1, size));
+    startAddingUnitToProduct(id, 1, size);
   };
   const handleRemoveUnitProduct = () => {
     if (newQuantity <= 1) return;
 
     setNewQuantity(newQuantity - 1);
-    dispatch(startRemoveUnitToProduct(id, 1, size));
+    startRemoveUnitToProduct(id, 1, size);
   };
 
   return (

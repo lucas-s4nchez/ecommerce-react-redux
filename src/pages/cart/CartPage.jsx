@@ -1,16 +1,14 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { formatPrice } from "../../helpers/formatPrice";
+import { useUserStore } from "../../hooks/useUserStore";
 import { CartItem } from "./CartItem";
 import { CartItemsSkeleton } from "./CartPageSkeletonLoader";
 import { CartContainerStyled } from "./CartPageStyles";
 
 export const CartPage = () => {
-  const { isLoading, cart, totalToPay, disabled } = useSelector(
-    (state) => state.user
-  );
+  const { isLoading, cart, totalToPay, disabled } = useUserStore();
   const navigate = useNavigate();
 
   const handleBuying = () => {

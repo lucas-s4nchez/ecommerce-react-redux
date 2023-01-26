@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { Box, Container, Divider, Typography } from "@mui/material";
 import { formatPrice } from "../../helpers";
 import { useState } from "react";
-import { startAddingNewPurchase } from "../../store/user/userThunks";
 import {
   clearActiveAddress,
   clearCart,
@@ -11,6 +10,7 @@ import {
 } from "../../store/user/userSlice";
 import { MobileStepper } from "./MobileStepper";
 import { DesktopStepper } from "./DesktopStepper";
+import { useUserStore } from "../../hooks/useUserStore";
 
 const steps = [
   "Selecciona tu domicilio",
@@ -19,8 +19,7 @@ const steps = [
 ];
 
 export const BuyingPage = () => {
-  const { totalToPay, paymentMethod, activeAddress, cart, isLoading } =
-    useSelector((state) => state.user);
+  const { totalToPay, cart, startAddingNewPurchase } = useUserStore();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
@@ -48,7 +47,7 @@ export const BuyingPage = () => {
         waitingToReceiveRating: true,
       };
     });
-    newPurchase.forEach((product) => dispatch(startAddingNewPurchase(product)));
+    newPurchase.forEach((product) => startAddingNewPurchase(product));
     dispatch(clearCart());
     navigate("/purchases");
   };

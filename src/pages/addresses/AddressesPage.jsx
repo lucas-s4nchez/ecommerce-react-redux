@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -23,14 +22,11 @@ import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  startAddingNewAddress,
-  startDeletingAddress,
-} from "../../store/user/userThunks";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const AddressesPage = () => {
-  const { isLoading, addresses } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { isLoading, addresses, startAddingNewAddress, startDeletingAddress } =
+    useUserStore();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -55,7 +51,7 @@ export const AddressesPage = () => {
         phoneNumber: Yup.number().required("Campo requerido"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewAddress(values));
+        startAddingNewAddress(values);
         handleCloseForm();
         resetForm();
       },
@@ -157,7 +153,7 @@ export const AddressesPage = () => {
                       </Box>
                     </Box>
                     <IconButton
-                      onClick={() => dispatch(startDeletingAddress(address.id))}
+                      onClick={() => startDeletingAddress(address.id)}
                       sx={{ height: "max-content", color: "primary.main" }}
                       title="Eliminar"
                       aria-label="Eliminar Direccion"

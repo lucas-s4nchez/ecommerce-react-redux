@@ -1,9 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Box, Typography } from "@mui/material";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
-import { startDeletingAllProductsFromFavorites } from "../../store/user/userThunks";
 import { FavoritesItem } from "./FavoritesItems";
 import {
   FavoritesButtonSkeleton,
@@ -11,14 +9,15 @@ import {
 } from "./FavoritesSkeletonLoader";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "../../hooks/useUserStore";
 
 export const FavoritesPage = () => {
-  const { isLoading, favorites } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { isLoading, favorites, startDeletingAllProductsFromFavorites } =
+    useUserStore();
   const navigate = useNavigate();
 
   const handleDeleteAll = () => {
-    dispatch(startDeletingAllProductsFromFavorites());
+    startDeletingAllProductsFromFavorites();
   };
 
   return (
