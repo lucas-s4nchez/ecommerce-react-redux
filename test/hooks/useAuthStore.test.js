@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { act, renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import {
+  changeDisplayName,
+  changeEmail,
   loginWithEmailAndPassword,
   registerUserWithEmailAndPassword,
   signInWithGoogle,
@@ -55,7 +57,6 @@ describe("Pruebas en useAuthStore", () => {
       startLogout: expect.any(Function),
       startChangingEmail: expect.any(Function),
       startChangingDisplayName: expect.any(Function),
-      startChangingPassword: expect.any(Function),
     });
   });
 
@@ -243,6 +244,105 @@ describe("Pruebas en useAuthStore", () => {
       email: null,
       displayName: null,
       errorMessage: "",
+    });
+  });
+
+  test("startChangingEmail debe de cambiar el email del usuario correctamente", async () => {
+    const mockStore = getMockStore({ ...authenticatedState });
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+    const formData = { newEmail: "NewTest@google.com", password: "123456" };
+    const changingEmailResults = { ok: true, email: formData.newEmail };
+    await changeEmail.mockResolvedValue(changingEmailResults);
+
+    await act(async () => {
+      await result.current.startChangingEmail(formData);
+    });
+
+    const { email } = result.current;
+    expect({ email }).toEqual({
+      email: formData.email,
+    });
+  });
+
+  test("startChangingEmail debe de fallar al cambiar el email del usuario", async () => {
+    const mockStore = getMockStore({ ...authenticatedState });
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+    const formData = { newEmail: "NewTest@google.com", password: "123456" };
+    const changingEmailResults = {
+      ok: false,
+      errorMessage: "Ocurrió un error",
+    };
+    await changeEmail.mockResolvedValue(changingEmailResults);
+
+    await act(async () => {
+      await result.current.startChangingEmail(formData);
+    });
+
+    const { email, errorMessage } = result.current;
+    expect({ errorMessage }).toEqual({
+      errorMessage: changingEmailResults.errorMessage,
+    });
+    expect({ email }).not.toEqual({
+      email: formData.email,
+    });
+  });
+
+  test("startChangingDisplayName debe de cambiar el nombre del usuario correctamente", async () => {
+    const mockStore = getMockStore({ ...authenticatedState });
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+    const formData = { newDisplayName: "New Test User" };
+    const changingDisplayNameResults = {
+      ok: true,
+      displayName: formData.newDisplayName,
+    };
+    await changeDisplayName.mockResolvedValue(changingDisplayNameResults);
+
+    await act(async () => {
+      await result.current.startChangingDisplayName(formData);
+    });
+
+    const { displayName } = result.current;
+    expect({ displayName }).toEqual({
+      displayName: formData.newDisplayName,
+    });
+  });
+
+  test("startChangingDisplayName debe de fallar al cmabiar el nombre del usuario", async () => {
+    const mockStore = getMockStore({ ...authenticatedState });
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+    const formData = { newDisplayName: "New Test User" };
+    const changingDisplayNameResults = {
+      ok: false,
+      errorMessage: "Ocurrió un error",
+    };
+    await changeDisplayName.mockResolvedValue(changingDisplayNameResults);
+
+    await act(async () => {
+      await result.current.startChangingDisplayName(formData);
+    });
+
+    const { displayName, errorMessage } = result.current;
+    expect({ displayName }).not.toEqual({
+      displayName: formData.newDisplayName,
+    });
+    expect({ errorMessage }).toEqual({
+      errorMessage: changingDisplayNameResults.errorMessage,
     });
   });
 });

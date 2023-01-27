@@ -113,23 +113,6 @@ export const useAuthStore = () => {
     dispatch(isSuccess(true));
     dispatch(isDisabled());
   };
-  const startChangingPassword = async (oldPassword, newPassword) => {
-    dispatch(isDisabled());
-    const { ok, errorMessage } = await changePassword(
-      email,
-      oldPassword,
-      newPassword
-    );
-    if (!ok && errorMessage) {
-      dispatch(isDisabled());
-      dispatch(isError({ errorMessage }));
-      return;
-    }
-
-    dispatch(isError(""));
-    dispatch(isSuccess(true));
-    dispatch(isDisabled());
-  };
 
   return {
     //Propiedades
@@ -148,6 +131,5 @@ export const useAuthStore = () => {
     startLogout,
     startChangingEmail,
     startChangingDisplayName,
-    startChangingPassword,
   };
 };

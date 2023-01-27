@@ -11,9 +11,9 @@ export const initialState = {
 export const authenticatedState = {
   status: "authenticated", //checking, not-authenticated, authenticated
   uid: "123ABC",
-  email: "demo@google.com",
-  displayName: "Demo User",
-  photoURL: "https://demo.jpg",
+  email: "test@google.com",
+  displayName: "Test User",
+  photoURL: "https://test.jpg",
   errorMessage: "",
   successUpdate: false,
 };

@@ -23,6 +23,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { isError, isSuccess } from "../../store/auth/authSlice";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import { useUserStore } from "../../hooks/useUserStore";
+import { isDisabled } from "../../store/user/userSlice";
+import { changePassword } from "../../firebase/providers";
 
 export const UserInfoPage = () => {
   const {
@@ -32,7 +34,6 @@ export const UserInfoPage = () => {
     successUpdate,
     startChangingDisplayName,
     startChangingEmail,
-    startChangingPassword,
   } = useAuthStore();
   const { disabled } = useUserStore();
   const dispatch = useDispatch();
@@ -40,6 +41,24 @@ export const UserInfoPage = () => {
   const [openEmailModal, setOpenEmailModal] = useState(false);
   const [openDisplayNameModal, setOpenDisplayNameModal] = useState(false);
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
+
+  const startChangingPassword = async (oldPassword, newPassword) => {
+    dispatch(isDisabled());
+    const { ok, errorMessage } = await changePassword(
+      email,
+      oldPassword,
+      newPassword
+    );
+    if (!ok && errorMessage) {
+      dispatch(isDisabled());
+      dispatch(isError({ errorMessage }));
+      return;
+    }
+
+    dispatch(isError(""));
+    dispatch(isSuccess(true));
+    dispatch(isDisabled());
+  };
 
   const handleOpenEmailModal = () => {
     dispatch(isError(""));
