@@ -36,11 +36,6 @@ export const useProductsStore = () => {
     });
 
     dispatch(setProducts(products));
-    // dispatch(setMenProducts());
-    // dispatch(setWomenProducts());
-    // dispatch(setKidProducts());
-    // dispatch(setProductsOnOffer());
-    // dispatch(setFeaturedProducts());
     dispatch(isLoadingProducts());
   };
   const startAddNewProduct = async () => {
