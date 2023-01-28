@@ -54,7 +54,6 @@ describe("Pruebas en el useUserStore", () => {
       startLoadingUserInfo: expect.any(Function),
       startAddingProductToFavorites: expect.any(Function),
       startDeletingProductFromFavorites: expect.any(Function),
-      startDeletingAllProductsFromFavorites: expect.any(Function),
       startAddingProductToCart: expect.any(Function),
       startAddingUnitToProduct: expect.any(Function),
       startRemoveUnitToProduct: expect.any(Function),

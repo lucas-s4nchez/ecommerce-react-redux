@@ -17,8 +17,8 @@ import {
   deleteCard,
   deleteProductFromCart,
   deleteProductFromFavorites,
-  disabled,
-  isLoading,
+  isDisabled,
+  isLoadingUserInfo,
   setActiveAddress,
   setAddresses,
   setCards,
@@ -42,12 +42,10 @@ import {
   newCartProduct,
   newFavoriteProduct,
   newPayment,
-  newProduct,
   newPurchase,
   paymentMethodState,
   productsCartList,
   productsFavoritesList,
-  productsList,
   purchasesList,
   purchasesState,
   totalItemsInCartTest,
@@ -63,13 +61,13 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
   });
 
   test('La propiedad "isLoading" del estado debe cambiar a "true"', () => {
-    const state = userSlice.reducer(userInitialState, isLoading());
+    const state = userSlice.reducer(userInitialState, isLoadingUserInfo());
 
     expect(state.isLoading).toBe(true);
   });
 
   test('La propiedad "disabled" del estado debe cambiar a "true"', () => {
-    const state = userSlice.reducer(userInitialState, disabled());
+    const state = userSlice.reducer(userInitialState, isDisabled());
 
     expect(state.disabled).toBe(true);
   });

@@ -1,5 +1,5 @@
 import {
-  isLoading,
+  isLoadingProducts,
   productsSlice,
   setFeaturedProducts,
   setKidProducts,
@@ -30,7 +30,10 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
   });
 
   test('La propiedad "isLoading" debe pasar a true al disparar la accion', () => {
-    const state = productsSlice.reducer(productsInitialState, isLoading());
+    const state = productsSlice.reducer(
+      productsInitialState,
+      isLoadingProducts()
+    );
 
     expect(state.isLoading).toBe(true);
   });
@@ -41,26 +44,28 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
       setProducts(productsStock)
     );
 
-    expect(state.products).toEqual(productsStock);
+    expect(state).toEqual(productsLoadedState);
+    expect(state.products.length).toBe(2);
   });
 
   test("Debe de actualizar un producto", () => {
+    const newProductId = "4hekghyh5jgwMcImmKPQ";
     const state = productsSlice.reducer(
       productsLoadedState,
-      updateProduct({ productId: 2, product: updatedProduct })
+      updateProduct({ productId: newProductId, product: updatedProduct })
     );
-    const findProductUpdated = {
-      ...state.products.find((product) => product.id === 2),
+    const currentProduct = {
+      ...state.products.find((product) => product.id === newProductId),
     };
-    delete findProductUpdated.id;
+    delete currentProduct.id;
 
-    expect(findProductUpdated).toEqual(updatedProduct);
+    expect(currentProduct).toEqual(updatedProduct);
   });
 
   test("Debe de cargar los productos de hombres", () => {
     const state = productsSlice.reducer(productsLoadedState, setMenProducts());
 
-    expect(state.menProducts.length).toBe(2);
+    expect(state.menProducts.length).toBe(1);
   });
 
   test("Debe de cargar los productos de mujeres", () => {
@@ -69,13 +74,13 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
       setWomenProducts()
     );
 
-    expect(state.womenProducts.length).toBe(2);
+    expect(state.womenProducts.length).toBe(1);
   });
 
   test("Debe de cargar los productos de niños", () => {
     const state = productsSlice.reducer(productsLoadedState, setKidProducts());
 
-    expect(state.kidProducts.length).toBe(1);
+    expect(state.kidProducts.length).toBe(0);
   });
 
   test("Debe de cargar los productos destacados", () => {
@@ -84,7 +89,7 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
       setFeaturedProducts()
     );
 
-    expect(state.featuredProducts.length).toBe(2);
+    expect(state.featuredProducts.length).toBe(1);
   });
 
   test("Debe de cargar los productos en oferta", () => {
@@ -93,6 +98,6 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
       setProductsOnOffer()
     );
 
-    expect(state.productsOnOffer.length).toBe(2);
+    expect(state.productsOnOffer.length).toBe(1);
   });
 });
