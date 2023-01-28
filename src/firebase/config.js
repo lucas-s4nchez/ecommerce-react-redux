@@ -1,25 +1,24 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
+import { getEnvironments } from "../helpers";
 // TODO: Add SDKs for Firebase products that you want to use
+const {
+  VITE_APIKEY,
+  VITE_AUTHDOMAIN,
+  VITE_PROJECTID,
+  VITE_STORAGEBUCKET,
+  VITE_MESSAGINGSENDERID,
+  VITE_APPID,
+} = getEnvironments();
 
-//Dev/Prod
-// const firebaseConfig = {
-//   apiKey: "AIzaSyB7L9NQ4WC5LzvC39SjgmZJg4cYRETSD4E",
-//   authDomain: "yury-ecommerce.firebaseapp.com",
-//   projectId: "yury-ecommerce",
-//   storageBucket: "yury-ecommerce.appspot.com",
-//   messagingSenderId: "1002819702727",
-//   appId: "1:1002819702727:web:6f880163c2345185ec93e2",
-// };
-//Testing
 const firebaseConfig = {
-  apiKey: "AIzaSyCnx1da_wseRj93VsYlwVSgfLDg2wtzXJk",
-  authDomain: "react-testing-412f9.firebaseapp.com",
-  projectId: "react-testing-412f9",
-  storageBucket: "react-testing-412f9.appspot.com",
-  messagingSenderId: "407229943033",
-  appId: "1:407229943033:web:c8bc607c0ce108a5d46628",
+  apiKey: VITE_APIKEY,
+  authDomain: VITE_AUTHDOMAIN,
+  projectId: VITE_PROJECTID,
+  storageBucket: VITE_STORAGEBUCKET,
+  messagingSenderId: VITE_MESSAGINGSENDERID,
+  appId: VITE_APPID,
 };
 
 // Initialize Firebase
