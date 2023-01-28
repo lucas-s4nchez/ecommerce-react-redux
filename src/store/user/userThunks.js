@@ -1,6 +1,6 @@
 // import {
 //   collection,
-//   deleteDoc,
+//   deleteDoc,.
 //   doc,
 //   getDocs,
 //   setDoc,

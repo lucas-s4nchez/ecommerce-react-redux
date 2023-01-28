@@ -1,24 +1,14 @@
 import { Button, Box, Typography } from "@mui/material";
 
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-
 import { FavoritesItem } from "./FavoritesItems";
-import {
-  FavoritesButtonSkeleton,
-  FavoritesItemsSkeleton,
-} from "./FavoritesSkeletonLoader";
+import { FavoritesItemsSkeleton } from "./FavoritesSkeletonLoader";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { useNavigate } from "react-router-dom";
 import { useUserStore } from "../../hooks/useUserStore";
 
 export const FavoritesPage = () => {
-  const { isLoading, favorites, startDeletingAllProductsFromFavorites } =
-    useUserStore();
+  const { isLoading, favorites } = useUserStore();
   const navigate = useNavigate();
-
-  const handleDeleteAll = () => {
-    startDeletingAllProductsFromFavorites();
-  };
 
   return (
     <>
@@ -32,14 +22,6 @@ export const FavoritesPage = () => {
           marginBottom: 5,
         }}
       >
-        {isLoading && (
-          <FavoritesButtonSkeleton sx={{ alignSelf: "flex-end" }} />
-        )}
-        {favorites.length >= 1 && (
-          <Button onClick={handleDeleteAll} sx={{ alignSelf: "flex-end" }}>
-            Eliminar Todos <DeleteForeverIcon />
-          </Button>
-        )}
         {isLoading ? (
           <FavoritesItemsSkeleton />
         ) : favorites.length < 1 ? (

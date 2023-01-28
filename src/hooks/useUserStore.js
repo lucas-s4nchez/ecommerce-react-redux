@@ -109,26 +109,19 @@ export const useUserStore = () => {
       ...products.find((product) => product.id === id),
     };
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/favorites`));
-    newFavoriteProduct.docId = newDoc.id;
+    newFavoriteProduct.id = newDoc.id;
+    newFavoriteProduct.productId = id;
+
     const setDocResp = await setDoc(newDoc, newFavoriteProduct);
 
     dispatch(addProductToFavorites(newFavoriteProduct));
   };
 
-  const startDeletingProductFromFavorites = async (docId, id) => {
-    const docRef = doc(FirebaseDB, `users/${uid}/favorites/${docId}`);
+  const startDeletingProductFromFavorites = async (id) => {
+    const docRef = doc(FirebaseDB, `users/${uid}/favorites/${id}`);
     await deleteDoc(docRef);
 
     dispatch(deleteProductFromFavorites(id));
-  };
-
-  const startDeletingAllProductsFromFavorites = async () => {
-    favorites.forEach(async (product) => {
-      const docRef = doc(FirebaseDB, `users/${uid}/favorites/${product.docId}`);
-      await deleteDoc(docRef);
-    });
-
-    dispatch(clearFavorites());
   };
 
   const startAddingProductToCart = async (id, quantity, size) => {
@@ -356,7 +349,6 @@ export const useUserStore = () => {
     startLoadingUserInfo,
     startAddingProductToFavorites,
     startDeletingProductFromFavorites,
-    startDeletingAllProductsFromFavorites,
     startAddingProductToCart,
     startAddingUnitToProduct,
     startRemoveUnitToProduct,
