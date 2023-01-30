@@ -4,11 +4,10 @@ import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
 import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
 import { ProductsContainer } from "../../components/productsContainer/ProductsContainer";
-import { useProductsStore } from "../../hooks/useProductsStore";
 import { setWomenProducts } from "../../store/products/productsSlice";
 
 export const WomenShopPage = () => {
-  const { isLoading, womenProducts } = useProductsStore();
+  const { isLoading, womenProducts } = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
   useEffect(() => {

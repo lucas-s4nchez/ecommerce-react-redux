@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -24,9 +24,8 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import { formatPrice } from "../../helpers/formatPrice";
 import { useNavigate } from "react-router-dom";
 import { PurchasesItemsSkeleton } from "./PurchaseSkeletonLoader";
-import { useAuthStore } from "../../hooks/useAuthStore";
-import { useProductsStore } from "../../hooks/useProductsStore";
-import { useUserStore } from "../../hooks/useUserStore";
+import { startAddingNewReview } from "../../store/user/userThunks";
+import { startLoadingProducts } from "../../store/products/productsThunks";
 
 const labels = {
   1: "Inutil",
@@ -37,17 +36,13 @@ const labels = {
 };
 
 export const PurchasesPage = () => {
-  const { isLoading, purchases, disabled, startAddingNewReview } =
-    useUserStore();
-  const { displayName } = useAuthStore();
-  const { startLoadingProducts } = useProductsStore();
+  const { isLoading, purchases, disabled } = useSelector((state) => state.user);
+  const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState("");
-  const loadingProducts = () => {
-    startLoadingProducts();
-  };
+
   const {
     getFieldProps,
     handleSubmit,
@@ -80,10 +75,10 @@ export const PurchasesPage = () => {
         rating: values.rating,
         userName: displayName,
       };
-      startAddingNewReview(newProduct);
+      dispatch(startAddingNewReview(newProduct));
       resetForm();
       setOpen(false);
-      loadingProducts();
+      dispatch(startLoadingProducts());
     },
     onReset: () => {
       setOpen(false);

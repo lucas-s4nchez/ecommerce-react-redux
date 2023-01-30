@@ -14,10 +14,10 @@ import {
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { useSelector } from "react-redux";
 
 export const AccountPage = () => {
-  const { displayName, photoURL } = useAuthStore();
+  const { displayName, photoURL } = useSelector((state) => state.auth);
   return (
     <>
       <RouterBreadcrumbs />

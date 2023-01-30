@@ -1,11 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Link as RouterLink,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -27,11 +22,13 @@ import * as Yup from "yup";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import {
+  startGoogleSigIn,
+  startLoginWithEmailAndPassword,
+} from "../../store/auth/authThunks";
 
 export const LoginPage = () => {
-  const { errorMessage, startGoogleSigIn, startLoginWithEmailAndPassword } =
-    useAuthStore();
+  const { errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const { getFieldProps, handleSubmit, errors, touched } = useFormik({
@@ -48,7 +45,7 @@ export const LoginPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      startLoginWithEmailAndPassword(values);
+      dispatch(startLoginWithEmailAndPassword(values));
     },
   });
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +56,7 @@ export const LoginPage = () => {
     event.preventDefault();
   };
   const onGoogleSignIn = () => {
-    startGoogleSigIn();
+    dispatch(startGoogleSigIn());
     history.back();
   };
   const onRedirect = () => {

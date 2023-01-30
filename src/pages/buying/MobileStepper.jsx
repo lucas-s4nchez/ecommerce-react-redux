@@ -9,7 +9,6 @@ import {
 import { ConfirmPayment } from "./ConfirmPayment";
 import { SelectAddress } from "./SelectAddress";
 import { SelectPaymentMethod } from "./SelectPaymentMethod";
-import { useUserStore } from "../../hooks/useUserStore";
 
 export const MobileStepper = ({
   steps,
@@ -19,7 +18,7 @@ export const MobileStepper = ({
   handleCancelBuy,
   handleCompleteBuy,
 }) => {
-  const { paymentMethod, activeAddress } = useUserStore();
+  const { paymentMethod, activeAddress } = useSelector((state) => state.user);
 
   return (
     <>

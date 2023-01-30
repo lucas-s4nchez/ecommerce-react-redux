@@ -1,11 +1,10 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { CardProduct } from "../../components/card/CardProduct";
 import { MUICarousel } from "../../components/carousel/Carousel";
 import { CarouselItem } from "./CarouselItem";
 import { HomeCardContainer } from "./HomeCardContainer";
 import { ShoppingInfoSection } from "./ShoppingInfoSection";
-import { useProductsStore } from "../../hooks/useProductsStore";
 import { useEffect } from "react";
 import {
   setFeaturedProducts,
@@ -54,7 +53,9 @@ const items = [
 ];
 
 export const HomePage = () => {
-  const { isLoading, featuredProducts, productsOnOffer } = useProductsStore();
+  const { isLoading, featuredProducts, productsOnOffer } = useSelector(
+    (state) => state.products
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {

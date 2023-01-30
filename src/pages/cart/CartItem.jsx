@@ -15,12 +15,17 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import { formatPrice } from "../../helpers/formatPrice";
-import { useState } from "react";
-import { useUserStore } from "../../hooks/useUserStore";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  startAddingUnitToProduct,
+  startDeletingProductFromCart,
+  startRemoveUnitToProduct,
+} from "../../store/user/userThunks";
 
 export const CartItem = ({
   id,
   model,
+  productId,
   version,
   discount,
   image,
@@ -31,29 +36,25 @@ export const CartItem = ({
   quantity,
   stock,
 }) => {
-  const {
-    disabled,
-    startAddingUnitToProduct,
-    startDeletingProductFromCart,
-    startRemoveUnitToProduct,
-  } = useUserStore();
+  const { disabled, cart } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const [newQuantity, setNewQuantity] = useState(quantity);
+  const cartProduct = cart.find((product) => product.id === id);
 
   const handleDelete = () => {
-    startDeletingProductFromCart(id);
+    dispatch(startDeletingProductFromCart(cartProduct.id));
   };
   const handleAddUnitProduct = () => {
-    if (newQuantity >= stock) return;
-
-    setNewQuantity(newQuantity + 1);
-    startAddingUnitToProduct(id, 1, size);
+    if (quantity >= stock) return;
+    dispatch(
+      startAddingUnitToProduct({ ...cartProduct, quantity: quantity + 1 })
+    );
   };
   const handleRemoveUnitProduct = () => {
-    if (newQuantity <= 1) return;
-
-    setNewQuantity(newQuantity - 1);
-    startRemoveUnitToProduct(id, 1, size);
+    if (quantity <= 1) return;
+    dispatch(
+      startRemoveUnitToProduct({ ...cartProduct, quantity: quantity - 1 })
+    );
   };
 
   return (
@@ -127,20 +128,20 @@ export const CartItem = ({
             <IconButton
               sx={{ color: "primary.main" }}
               onClick={handleRemoveUnitProduct}
-              disabled={newQuantity <= 1 || disabled}
+              disabled={quantity <= 1 || disabled}
             >
               <RemoveIcon />
             </IconButton>
             <TextField
               type="text"
-              value={newQuantity}
+              value={quantity}
               size="small"
               sx={{ width: "70px" }}
             />
             <IconButton
               sx={{ color: "primary.main" }}
               onClick={handleAddUnitProduct}
-              disabled={newQuantity >= stock || disabled}
+              disabled={quantity >= stock || disabled}
             >
               <AddIcon />
             </IconButton>
@@ -151,9 +152,7 @@ export const CartItem = ({
             </Typography>
           </Box>
           <Box>
-            <Typography>
-              Subtotal: {formatPrice(newQuantity * price)}
-            </Typography>
+            <Typography>Subtotal: {formatPrice(quantity * price)}</Typography>
           </Box>
         </Box>
         <CardActions

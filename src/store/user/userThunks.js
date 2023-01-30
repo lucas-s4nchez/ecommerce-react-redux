@@ -5,12 +5,9 @@ import {
   getDocs,
   setDoc,
 } from "firebase/firestore/lite";
-import { useDispatch, useSelector } from "react-redux";
-import { FirebaseDB } from "../firebase/config";
-import { updateProduct } from "../store/products/productsSlice";
+import { FirebaseDB } from "../../firebase/config";
+import { updateProduct } from "../products/productsSlice";
 import {
-  isDisabled,
-  isLoadingUserInfo,
   addNewAddress,
   addNewCard,
   addNewPurchase,
@@ -18,61 +15,38 @@ import {
   addProductToFavorites,
   addUnitToProduct,
   clearActiveAddress,
-  clearFavorites,
   clearPaymentMethod,
   deleteAddress,
   deleteCard,
   deleteProductFromCart,
   deleteProductFromFavorites,
+  isDisabled,
+  isLoadingUserInfo,
   setAddresses,
   setCards,
   setCart,
   setFavorites,
   setPurchases,
+  setTotalItemsInCart,
+  setTotalToPay,
   subtractUnitToProduct,
   updatePurchase,
-} from "../store/user/userSlice";
-import { useAuthStore } from "./useAuthStore";
+} from "./userSlice";
 
-export const useUserStore = () => {
-  const {
-    isLoading,
-    disabled,
-    favorites,
-    cart,
-    purchases,
-    totalItemsInCart,
-    totalToPay,
-    addresses,
-    cards,
-    activeAddress,
-    paymentMethod,
-  } = useSelector((state) => state.user);
-  const { uid } = useSelector((state) => state.auth);
-  const { products } = useSelector((state) => state.products);
-  const dispatch = useDispatch();
-
-  const startLoadingUserInfo = async (currentUID) => {
+export const startLoadingUserInfo = () => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     dispatch(isLoadingUserInfo());
 
-    const cartRef = collection(FirebaseDB, `users/${currentUID}/cart`);
+    const cartRef = collection(FirebaseDB, `users/${uid}/cart`);
     const cartDocs = await getDocs(cartRef);
-    const favoritesRef = collection(
-      FirebaseDB,
-      `users/${currentUID}/favorites`
-    );
+    const favoritesRef = collection(FirebaseDB, `users/${uid}/favorites`);
     const favoritesDocs = await getDocs(favoritesRef);
-    const addressesRef = collection(
-      FirebaseDB,
-      `users/${currentUID}/addresses`
-    );
+    const addressesRef = collection(FirebaseDB, `users/${uid}/addresses`);
     const addressesDocs = await getDocs(addressesRef);
-    const cardsRef = collection(FirebaseDB, `users/${currentUID}/cards`);
+    const cardsRef = collection(FirebaseDB, `users/${uid}/cards`);
     const cardsDocs = await getDocs(cardsRef);
-    const purchasesRef = collection(
-      FirebaseDB,
-      `users/${currentUID}/purchases`
-    );
+    const purchasesRef = collection(FirebaseDB, `users/${uid}/purchases`);
     const purchasesDocs = await getDocs(purchasesRef);
 
     const cart = [];
@@ -101,105 +75,89 @@ export const useUserStore = () => {
     dispatch(setAddresses(addresses));
     dispatch(setCards(cards));
     dispatch(setPurchases(purchases));
+    dispatch(setTotalItemsInCart());
+    dispatch(setTotalToPay());
     dispatch(isLoadingUserInfo());
   };
+};
 
-  const startAddingProductToFavorites = async (id) => {
-    const newFavoriteProduct = {
-      ...products.find((product) => product.id === id),
-    };
+export const startAddingProductToFavorites = (product) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/favorites`));
-    newFavoriteProduct.id = newDoc.id;
-    newFavoriteProduct.productId = id;
+    product.id = newDoc.id;
 
-    const setDocResp = await setDoc(newDoc, newFavoriteProduct);
+    const setDocResp = await setDoc(newDoc, product);
 
-    dispatch(addProductToFavorites(newFavoriteProduct));
+    dispatch(addProductToFavorites(product));
   };
+};
 
-  const startDeletingProductFromFavorites = async (id) => {
+export const startDeletingProductFromFavorites = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     const docRef = doc(FirebaseDB, `users/${uid}/favorites/${id}`);
     await deleteDoc(docRef);
 
     dispatch(deleteProductFromFavorites(id));
   };
+};
 
-  const startAddingProductToCart = async (id, quantity, size) => {
-    const product = {
-      ...products.find((product) => product.id === id),
-    };
-    const cartProduct = {
-      brand: product.brand,
-      model: product.model,
-      version: product.version,
-      price: product.price,
-      stock: product.stock,
-      discount: product.discount,
-      quantity: quantity,
-      size: size,
-      image: product.images[0],
-      colors: product.colors,
-    };
-    if (cartProduct.discount > 0) {
-      const newPrice =
-        cartProduct.price - (cartProduct.price * cartProduct.discount) / 100;
-      cartProduct.price = newPrice;
-    }
+export const startAddingProductToCart = (product) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cart`));
-    cartProduct.id = newDoc.id;
-    cartProduct.productId = id;
-    const setDocResp = await setDoc(newDoc, cartProduct);
-    dispatch(addProductToCart(cartProduct));
+    product.id = newDoc.id;
+    const setDocResp = await setDoc(newDoc, product);
+    dispatch(addProductToCart(product));
+    dispatch(setTotalToPay());
+    dispatch(setTotalItemsInCart());
   };
+};
 
-  const startAddingUnitToProduct = async (id, quantity, size) => {
+export const startAddingUnitToProduct = (product) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+
     dispatch(isDisabled());
-
-    const newProduct = {
-      ...cart.find((product) => product.id === id && product.size === size),
-    };
-
-    const newProductUpdate = {
-      ...newProduct,
-      quantity: newProduct.quantity + quantity,
-    };
-    delete newProductUpdate.id; //Elimino el id porque no quiero crearla de nuevo
-    const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
-    await setDoc(docRef, newProductUpdate, { merge: true });
-    dispatch(addUnitToProduct({ cartProduct: newProduct, quantity: quantity }));
+    const docRef = doc(FirebaseDB, `users/${uid}/cart/${product.id}`);
+    await setDoc(docRef, product, { merge: true });
+    dispatch(addUnitToProduct(product));
+    dispatch(setTotalToPay());
+    dispatch(setTotalItemsInCart());
     dispatch(isDisabled());
   };
+};
 
-  const startRemoveUnitToProduct = async (id, quantity, size) => {
+export const startRemoveUnitToProduct = (product) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     dispatch(isDisabled());
-
-    const newProduct = {
-      ...cart.find((product) => product.id === id && product.size === size),
-    };
-
-    const newProductUpdate = {
-      ...newProduct,
-      quantity: newProduct.quantity - quantity,
-    };
-    delete newProductUpdate.id; //Elimino el id porque no quiero crearla de nuevo
-    const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
-    await setDoc(docRef, newProductUpdate, { merge: true });
-    dispatch(
-      subtractUnitToProduct({ cartProduct: newProduct, quantity: quantity })
-    );
+    const docRef = doc(FirebaseDB, `users/${uid}/cart/${product.id}`);
+    await setDoc(docRef, product, { merge: true });
+    dispatch(subtractUnitToProduct(product));
+    dispatch(setTotalToPay());
+    dispatch(setTotalItemsInCart());
     dispatch(isDisabled());
   };
+};
 
-  const startDeletingProductFromCart = async (id) => {
-    const currentProduct = { ...cart.find((product) => product.id === id) };
+export const startDeletingProductFromCart = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
 
     const docRef = doc(FirebaseDB, `users/${uid}/cart/${id}`);
     await deleteDoc(docRef);
 
-    dispatch(deleteProductFromCart(currentProduct));
+    dispatch(deleteProductFromCart(id));
+    dispatch(setTotalToPay());
+    dispatch(setTotalItemsInCart());
   };
+};
 
-  const startAddingNewAddress = async (values) => {
+export const startAddingNewAddress = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     const newAddress = {
       ...values,
     };
@@ -211,8 +169,13 @@ export const useUserStore = () => {
 
     dispatch(addNewAddress(newAddress));
   };
+};
 
-  const startDeletingAddress = async (id) => {
+export const startDeletingAddress = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { addresses } = getState().user;
+
     const currentAddress = {
       ...addresses.find((address) => address.id === id),
     };
@@ -222,8 +185,11 @@ export const useUserStore = () => {
 
     dispatch(deleteAddress(currentAddress));
   };
+};
 
-  const startAddingNewCard = async (values) => {
+export const startAddingNewCard = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
     const newCard = {
       ...values,
     };
@@ -235,8 +201,12 @@ export const useUserStore = () => {
 
     dispatch(addNewCard(newCard));
   };
+};
 
-  const startDeletingCard = async (id) => {
+export const startDeletingCard = (id) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { cards } = getState().user;
     const currentCard = {
       ...cards.find((address) => address.id === id),
     };
@@ -246,8 +216,14 @@ export const useUserStore = () => {
 
     dispatch(deleteCard(currentCard));
   };
+};
 
-  const startAddingNewPurchase = async (values) => {
+export const startAddingNewPurchase = (values) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { products } = getState().products;
+    const { cart } = getState().user;
+
     const newPurchase = {
       ...values,
     };
@@ -280,8 +256,14 @@ export const useUserStore = () => {
     dispatch(clearPaymentMethod());
     dispatch(clearActiveAddress());
   };
+};
 
-  const startAddingNewReview = async (item) => {
+export const startAddingNewReview = (item) => {
+  return async (dispatch, getState) => {
+    const { purchases } = getState().user;
+    const { uid } = getState().auth;
+    const { products } = getState().products;
+
     dispatch(isDisabled());
 
     //Agrega la nueva review
@@ -329,35 +311,5 @@ export const useUserStore = () => {
     );
     dispatch(isDisabled());
     // startLoadingProducts();
-  };
-
-  return {
-    //Propiedades
-    isLoading,
-    disabled,
-    favorites,
-    cart,
-    purchases,
-    totalItemsInCart,
-    totalToPay,
-    addresses,
-    cards,
-    activeAddress,
-    paymentMethod,
-
-    //Métodos
-    startLoadingUserInfo,
-    startAddingProductToFavorites,
-    startDeletingProductFromFavorites,
-    startAddingProductToCart,
-    startAddingUnitToProduct,
-    startRemoveUnitToProduct,
-    startDeletingProductFromCart,
-    startAddingNewAddress,
-    startDeletingAddress,
-    startAddingNewCard,
-    startDeletingCard,
-    startAddingNewPurchase,
-    startAddingNewReview,
   };
 };

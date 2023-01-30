@@ -18,10 +18,10 @@ import SaveIcon from "@mui/icons-material/Save";
 import DoDisturbIcon from "@mui/icons-material/DoDisturb";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { setActiveAddress } from "../../store/user/userSlice";
-import { useUserStore } from "../../hooks/useUserStore";
+import { startAddingNewAddress } from "../../store/user/userThunks";
 
 export const SelectAddress = () => {
-  const { addresses, activeAddress, startAddingNewAddress } = useUserStore();
+  const { addresses, activeAddress } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const { getFieldProps, handleSubmit, handleReset, errors, touched } =
@@ -45,7 +45,7 @@ export const SelectAddress = () => {
         phoneNumber: Yup.number().required("Campo requerido"),
       }),
       onSubmit: (values, { resetForm }) => {
-        startAddingNewAddress(values);
+        dispatch(startAddingNewAddress(values));
         handleCloseForm();
         resetForm();
       },

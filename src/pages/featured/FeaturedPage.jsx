@@ -4,11 +4,12 @@ import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
 import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
 import { ProductsContainer } from "../../components/productsContainer/ProductsContainer";
-import { useProductsStore } from "../../hooks/useProductsStore";
 import { setFeaturedProducts } from "../../store/products/productsSlice";
 
 export const FeaturedPage = () => {
-  const { isLoading, featuredProducts } = useProductsStore();
+  const { isLoading, featuredProducts } = useSelector(
+    (state) => state.products
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {

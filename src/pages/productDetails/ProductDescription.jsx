@@ -12,10 +12,9 @@ import { GiRolledCloth } from "react-icons/gi";
 import { MdCloseFullscreen } from "react-icons/md";
 import { FaShoePrints } from "react-icons/fa";
 import { GiConverseShoe } from "react-icons/gi";
-import { useProductsStore } from "../../hooks/useProductsStore";
 
 export const ProductDescription = ({ product }) => {
-  const { isLoading } = useProductsStore();
+  const { isLoading } = useSelector((state) => state.products);
   if (isLoading) {
     return (
       <>

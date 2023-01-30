@@ -40,42 +40,34 @@ export const userSlice = createSlice({
     },
     setCart: (state, { payload }) => {
       state.cart = payload;
-      state.totalToPay = state.cart.reduce((acc, cur) => {
-        return acc + cur.price * cur.quantity;
-      }, 0);
-      state.totalItemsInCart = state.cart.reduce((acc, cur) => {
-        return acc + cur.quantity;
-      }, 0);
     },
     addProductToCart: (state, { payload }) => {
       state.cart.push(payload);
-      state.totalItemsInCart = state.totalItemsInCart + payload.quantity;
-      state.totalToPay = state.totalToPay + payload.price * payload.quantity;
     },
     deleteProductFromCart: (state, { payload }) => {
-      state.cart = state.cart.filter((product) => product.id !== payload.id);
-      state.totalItemsInCart = state.totalItemsInCart - payload.quantity;
-      state.totalToPay = state.totalToPay - payload.price * payload.quantity;
+      state.cart = state.cart.filter((product) => product.id !== payload);
     },
     addUnitToProduct: (state, { payload }) => {
-      const { cartProduct, quantity } = payload;
       state.cart = state.cart.map((product) => {
-        return product.id === cartProduct.id
-          ? { ...product, quantity: cartProduct.quantity + quantity }
-          : product;
+        return product.id === payload.id ? payload : product;
       });
-      state.totalItemsInCart = state.totalItemsInCart + quantity;
-      state.totalToPay = state.totalToPay + cartProduct.price * quantity;
     },
     subtractUnitToProduct: (state, { payload }) => {
-      const { cartProduct, quantity } = payload;
       state.cart = state.cart.map((product) => {
-        return product.id === cartProduct.id
-          ? { ...product, quantity: cartProduct.quantity - quantity }
-          : product;
+        return product.id === payload.id ? payload : product;
       });
-      state.totalItemsInCart = state.totalItemsInCart - quantity;
-      state.totalToPay = state.totalToPay - cartProduct.price * quantity;
+    },
+    setTotalToPay: (state) => {
+      state.totalToPay = state.cart.reduce(
+        (acc, curr) => acc + curr.quantity * curr.price,
+        0
+      );
+    },
+    setTotalItemsInCart: (state) => {
+      state.totalItemsInCart = state.cart.reduce(
+        (acc, curr) => acc + curr.quantity,
+        0
+      );
     },
     clearCart: (state) => {
       state.isLoading = false;
@@ -171,6 +163,8 @@ export const {
   deleteProductFromCart,
   addUnitToProduct,
   subtractUnitToProduct,
+  setTotalItemsInCart,
+  setTotalToPay,
   clearCart,
   setAddresses,
   addNewAddress,

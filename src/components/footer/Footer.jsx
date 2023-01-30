@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useAuthStore } from "../../hooks/useAuthStore";
 
 import { Wrapper } from "../../styles/Wrapper";
 import {
@@ -15,9 +14,10 @@ import { Link, Typography, Box } from "@mui/material";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { useSelector } from "react-redux";
 
 export const Footer = () => {
-  const { status } = useAuthStore();
+  const { status } = useSelector((state) => state.auth);
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
   return (
     <Box sx={{ backgroundColor: "secondary.main" }}>

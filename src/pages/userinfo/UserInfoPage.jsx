@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -21,21 +21,18 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import EditIcon from "@mui/icons-material/Edit";
 import { isError, isSuccess } from "../../store/auth/authSlice";
-import { useAuthStore } from "../../hooks/useAuthStore";
-import { useUserStore } from "../../hooks/useUserStore";
 import { isDisabled } from "../../store/user/userSlice";
 import { changePassword } from "../../firebase/providers";
+import {
+  startChangingDisplayName,
+  startChangingEmail,
+} from "../../store/auth/authThunks";
 
 export const UserInfoPage = () => {
-  const {
-    email,
-    displayName,
-    errorMessage,
-    successUpdate,
-    startChangingDisplayName,
-    startChangingEmail,
-  } = useAuthStore();
-  const { disabled } = useUserStore();
+  const { email, displayName, errorMessage, successUpdate } = useSelector(
+    (state) => state.auth
+  );
+  const { disabled } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openEmailModal, setOpenEmailModal] = useState(false);
@@ -132,7 +129,7 @@ export const UserInfoPage = () => {
                       .required("Campo requerido"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    startChangingEmail(values.email, values.password);
+                    dispatch(startChangingEmail(values.email, values.password));
                   }}
                   onReset={() => {
                     handleCloseEmailModal();
@@ -249,7 +246,7 @@ export const UserInfoPage = () => {
                       .min(3, "Minimo 3 caracteres"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    startChangingDisplayName(values.displayName);
+                    dsipatch(startChangingDisplayName(values.displayName));
                   }}
                   onReset={() => {
                     handleCloseDisplayNameModal();

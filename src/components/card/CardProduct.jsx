@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAlerts } from "../../hooks/useAlerts";
-import { useAuthStore } from "../../hooks/useAuthStore";
 import {
   ProductContainerDiscountStyled,
   ProductDiscountStyled,
@@ -27,8 +26,10 @@ import {
 } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { useProductsStore } from "../../hooks/useProductsStore";
-import { useUserStore } from "../../hooks/useUserStore";
+import {
+  startAddingProductToFavorites,
+  startDeletingProductFromFavorites,
+} from "../../store/user/userThunks";
 
 export const ProductPrice = ({ discount, price, isLoading }) => {
   return (
@@ -74,13 +75,9 @@ export const CardProduct = ({
 }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { status } = useAuthStore();
-  const {
-    favorites,
-    startAddingProductToFavorites,
-    startDeletingProductFromFavorites,
-  } = useUserStore();
-  const { isLoading } = useProductsStore();
+  const { status } = useSelector((state) => state.auth);
+  const { favorites } = useSelector((state) => state.user);
+  const { isLoading, products } = useSelector((state) => state.products);
   const {
     messageOfNotAuthenticatedUser,
     handleOpenMessageOfNotAuthenticatedUser,
@@ -94,21 +91,46 @@ export const CardProduct = ({
   } = useAlerts();
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
-  const isExistingProduct = favorites.find((product) => product.id === id);
+
+  const isExistingFavoritesProduct = favorites.find(
+    (product) => product.productId === id
+  );
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
       handleOpenMessageOfNotAuthenticatedUser();
       return;
     }
-    if (isExistingProduct) {
-      startDeletingProductFromFavorites(isExistingProduct.docId, id);
+
+    const newFavoriteProduct = {
+      ...products.find((product) => product.id === id),
+      productId: id,
+    };
+
+    if (isExistingFavoritesProduct) {
+      dispatch(
+        startDeletingProductFromFavorites(isExistingFavoritesProduct.id)
+      );
       handleOpenMessageRemoveProductToFavorites();
     } else {
-      startAddingProductToFavorites(id);
+      dispatch(startAddingProductToFavorites(newFavoriteProduct));
       handleOpenMessageAddProductToFavorites();
     }
   };
+
+  // const handleAddProductToFavorites = () => {
+  //   if (!isAuthenticated) {
+  //     handleOpenMessageOfNotAuthenticatedUser();
+  //     return;
+  //   }
+  //   if (isExistingProduct) {
+  //     startDeletingProductFromFavorites(isExistingProduct.docId, id);
+  //     handleOpenMessageRemoveProductToFavorites();
+  //   } else {
+  //     startAddingProductToFavorites(id);
+  //     handleOpenMessageAddProductToFavorites();
+  //   }
+  // };
 
   const setPathname = () => {
     if (location.pathname === "/") {
@@ -152,12 +174,12 @@ export const CardProduct = ({
           aria-label="add to favorites"
           onClick={handleAddProductToFavorites}
           title={
-            favorites.find((product) => product.id === id)
+            isExistingFavoritesProduct
               ? "Eliminar de Favoritos"
               : "Agregar a Favoritos"
           }
         >
-          {favorites.find((product) => product.id === id) ? (
+          {isExistingFavoritesProduct ? (
             <FavoriteOutlinedIcon sx={{ color: "primary.main" }} />
           ) : (
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />

@@ -7,10 +7,11 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
-import { useUserStore } from "../../hooks/useUserStore";
 
 export const ConfirmPayment = () => {
-  const { paymentMethod, activeAddress, cart, isLoading } = useUserStore();
+  const { paymentMethod, activeAddress, cart, isLoading } = useSelector(
+    (state) => state.user
+  );
 
   if (isLoading) {
     return <Skeleton width="100%" height={400} />;

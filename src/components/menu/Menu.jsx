@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useAuthStore } from "../../hooks/useAuthStore";
 import { MenuItem } from "../menuItem/MenuItem";
 
 import {
@@ -29,19 +28,22 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import MaleOutlinedIcon from "@mui/icons-material/MaleOutlined";
 import FemaleOutlinedIcon from "@mui/icons-material/FemaleOutlined";
 import ChildCareOutlinedIcon from "@mui/icons-material/ChildCareOutlined";
+import { useDispatch, useSelector } from "react-redux";
+import { startLogout } from "../../store/auth/authThunks";
 
 const drawerWidth = 300;
 
 export const Menu = (props) => {
   const { window, openMenu, handleOpenMenu } = props;
-  const { status, displayName, photoURL, startLogout } = useAuthStore();
+  const { status, displayName, photoURL } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   const onLogout = () => {
-    startLogout();
+    dispatch(startLogout());
     handleOpenMenu();
   };
 

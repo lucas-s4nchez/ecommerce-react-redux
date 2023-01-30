@@ -4,10 +4,10 @@ import { FavoritesItem } from "./FavoritesItems";
 import { FavoritesItemsSkeleton } from "./FavoritesSkeletonLoader";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../hooks/useUserStore";
+import { useSelector } from "react-redux";
 
 export const FavoritesPage = () => {
-  const { isLoading, favorites } = useUserStore();
+  const { isLoading, favorites } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   return (

@@ -2,7 +2,6 @@ import { Box, Button, Step, StepLabel, Stepper } from "@mui/material";
 import { ConfirmPayment } from "./ConfirmPayment";
 import { SelectAddress } from "./SelectAddress";
 import { SelectPaymentMethod } from "./SelectPaymentMethod";
-import { useUserStore } from "../../hooks/useUserStore";
 
 function getStepContent(step) {
   switch (step) {
@@ -25,7 +24,7 @@ export const DesktopStepper = ({
   handleCancelBuy,
   handleCompleteBuy,
 }) => {
-  const { paymentMethod, activeAddress } = useUserStore();
+  const { paymentMethod, activeAddress } = useSelector((state) => state.user);
 
   return (
     <>

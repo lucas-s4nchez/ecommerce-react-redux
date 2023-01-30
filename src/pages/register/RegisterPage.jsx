@@ -21,11 +21,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { isError } from "../../store/auth/authSlice";
 import { AuthLayout } from "../../layout/AuthLayout";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
-import { useAuthStore } from "../../hooks/useAuthStore";
+import { startRegisterUserwithEmailAndPassword } from "../../store/auth/authThunks";
 
 export const RegisterPage = () => {
-  const { status, errorMessage, startRegisterUserwithEmailAndPassword } =
-    useAuthStore();
+  const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const isCheckingAuthentication = useMemo(
     () => status === "checking",
@@ -50,7 +49,7 @@ export const RegisterPage = () => {
         .required("Campo requerido"),
     }),
     onSubmit: (values) => {
-      startRegisterUserwithEmailAndPassword(values);
+      dispatch(startRegisterUserwithEmailAndPassword(values));
     },
   });
   const [showPassword, setShowPassword] = useState(false);

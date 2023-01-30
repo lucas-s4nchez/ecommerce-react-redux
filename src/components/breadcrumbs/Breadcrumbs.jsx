@@ -2,14 +2,14 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { Box, Link, Typography, Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import HomeIcon from "@mui/icons-material/Home";
-import { useProductsStore } from "../../hooks/useProductsStore";
+import { useSelector } from "react-redux";
 
 function LinkRouter(props) {
   return <Link {...props} component={RouterLink} />;
 }
 
 export const RouterBreadcrumbs = () => {
-  const { products } = useProductsStore();
+  const { products } = useSelector((state) => state.products);
   const location = useLocation();
   const breadcrumbNameMap = {
     "/search": "Buscar",

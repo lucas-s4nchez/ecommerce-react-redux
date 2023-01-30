@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useProductsStore } from "../../hooks/useProductsStore";
+import { useSelector } from "react-redux";
 import {
   ProductImageContainerSkeleton,
   ProductImagesListSkeleton,
@@ -12,7 +12,7 @@ import {
 } from "./ProductDetailsStyles";
 
 export const ProductImage = ({ product }) => {
-  const { isLoading } = useProductsStore();
+  const { isLoading } = useSelector((state) => state.products);
   const [currentImage, setCurrentImage] = useState("");
   useEffect(() => {
     setCurrentImage(product?.images[0]);

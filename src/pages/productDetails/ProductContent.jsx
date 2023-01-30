@@ -30,21 +30,19 @@ import {
 import { ProductPrice } from "../../components/card/CardProduct";
 import { ProductDetailsActionsSkeleton } from "./ProductDetailsSkeleton";
 import { useAlerts } from "../../hooks/useAlerts";
-import { useProductsStore } from "../../hooks/useProductsStore";
-import { useAuthStore } from "../../hooks/useAuthStore";
-import { useUserStore } from "../../hooks/useUserStore";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  startAddingProductToCart,
+  startAddingProductToFavorites,
+  startAddingUnitToProduct,
+  startDeletingProductFromFavorites,
+} from "../../store/user/userThunks";
 
 export const ProductContent = ({ product, id }) => {
-  const { status } = useAuthStore();
-  const { isLoading } = useProductsStore();
-  const {
-    favorites,
-    cart,
-    startAddingProductToCart,
-    startAddingProductToFavorites,
-    startAddingUnitToProduct,
-    startDeletingProductFromFavorites,
-  } = useUserStore();
+  const { status } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.products);
+  const { favorites, cart } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const {
     messageOfNotAuthenticatedUser,
@@ -72,39 +70,70 @@ export const ProductContent = ({ product, id }) => {
       size: Yup.number().required("Por favor selecciona un talle"),
     }),
     onSubmit: (values) => {
-      const isExistingProduct = cart.find(
+      const cartProduct = {
+        brand: product.brand,
+        model: product.model,
+        version: product.version,
+        stock: product.stock,
+        discount: product.discount,
+        quantity: quantity,
+        size: values.size,
+        image: product.images[0],
+        colors: product.colors,
+        price:
+          product.discount > 0
+            ? product.price - (product.price * product.discount) / 100
+            : product.price,
+        productId: product.id,
+      };
+      const isExistingCartProduct = cart.find(
         (cartProduct) =>
           cartProduct.productId === product.id &&
           cartProduct.size === values.size
       );
-      if (isExistingProduct) {
-        startAddingUnitToProduct(isExistingProduct.id, quantity, values.size);
+      if (isExistingCartProduct) {
+        dispatch(
+          startAddingUnitToProduct({
+            ...isExistingCartProduct,
+            quantity: isExistingCartProduct.quantity + quantity,
+          })
+        );
 
         handleOpenMessageAddUnitProductToCart();
       } else {
-        startAddingProductToCart(product.id, quantity, values.size);
+        dispatch(startAddingProductToCart(cartProduct));
         handleOpenMessageAddProductToCart();
       }
     },
   });
 
   const isAuthenticated = useMemo(() => status === "authenticated", [status]);
-  const isExistingProduct = favorites.find((product) => product.id === id);
+
+  const isExistingFavoritesProduct = favorites.find(
+    (product) => product.productId === id
+  );
 
   const handleAddProductToFavorites = () => {
     if (!isAuthenticated) {
       handleOpenMessageOfNotAuthenticatedUser();
       return;
     }
+    const newFavoritesProduct = {
+      ...product,
+      productId: product.id,
+    };
 
-    if (isExistingProduct) {
-      startDeletingProductFromFavorites(isExistingProduct.docId, id);
+    if (isExistingFavoritesProduct) {
+      dispatch(
+        startDeletingProductFromFavorites(isExistingFavoritesProduct.id)
+      );
       handleOpenMessageRemoveProductToFavorites();
     } else {
-      startAddingProductToFavorites(id);
+      dispatch(startAddingProductToFavorites(newFavoritesProduct));
       handleOpenMessageAddProductToFavorites();
     }
   };
+
   const handleAddUnitProduct = () => {
     if (quantity >= product.stock) return;
     setQuantity(quantity + 1);
@@ -177,12 +206,12 @@ export const ProductContent = ({ product, id }) => {
           aria-label="añadir a favoritos"
           onClick={handleAddProductToFavorites}
           title={
-            favorites.find((product) => product.id === id)
+            isExistingFavoritesProduct
               ? "Eliminar de Favoritos"
               : "Agregar a Favoritos"
           }
         >
-          {favorites.find((product) => product.id === id) ? (
+          {isExistingFavoritesProduct ? (
             <FavoriteOutlinedIcon sx={{ color: "primary.main" }} />
           ) : (
             <FavoriteBorderOutlinedIcon sx={{ color: "primary.main" }} />

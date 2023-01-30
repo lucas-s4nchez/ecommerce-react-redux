@@ -6,10 +6,10 @@ import { Alert, Box, Button, Skeleton, TextField } from "@mui/material";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
 import { CardProduct } from "../../components/card/CardProduct";
 import { CardsSkeleton } from "../../components/cardsSkeleton/CardsSkeleton";
-import { useProductsStore } from "../../hooks/useProductsStore";
+import { useSelector } from "react-redux";
 
 export const SearchPage = () => {
-  const { isLoading, products } = useProductsStore();
+  const { isLoading, products } = useSelector((state) => state.products);
   const navigate = useNavigate();
   const location = useLocation();
 
