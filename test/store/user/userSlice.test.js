@@ -26,6 +26,8 @@ import {
   setFavorites,
   setPaymentMethod,
   setPurchases,
+  setTotalItemsInCart,
+  setTotalToPay,
   subtractUnitToProduct,
   updatePurchase,
   userSlice,
@@ -55,6 +57,11 @@ import {
 
 describe('Pruebas en el archivo "userSlice.js"', () => {
   test("El slice debe de tener el name 'user'", () => {
+    const state = userSlice.reducer(userInitialState, {});
+
+    expect(state).toEqual(userInitialState);
+  });
+  test("Debe de retornar el estado inicial", () => {
     const state = userSlice.reducer(userInitialState, {});
 
     expect(state).toEqual(userInitialState);
@@ -92,9 +99,10 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
   });
 
   test("Debe de eliminar un producto de favoritos", () => {
+    const productId = 3;
     const state = userSlice.reducer(
       favoritesState,
-      deleteProductFromFavorites(3)
+      deleteProductFromFavorites(productId)
     );
 
     expect(state.favorites.length).toBe(2);
@@ -107,102 +115,117 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
     expect(state.favorites.length).toBe(0);
   });
 
-  test("Debe de cargar los productos al carrito, calcular el total y la cantidad de productos en el carrito", () => {
+  test("Debe de cargar los productos al carrito", () => {
     const state = userSlice.reducer(
       userInitialState,
       setCart(productsCartList)
     );
 
     expect(state.cart).toEqual(productsCartList);
-    expect(state.totalToPay).toBe(totalToPayTest);
-    expect(state.totalItemsInCart).toBe(totalItemsInCartTest);
   });
 
-  test("Debe de agregar un producto al carrito, calcular el total y la cantidad de productos en el carrito", () => {
+  test("Debe de agregar un producto al carrito", () => {
     const state = userSlice.reducer(
-      cartState,
+      userInitialState,
       addProductToCart(newCartProduct)
     );
 
-    expect(state.cart).toEqual([...productsCartList, newCartProduct]);
-    expect(state.totalToPay).toBe(
-      cartState.totalToPay + newCartProduct.price * newCartProduct.quantity
-    );
-    expect(state.totalItemsInCart).toBe(
-      cartState.totalItemsInCart + newCartProduct.quantity
-    );
+    expect(state.cart).toEqual([newCartProduct]);
+    expect(state.cart.length).toBe(1);
   });
 
-  test("Debe de eliminar un producto del carrito, calcular el total y la cantidad de productos en el carrito", () => {
-    //agrego un producto para luego eliminarlo
-    const newCartState = {
-      ...cartState,
-      cart: [...cartState.cart, newCartProduct],
-      totalItemsInCart: cartState.totalItemsInCart + newCartProduct.quantity,
-      totalToPay:
-        cartState.totalToPay + newCartProduct.quantity * newCartProduct.price,
+  test("Debe de eliminar un producto del carrito", () => {
+    const productId = 3;
+    const state = userSlice.reducer(cartState, deleteProductFromCart(3));
+
+    expect(state.cart).toEqual(
+      productsCartList.filter((p) => p.id !== productId)
+    );
+    expect(state.cart.length).toBe(2);
+  });
+
+  test("Debe de agregar una unidad a un producto del carrito", () => {
+    const newCartProduct = {
+      id: 3,
+      brand: "Fila",
+      model: "Trend",
+      version: "2.0",
+      gender: "Mujer",
+      adjustment: "Slip-on, Cordones",
+      price: 15500,
+      style: "Deportivo",
+      exterior: "Poliéster",
+      sole: "Goma EVA",
+      colors: ["negro", "rojo"],
+      images: [
+        "https://i.ibb.co/XXrRLmF/trend-1.webp",
+        "https://i.ibb.co/Ctj7Cy0/trend-2.webp",
+        "https://i.ibb.co/jkvfnMK/trend-3.webp",
+        "https://i.ibb.co/Sr1vhPX/trend-4.webp",
+      ],
+      sizes: [35, 39, 40],
+      stock: 50,
+      discount: 0,
+      quantity: 4,
+      featured: true,
+      reviews: [],
+      sold: 0,
     };
     const state = userSlice.reducer(
-      newCartState,
-      deleteProductFromCart(newCartProduct)
+      cartState,
+      addUnitToProduct(newCartProduct)
     );
 
-    expect(state.cart).toEqual([...productsCartList]);
+    //originalmente la cantidad era 2
+    expect(state.cart[0].quantity).toBe(4);
+  });
+
+  test("Debe de restar una unidad a un producto del carrito", () => {
+    const newCartProduct = {
+      id: 3,
+      brand: "Fila",
+      model: "Trend",
+      version: "2.0",
+      gender: "Mujer",
+      adjustment: "Slip-on, Cordones",
+      price: 15500,
+      style: "Deportivo",
+      exterior: "Poliéster",
+      sole: "Goma EVA",
+      colors: ["negro", "rojo"],
+      images: [
+        "https://i.ibb.co/XXrRLmF/trend-1.webp",
+        "https://i.ibb.co/Ctj7Cy0/trend-2.webp",
+        "https://i.ibb.co/jkvfnMK/trend-3.webp",
+        "https://i.ibb.co/Sr1vhPX/trend-4.webp",
+      ],
+      sizes: [35, 39, 40],
+      stock: 50,
+      discount: 0,
+      quantity: 1,
+      featured: true,
+      reviews: [],
+      sold: 0,
+    };
+    const state = userSlice.reducer(
+      cartState,
+      subtractUnitToProduct(newCartProduct)
+    );
+
+    //Originalmente la cantidad era 2
+    expect(state.cart[0].quantity).toBe(1);
+  });
+
+  test("Debe de calcular el total a pagar del carrito", () => {
+    const state = userSlice.reducer(cartState, setTotalToPay());
+
     expect(state.totalToPay).toBe(totalToPayTest);
+  });
+
+  test("Debe de calcular el total de productos en el carrito", () => {
+    const state = userSlice.reducer(cartState, setTotalItemsInCart());
+
     expect(state.totalItemsInCart).toBe(totalItemsInCartTest);
-  });
-
-  test("Debe de agregar una unidad a un producto del carrito, calcular el total y la cantidad de productos en el carrito", () => {
-    //agrego un producto para luego agregar una unidad a este
-    const newCartState = {
-      ...cartState,
-      cart: [...cartState.cart, newCartProduct],
-      totalItemsInCart: cartState.totalItemsInCart + newCartProduct.quantity,
-      totalToPay:
-        cartState.totalToPay + newCartProduct.quantity * newCartProduct.price,
-    };
-    const state = userSlice.reducer(
-      newCartState,
-      addUnitToProduct({ cartProduct: newCartProduct, quantity: 1 })
-    );
-
-    expect(state.cart).toEqual([
-      ...cartState.cart,
-      { ...newCartProduct, quantity: newCartProduct.quantity + 1 },
-    ]);
-    expect(state.totalToPay).toBe(
-      newCartState.totalToPay + newCartProduct.price * newCartProduct.quantity
-    );
-    expect(state.totalItemsInCart).toBe(
-      newCartState.totalItemsInCart + newCartProduct.quantity
-    );
-  });
-
-  test("Debe de restar una unidad a un producto del carrito, calcular el total y la cantidad de productos en el carrito", () => {
-    //agrego un producto con varias unidades para luego restar una unidad a este
-    const newCartProductTest = { ...newCartProduct, quantity: 3 };
-    const newCartState = {
-      ...cartState,
-      cart: [...cartState.cart, newCartProductTest],
-      totalItemsInCart:
-        cartState.totalItemsInCart + newCartProductTest.quantity,
-      totalToPay:
-        cartState.totalToPay +
-        newCartProductTest.quantity * newCartProductTest.price,
-    };
-    const state = userSlice.reducer(
-      newCartState,
-      subtractUnitToProduct({ cartProduct: newCartProductTest, quantity: 1 })
-    );
-
-    expect(state.cart).toEqual([
-      ...cartState.cart,
-      { ...newCartProductTest, quantity: newCartProductTest.quantity - 1 },
-    ]);
-    expect(state.totalToPay).toBe(
-      newCartState.totalToPay - newCartProductTest.price * 1
-    );
-    expect(state.totalItemsInCart).toBe(newCartState.totalItemsInCart - 1);
   });
 
   test("Debe de eliminar todos los productos del carrito", () => {

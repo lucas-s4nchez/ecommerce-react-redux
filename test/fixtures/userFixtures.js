@@ -234,8 +234,6 @@ export const totalToPayTest = productsCartList.reduce((acc, cur) => {
 export const cartState = {
   ...userInitialState,
   cart: [...productsCartList],
-  totalToPay: totalToPayTest,
-  totalItemsInCart: totalItemsInCartTest,
 };
 //Addresses
 export const newAddress = {
