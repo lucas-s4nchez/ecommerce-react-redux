@@ -7,6 +7,7 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export const ConfirmPayment = () => {
   const { paymentMethod, activeAddress, cart, isLoading } = useSelector(
@@ -23,6 +24,7 @@ export const ConfirmPayment = () => {
         flexDirection: "column",
         alignItems: "flex-start",
         gap: 2,
+        marginBottom: 3,
       }}
     >
       <Typography sx={{ fontWeight: "bolder" }}>Completa tu compra</Typography>

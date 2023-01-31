@@ -10,6 +10,7 @@ import {
 } from "../../store/user/userSlice";
 import { MobileStepper } from "./MobileStepper";
 import { DesktopStepper } from "./DesktopStepper";
+import { startAddingNewPurchase } from "../../store/user/userThunks";
 
 const steps = [
   "Selecciona tu domicilio",
@@ -19,6 +20,7 @@ const steps = [
 
 export const BuyingPage = () => {
   const { totalToPay, cart } = useSelector((state) => state.user);
+  const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
@@ -33,7 +35,15 @@ export const BuyingPage = () => {
 
   const handleCompleteBuy = () => {
     const newPurchase = cart.map((element) => {
-      return {
+      const currentProduct = {
+        ...products.find((product) => product.id === element.productId),
+      };
+      const newProduct = {
+        ...currentProduct,
+        stock: currentProduct.stock - element.quantity,
+        sold: currentProduct.sold + element.quantity,
+      };
+      const newPurchase = {
         productId: element.productId,
         image: element.image,
         brand: element.brand,
@@ -45,6 +55,7 @@ export const BuyingPage = () => {
         price: element.price,
         waitingToReceiveRating: true,
       };
+      return { purchase: newPurchase, product: newProduct };
     });
     newPurchase.forEach((product) => dispatch(startAddingNewPurchase(product)));
     dispatch(clearCart());

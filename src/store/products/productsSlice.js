@@ -23,11 +23,7 @@ export const productsSlice = createSlice({
 
     updateProduct: (state, { payload }) => {
       state.products = state.products.map((product) => {
-        if (product.id === payload.productId) {
-          return { id: payload.productId, ...payload.product };
-        } else {
-          return product;
-        }
+        return product.id === payload.id ? { ...payload } : product;
       });
     },
     setMenProducts: (state) => {

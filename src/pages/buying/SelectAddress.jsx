@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -45,7 +45,10 @@ export const SelectAddress = () => {
         phoneNumber: Yup.number().required("Campo requerido"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewAddress(values));
+        const newAddress = {
+          ...values,
+        };
+        dispatch(startAddingNewAddress(newAddress));
         handleCloseForm();
         resetForm();
       },
@@ -67,6 +70,7 @@ export const SelectAddress = () => {
         flexDirection: "column",
         alignItems: "flex-start",
         gap: 2,
+        marginBottom: 3,
       }}
     >
       <Typography sx={{ fontWeight: "bolder" }}>

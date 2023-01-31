@@ -49,15 +49,13 @@ describe('Pruebas en el archivo "productsSlice.js"', () => {
   });
 
   test("Debe de actualizar un producto", () => {
-    const newProductId = "4hekghyh5jgwMcImmKPQ";
     const state = productsSlice.reducer(
       productsLoadedState,
-      updateProduct({ productId: newProductId, product: updatedProduct })
+      updateProduct(updatedProduct)
     );
     const currentProduct = {
-      ...state.products.find((product) => product.id === newProductId),
+      ...state.products.find((product) => product.id === updatedProduct.id),
     };
-    delete currentProduct.id;
 
     expect(currentProduct).toEqual(updatedProduct);
   });

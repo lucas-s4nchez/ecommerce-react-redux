@@ -104,7 +104,10 @@ export const SelectPaymentMethod = () => {
           .min(3, "Mínimo 3 caracteres"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewCard(values));
+        const newCard = {
+          ...values,
+        };
+        dispatch(startAddingNewCard(newCard));
         handleCloseForm();
         resetForm();
       },
@@ -132,6 +135,7 @@ export const SelectPaymentMethod = () => {
         flexDirection: "column",
         alignItems: "flex-start",
         gap: 2,
+        marginBottom: 3,
       }}
     >
       <Typography sx={{ fontWeight: "bolder" }}>

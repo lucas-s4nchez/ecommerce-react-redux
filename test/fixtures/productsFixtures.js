@@ -12,7 +12,7 @@ export const productsLoadedState = {
   isLoading: false,
   products: [
     {
-      id: "4hekghyh5jgwMcImmKPQ",
+      id: 1,
       brand: "Fila",
       model: "Float Knit",
       version: "",
@@ -50,7 +50,7 @@ export const productsLoadedState = {
       sold: 3,
     },
     {
-      id: "cCtpg8sCQzVDH2ScfRX5",
+      id: 2,
       brand: "Adidas",
       model: "Duramo",
       version: "SL",
@@ -92,7 +92,7 @@ export const productsLoadedState = {
 
 export const productsStock = [
   {
-    id: "4hekghyh5jgwMcImmKPQ",
+    id: 1,
     brand: "Fila",
     model: "Float Knit",
     version: "",
@@ -130,7 +130,7 @@ export const productsStock = [
     sold: 3,
   },
   {
-    id: "cCtpg8sCQzVDH2ScfRX5",
+    id: 2,
     brand: "Adidas",
     model: "Duramo",
     version: "SL",
@@ -165,6 +165,7 @@ export const productsStock = [
 ];
 
 export const updatedProduct = {
+  id: 2,
   brand: "Fila",
   model: "Float Knit",
   version: "",

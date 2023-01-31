@@ -7,6 +7,7 @@ import {
 } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
 import { updateProduct } from "../products/productsSlice";
+import { startLoadingProducts } from "../products/productsThunks";
 import {
   addNewAddress,
   addNewCard,
@@ -105,6 +106,7 @@ export const startDeletingProductFromFavorites = (id) => {
 
 export const startAddingProductToCart = (product) => {
   return async (dispatch, getState) => {
+    dispatch(isDisabled());
     const { uid } = getState().auth;
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cart`));
     product.id = newDoc.id;
@@ -112,6 +114,7 @@ export const startAddingProductToCart = (product) => {
     dispatch(addProductToCart(product));
     dispatch(setTotalToPay());
     dispatch(setTotalItemsInCart());
+    dispatch(isDisabled());
   };
 };
 
@@ -155,12 +158,9 @@ export const startDeletingProductFromCart = (id) => {
   };
 };
 
-export const startAddingNewAddress = (values) => {
+export const startAddingNewAddress = (newAddress) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    const newAddress = {
-      ...values,
-    };
 
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/addresses`));
     const setDocResp = await setDoc(newDoc, newAddress);
@@ -174,142 +174,80 @@ export const startAddingNewAddress = (values) => {
 export const startDeletingAddress = (id) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    const { addresses } = getState().user;
-
-    const currentAddress = {
-      ...addresses.find((address) => address.id === id),
-    };
 
     const docRef = doc(FirebaseDB, `users/${uid}/addresses/${id}`);
     await deleteDoc(docRef);
 
-    dispatch(deleteAddress(currentAddress));
+    dispatch(deleteAddress(id));
   };
 };
 
-export const startAddingNewCard = (values) => {
+export const startAddingNewCard = (card) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    const newCard = {
-      ...values,
-    };
 
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/cards`));
-    const setDocResp = await setDoc(newDoc, newCard);
+    const setDocResp = await setDoc(newDoc, card);
 
-    newCard.id = newDoc.id;
+    card.id = newDoc.id;
 
-    dispatch(addNewCard(newCard));
+    dispatch(addNewCard(card));
   };
 };
 
 export const startDeletingCard = (id) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    const { cards } = getState().user;
-    const currentCard = {
-      ...cards.find((address) => address.id === id),
-    };
 
     const docRef = doc(FirebaseDB, `users/${uid}/cards/${id}`);
     await deleteDoc(docRef);
 
-    dispatch(deleteCard(currentCard));
+    dispatch(deleteCard(id));
   };
 };
 
-export const startAddingNewPurchase = (values) => {
+export const startAddingNewPurchase = ({ purchase, product }) => {
   return async (dispatch, getState) => {
     const { uid } = getState().auth;
-    const { products } = getState().products;
     const { cart } = getState().user;
 
-    const newPurchase = {
-      ...values,
-    };
-    //Añade una compra a la base de datos
     const newDoc = doc(collection(FirebaseDB, `users/${uid}/purchases`));
-    const setDocResp = await setDoc(newDoc, newPurchase);
-    newPurchase.id = newDoc.id;
-    //Resta las cantidad comprada, del stock. Añade la cantidad a las ventas
-    const currentProduct = {
-      ...products.find((product) => product.id === values.productId),
-    };
-    const newProduct = {
-      ...currentProduct,
-      stock: currentProduct.stock - values.quantity,
-      sold: currentProduct.sold + values.quantity,
-    };
-    delete newProduct.id;
-    const docRef = doc(FirebaseDB, `/products/${currentProduct.id}`);
-    await setDoc(docRef, newProduct, { merge: true });
+    const setDocResp = await setDoc(newDoc, purchase);
+    purchase.id = newDoc.id;
+    //Actualiza el producto
+    const docRef = doc(FirebaseDB, `/products/${product.id}`);
+    await setDoc(docRef, product, { merge: true });
     //Limpia el carrito
     cart.forEach(async (product) => {
       const docRef = doc(FirebaseDB, `users/${uid}/cart/${product.id}`);
       await deleteDoc(docRef);
     });
 
-    dispatch(addNewPurchase(newPurchase));
-    dispatch(
-      updateProduct({ productId: values.productId, product: newProduct })
-    );
+    dispatch(updateProduct(product));
+    dispatch(addNewPurchase(purchase));
     dispatch(clearPaymentMethod());
     dispatch(clearActiveAddress());
   };
 };
 
-export const startAddingNewReview = (item) => {
+export const startAddingNewReview = ({ product, purchase }) => {
   return async (dispatch, getState) => {
-    const { purchases } = getState().user;
     const { uid } = getState().auth;
-    const { products } = getState().products;
 
     dispatch(isDisabled());
 
-    //Agrega la nueva review
-    const currentProduct = {
-      ...products.find((product) => product.id === item.id),
-    };
-    const newProduct = {
-      ...currentProduct,
-      reviews: [
-        ...currentProduct.reviews,
-        {
-          comment: item.comment,
-          rating: item.rating,
-          date: item.date,
-          userName: item.userName,
-        },
-      ],
-    };
-    delete newProduct.id;
-
-    const docRef = doc(FirebaseDB, `/products/${currentProduct.id}`);
-    await setDoc(docRef, newProduct, { merge: true });
+    const docRef = doc(FirebaseDB, `/products/${product.id}`);
+    await setDoc(docRef, product, { merge: true });
 
     //Cambiar 'waitingToReceiveRating' a false
-    const currentPurchase = {
-      ...purchases.find((product) => product.id === item.purchaseId),
-    };
-    const newPurchase = {
-      ...currentPurchase,
-      waitingToReceiveRating: false,
-    };
-    delete newPurchase.id;
-
     const purchaseRef = doc(
       FirebaseDB,
-      `users/${uid}/purchases/${item.purchaseId}`
+      `users/${uid}/purchases/${purchase.id}`
     );
-    await setDoc(purchaseRef, newPurchase, { merge: true });
+    await setDoc(purchaseRef, purchase, { merge: true });
 
-    dispatch(
-      updateProduct({ productId: currentProduct.id, product: newProduct })
-    );
-    dispatch(
-      updatePurchase({ purchaseId: item.purchaseId, purchase: newPurchase })
-    );
+    dispatch(updateProduct(product));
+    dispatch(updatePurchase(purchase));
     dispatch(isDisabled());
-    // startLoadingProducts();
   };
 };

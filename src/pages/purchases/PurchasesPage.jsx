@@ -38,10 +38,11 @@ const labels = {
 export const PurchasesPage = () => {
   const { isLoading, purchases, disabled } = useSelector((state) => state.user);
   const { displayName } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState("");
+  const [currentPurchase, setCurrentPurchase] = useState("");
 
   const {
     getFieldProps,
@@ -67,15 +68,29 @@ export const PurchasesPage = () => {
     }),
     onSubmit: (values, { resetForm }) => {
       values.rating = Number(values.rating);
-      const newProduct = {
-        id: currentProduct.productId,
-        purchaseId: currentProduct.id,
-        date: new Date().getTime(),
-        comment: values.review,
-        rating: values.rating,
-        userName: displayName,
+
+      const currentProduct = {
+        ...products.find((product) => product.id === currentPurchase.productId),
       };
-      dispatch(startAddingNewReview(newProduct));
+      const newProduct = {
+        ...currentProduct,
+        reviews: [
+          ...currentProduct.reviews,
+          {
+            date: new Date().getTime(),
+            comment: values.review,
+            rating: values.rating,
+            userName: displayName,
+          },
+        ],
+      };
+      const newPurchase = {
+        ...currentPurchase,
+        waitingToReceiveRating: false,
+      };
+      dispatch(
+        startAddingNewReview({ product: newProduct, purchase: newPurchase })
+      );
       resetForm();
       setOpen(false);
       dispatch(startLoadingProducts());
@@ -86,7 +101,7 @@ export const PurchasesPage = () => {
   });
   const handleAddReview = (item) => {
     setOpen(true);
-    setCurrentProduct(item);
+    setCurrentPurchase(item);
   };
 
   return (

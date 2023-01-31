@@ -251,19 +251,8 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
   });
 
   test("Debe de eliminar una dirección", () => {
-    const state = userSlice.reducer(
-      addressesState,
-      deleteAddress({
-        id: 1,
-        city: "Milagro",
-        fullName: "Dmitri Klokov",
-        phoneNumber: "8759869",
-        postalCode: "1233",
-        province: "Buenos Aires",
-        street: "San Martín",
-        streetNumber: "36",
-      })
-    );
+    const addressId = 1;
+    const state = userSlice.reducer(addressesState, deleteAddress(addressId));
 
     expect(state.addresses.length).toBe(1);
   });
@@ -306,17 +295,8 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
   });
 
   test("Debe de eliminar una tarjeta", () => {
-    const state = userSlice.reducer(
-      cardsState,
-      deleteCard({
-        id: 1,
-        cvc: "545",
-        expiryMonth: 8,
-        expiryYear: 28,
-        name: "Maria elena fuseneco",
-        number: "4584845241649845",
-      })
-    );
+    const cardId = 1;
+    const state = userSlice.reducer(cardsState, deleteCard(cardId));
 
     expect(state.cards.length).toBe(1);
   });
@@ -371,19 +351,8 @@ describe('Pruebas en el archivo "userSlice.js"', () => {
     const state = userSlice.reducer(
       purchasesState,
       updatePurchase({
-        purchaseId: 2,
-        purchase: {
-          brand: "Nike",
-          colors: ["negro", "rojo"],
-          image: "https://image2.com",
-          model: "Air Max",
-          price: 20000,
-          productId: "joisadoasidhos",
-          quantity: 1,
-          size: 44,
-          version: 2.0,
-          waitingToReceiveRating: false,
-        },
+        ...purchasesList[1],
+        waitingToReceiveRating: false,
       })
     );
 

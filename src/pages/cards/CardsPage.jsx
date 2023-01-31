@@ -94,7 +94,10 @@ export const CardsPage = () => {
           .min(3, "Mínimo 3 caracteres"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewCard(values));
+        const newCard = {
+          ...values,
+        };
+        dispatch(startAddingNewCard(newCard));
         handleCloseForm();
         resetForm();
       },

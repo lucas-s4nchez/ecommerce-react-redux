@@ -23,6 +23,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  startAddingNewAddress,
+  startDeletingAddress,
+} from "../../store/user/userThunks";
 
 export const AddressesPage = () => {
   const { isLoading, addresses } = useSelector((state) => state.user);
@@ -51,7 +55,10 @@ export const AddressesPage = () => {
         phoneNumber: Yup.number().required("Campo requerido"),
       }),
       onSubmit: (values, { resetForm }) => {
-        dispatch(startAddingNewAddress(values));
+        const newAddress = {
+          ...values,
+        };
+        dispatch(startAddingNewAddress(newAddress));
         handleCloseForm();
         resetForm();
       },

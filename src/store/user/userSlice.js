@@ -83,7 +83,7 @@ export const userSlice = createSlice({
     },
     deleteAddress: (state, { payload }) => {
       state.addresses = state.addresses.filter(
-        (address) => address.id !== payload.id
+        (address) => address.id !== payload
       );
     },
     setActiveAddress: (state, { payload }) => {
@@ -102,7 +102,7 @@ export const userSlice = createSlice({
       state.cards.push(payload);
     },
     deleteCard: (state, { payload }) => {
-      state.cards = state.cards.filter((card) => card.id !== payload.id);
+      state.cards = state.cards.filter((card) => card.id !== payload);
     },
     clearCards: (state) => {
       state.cards = [];
@@ -125,11 +125,7 @@ export const userSlice = createSlice({
     },
     updatePurchase: (state, { payload }) => {
       state.purchases = state.purchases.map((item) => {
-        if (item.id === payload.purchaseId) {
-          return { id: payload.purchaseId, ...payload.purchase };
-        } else {
-          return item;
-        }
+        return item.id === payload.id ? { ...payload } : item;
       });
     },
     clearPurchases: (state) => {
