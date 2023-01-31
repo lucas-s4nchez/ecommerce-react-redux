@@ -38,7 +38,7 @@ export const AppRoutes = () => {
         alignItems="center"
         sx={{ backgroundColor: "white.cream", minHeight: "100vh" }}
       >
-        <CircularProgress />
+        <CircularProgress data-testid="circular-progress" />
       </Grid>
     );
   }
