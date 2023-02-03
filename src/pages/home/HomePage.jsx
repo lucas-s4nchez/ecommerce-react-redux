@@ -75,19 +75,19 @@ export const HomePage = () => {
 
   return (
     <>
-      <Head
+      {/* <Head
         title="Yury"
         description="Las Mejores Ofertas de Zapatillas Estan Aquí ¡Cambiá Ahora Tu Estilo Sin Gastar de Más!"
         url="https://ecommerce-react-redux-mu.vercel.app/"
         images="https://i.ibb.co/FY27f2r/og-fb.webp"
-      />
-      <Box sx={{ marginBlock: 5 }}>
+      /> */}
+      {/* <Box sx={{ marginBlock: 5 }}>
         <MUICarousel color={"#e53935"} activeColor={"#EA605D"}>
           {items.map((item, i) => (
             <CarouselItem key={i} {...item} />
           ))}
         </MUICarousel>
-      </Box>
+      </Box> */}
       <ShoppingInfoSection />
       <Box>
         <Typography variant="h3" sx={{ fontSize: { xs: 22, sm: 30 } }}>
