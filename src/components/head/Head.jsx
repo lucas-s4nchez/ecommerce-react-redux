@@ -11,7 +11,10 @@ export const Head = ({ title, description, url, images }) => {
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={"../public/mercado-pago-icon.png"} />
+      <meta
+        property="og:image"
+        content="https://ecommerce-react-redux-mu.vercel.app/assets/mercado-pago-icon.png"
+      />
       {/* Twitter  */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={url} />
@@ -19,7 +22,7 @@ export const Head = ({ title, description, url, images }) => {
       <meta property="twitter:description" content={description} />
       <meta
         property="twitter:image"
-        content={"../public/mercado-pago-icon.png"}
+        content="https://ecommerce-react-redux-mu.vercel.app/assets/mercado-pago-icon.png"
       />
     </Helmet>
   );
