@@ -322,7 +322,7 @@ export const ProductContent = ({ product, id }) => {
         <Button
           type="submit"
           variant="contained"
-          disabled={!isAuthenticated}
+          disabled={!isAuthenticated || product.stock < 1}
           sx={{
             display: "flex",
             alignItems: "center",

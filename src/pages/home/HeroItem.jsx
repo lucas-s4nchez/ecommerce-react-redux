@@ -1,19 +1,13 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Button, Link, Paper, Typography } from "@mui/material";
 
-export const CarouselItem = ({
-  title1,
-  title2,
-  imgUrl,
-  button,
-  redirectTo,
-}) => {
+export const HeroItem = () => {
   return (
     <Paper
       sx={{
         height: { xs: "60vh", md: "45vh" },
         padding: 2,
-        backgroundImage: `url(${imgUrl})`,
+        backgroundImage: `url(https://i.ibb.co/tmm6W37/hero.webp)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -35,7 +29,7 @@ export const CarouselItem = ({
         <Typography
           sx={{ fontSize: { xs: 24, sm: 30 }, textTransform: "uppercase" }}
         >
-          {title1}
+          hasta
         </Typography>
         <Typography
           sx={{
@@ -44,28 +38,27 @@ export const CarouselItem = ({
             color: "primary.main",
           }}
         >
-          {title2}
+          30% Off
         </Typography>
-        {button && (
-          <Button
-            variant="contained"
+
+        <Button
+          variant="contained"
+          sx={{
+            padding: 0,
+          }}
+        >
+          <Link
+            to="/offers"
+            component={RouterLink}
             sx={{
-              padding: 0,
+              padding: 1,
+              color: "white.cream",
+              textDecoration: "none",
             }}
           >
-            <Link
-              to={redirectTo}
-              component={RouterLink}
-              sx={{
-                padding: 1,
-                color: "white.cream",
-                textDecoration: "none",
-              }}
-            >
-              Comprar
-            </Link>
-          </Button>
-        )}
+            Comprar
+          </Link>
+        </Button>
       </Box>
     </Paper>
   );

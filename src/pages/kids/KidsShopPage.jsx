@@ -1,3 +1,4 @@
+import { Alert } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouterBreadcrumbs } from "../../components/breadcrumbs/Breadcrumbs";
@@ -22,6 +23,11 @@ export const KidsShopPage = () => {
     <>
       <RouterBreadcrumbs />
       <ProductsContainer array={kidProducts}>
+        {!kidProducts.length && (
+          <Alert severity="error" variant="filled">
+            Lo sentimos, no disponemos de stock en este momento
+          </Alert>
+        )}
         {kidProducts.map((product) => (
           <CardProduct key={product.id} {...product} />
         ))}
