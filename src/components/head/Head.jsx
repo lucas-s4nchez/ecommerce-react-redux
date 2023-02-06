@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-
+import logo from "../public/mercado-pago-icon.png";
 export const Head = ({ title, description, url, images }) => {
   return (
     <Helmet>
@@ -11,19 +11,13 @@ export const Head = ({ title, description, url, images }) => {
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta
-        property="og:image"
-        content="https://ecommerce-react-redux-mu.vercel.app/static/mercado-pago-icon.png"
-      />
+      <meta property="og:image" content={logo} />
       {/* Twitter  */}
       <meta property="twitter:card" content="summary_large_image" />
       <meta property="twitter:url" content={url} />
       <meta property="twitter:title" content={title} />
       <meta property="twitter:description" content={description} />
-      <meta
-        property="twitter:image"
-        content="https://ecommerce-react-redux-mu.vercel.app/static/mercado-pago-icon.png"
-      />
+      <meta property="twitter:image" content={logo} />
     </Helmet>
   );
 };
