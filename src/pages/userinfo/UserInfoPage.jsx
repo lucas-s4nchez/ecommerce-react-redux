@@ -246,7 +246,7 @@ export const UserInfoPage = () => {
                       .min(3, "Minimo 3 caracteres"),
                   })}
                   onSubmit={(values, { resetForm }) => {
-                    dsipatch(startChangingDisplayName(values.displayName));
+                    dispatch(startChangingDisplayName(values.displayName));
                   }}
                   onReset={() => {
                     handleCloseDisplayNameModal();
